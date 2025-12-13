@@ -38,6 +38,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
         auth: { type: 'accessToken', value: accessToken },
         configId: '606a18be-4c8e-4877-8fb4-52665831b33d',
         sessionSettings: {
+          type: 'session_settings',
           systemPrompt: SOMMELIER_PROMPT,
           ...(userId && { variables: { user_id: userId } }),
         },
