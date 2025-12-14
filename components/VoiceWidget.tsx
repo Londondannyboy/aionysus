@@ -3,8 +3,27 @@
 import { useState, useCallback, useEffect } from 'react'
 import { VoiceProvider, useVoice } from '@humeai/voice-react'
 import { useUser } from '@stackframe/stack'
+import Image from 'next/image'
+import Link from 'next/link'
 
-const SOMMELIER_PROMPT = `You are Sofia, an expert sommelier and wine advisor. Your role is to help people discover wines they'll love, understand food pairings, and learn about wine in an approachable, friendly way.
+interface Wine {
+  id: number
+  name: string
+  winery: string
+  region: string
+  wine_type: string
+  price_range: string
+  image_url: string
+}
+
+const priceMap: Record<string, { price: number; display: string }> = {
+  budget: { price: 12.99, display: '£12.99' },
+  mid: { price: 24.99, display: '£24.99' },
+  premium: { price: 49.99, display: '£49.99' },
+  luxury: { price: 199.99, display: '£199.99' },
+}
+
+const SOMMELIER_PROMPT = `You are Sofia, an expert sommelier and wine advisor for SommelierQuest. Your role is to help people discover wines they'll love, understand food pairings, and learn about wine in an approachable, friendly way.
 
 Key behaviors:
 - Greet warmly and ask what brings them to you today
@@ -14,19 +33,121 @@ Key behaviors:
 - Explain wine terms in accessible language
 - Be enthusiastic and passionate about wine, but never pretentious
 
-When recommending wines:
-- Suggest 2-3 specific wines by name when possible
-- Explain WHY each wine suits their needs
+When recommending wines, ALWAYS mention specific wine names from our collection when relevant:
+- Blackdown Valley Merlot (English red, medium-bodied)
+- Caymus Cabernet Sauvignon (Napa Valley premium)
+- Kim Crawford Sauvignon Blanc (New Zealand, crisp)
+- Meiomi Pinot Noir (California, smooth)
+- Whispering Angel Rose (Provence rosé)
+- Veuve Clicquot (Champagne)
+- Chateau Margaux (Bordeaux luxury)
+- La Crema Chardonnay (Sonoma, creamy)
+- 19 Crimes Red Blend (Australian, budget-friendly)
+- Apothic Red (California, smooth blend)
+
+For each wine you suggest:
+- Explain WHY it suits their needs
 - Describe tasting notes they can expect
 - Mention the region and grape variety
-- Give approximate price ranges
 
 Start by warmly greeting the user and asking how you can help them with wine today.`
+
+function WineCard({ wine, onAddToCart }: { wine: Wine; onAddToCart: (wine: Wine) => void }) {
+  const [added, setAdded] = useState(false)
+  const pricing = priceMap[wine.price_range] || { price: 19.99, display: '£19.99' }
+
+  const handleAdd = () => {
+    onAddToCart(wine)
+    setAdded(true)
+    setTimeout(() => setAdded(false), 2000)
+  }
+
+  return (
+    <div className="flex gap-3 bg-white rounded-xl border border-stone-200 p-3 mt-2 max-w-sm">
+      <Link href={`/wines/${wine.id}`} className="relative w-16 h-24 flex-shrink-0">
+        <Image
+          src={wine.image_url || 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=600&fit=crop'}
+          alt={wine.name}
+          fill
+          className="object-cover rounded-lg"
+        />
+      </Link>
+      <div className="flex-1 min-w-0">
+        <Link href={`/wines/${wine.id}`} className="font-semibold text-stone-900 text-sm hover:text-wine-600 line-clamp-2">
+          {wine.name}
+        </Link>
+        <p className="text-xs text-stone-500">{wine.region}</p>
+        <p className="font-bold text-wine-600 text-sm mt-1">{pricing.display}</p>
+        <button
+          onClick={handleAdd}
+          className={`mt-2 px-3 py-1 text-xs font-medium rounded-full transition-all ${
+            added
+              ? 'bg-green-600 text-white'
+              : 'bg-wine-600 text-white hover:bg-wine-700'
+          }`}
+        >
+          {added ? 'Added!' : 'Add to Cart'}
+        </button>
+      </div>
+    </div>
+  )
+}
 
 function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?: string }) {
   const { connect, disconnect, status, messages } = useVoice()
   const [isConnecting, setIsConnecting] = useState(false)
   const [waveHeights, setWaveHeights] = useState<number[]>([])
+  const [wines, setWines] = useState<Wine[]>([])
+  const [detectedWines, setDetectedWines] = useState<Map<number, Wine[]>>(new Map())
+
+  // Fetch wines on mount
+  useEffect(() => {
+    async function fetchWines() {
+      try {
+        const response = await fetch('/api/wines')
+        if (response.ok) {
+          const data = await response.json()
+          setWines(data)
+        }
+      } catch (error) {
+        console.error('Error fetching wines:', error)
+      }
+    }
+    fetchWines()
+  }, [])
+
+  // Detect wines in messages
+  useEffect(() => {
+    if (wines.length === 0) return
+
+    const newDetected = new Map<number, Wine[]>()
+
+    messages.forEach((msg, index) => {
+      if (msg.type === 'assistant_message' && msg.message?.content) {
+        const content = msg.message.content.toLowerCase()
+        const foundWines: Wine[] = []
+
+        wines.forEach(wine => {
+          // Check for wine name in message
+          const wineName = wine.name.toLowerCase()
+          if (content.includes(wineName) ||
+              content.includes(wine.winery?.toLowerCase() || '') ||
+              // Check for partial matches
+              wineName.split(' ').some(word => word.length > 4 && content.includes(word))) {
+            if (!foundWines.find(w => w.id === wine.id)) {
+              foundWines.push(wine)
+            }
+          }
+        })
+
+        if (foundWines.length > 0) {
+          newDetected.set(index, foundWines)
+        }
+      }
+    })
+
+    setDetectedWines(newDetected)
+  }, [messages, wines])
 
   useEffect(() => {
     if (status.value === 'connected') {
@@ -61,6 +182,27 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
     disconnect()
   }, [disconnect])
 
+  const handleAddToCart = useCallback((wine: Wine) => {
+    const existingCart = JSON.parse(localStorage.getItem('sommelier-cart') || '[]')
+    const existingIndex = existingCart.findIndex((item: { id: number }) => item.id === wine.id)
+    const pricing = priceMap[wine.price_range] || { price: 19.99 }
+
+    if (existingIndex >= 0) {
+      existingCart[existingIndex].quantity += 1
+    } else {
+      existingCart.push({
+        id: wine.id,
+        name: wine.name,
+        winery: wine.winery,
+        price: pricing.price,
+        quantity: 1,
+        image_url: wine.image_url,
+      })
+    }
+
+    localStorage.setItem('sommelier-cart', JSON.stringify(existingCart))
+  }, [])
+
   const isConnected = status.value === 'connected'
   const isError = status.value === 'error'
 
@@ -81,7 +223,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
               ? 'bg-wine-600 hover:bg-wine-700'
               : 'bg-stone-900 hover:bg-stone-800'
           } ${isConnecting ? 'opacity-50' : ''}`}
-          aria-label={isConnected ? "Stop Sommelier AI conversation" : "Start Sommelier AI conversation"}
+          aria-label={isConnected ? "Stop SommelierQuest conversation" : "Start SommelierQuest conversation"}
         >
           {isConnecting ? (
             <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -111,37 +253,55 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
 
       <p className="text-stone-500 text-lg mb-8">
         {isConnected
-          ? "Sommelier AI is listening — ask about wine."
+          ? "Sofia is listening — ask about wine."
           : isError
           ? "Connection error — tap to try again."
-          : "Want wine advice? Hit play — Sommelier AI will help."}
+          : "Want wine advice? Hit play — Sofia will help."}
       </p>
 
       {messages.length > 0 && (
-        <div className="w-full max-w-2xl bg-stone-50 rounded-2xl p-6 max-h-64 overflow-y-auto mb-8">
+        <div className="w-full max-w-2xl bg-stone-50 rounded-2xl p-6 max-h-[500px] overflow-y-auto mb-8">
           <div className="space-y-3">
             {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`flex ${msg.type === 'user_message' ? 'justify-end' : 'justify-start'}`}
-              >
+              <div key={index}>
                 <div
-                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
-                    msg.type === 'user_message'
-                      ? 'bg-wine-600 text-white'
-                      : 'bg-white border border-stone-200 text-stone-700'
-                  }`}
+                  className={`flex ${msg.type === 'user_message' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <p className="text-sm leading-relaxed">
-                    {msg.type === 'user_message' && msg.message?.content}
-                    {msg.type === 'assistant_message' && msg.message?.content}
-                  </p>
+                  <div
+                    className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
+                      msg.type === 'user_message'
+                        ? 'bg-wine-600 text-white'
+                        : 'bg-white border border-stone-200 text-stone-700'
+                    }`}
+                  >
+                    <p className="text-sm leading-relaxed">
+                      {msg.type === 'user_message' && msg.message?.content}
+                      {msg.type === 'assistant_message' && msg.message?.content}
+                    </p>
+                  </div>
                 </div>
+
+                {/* Wine cards for detected wines */}
+                {detectedWines.get(index)?.map(wine => (
+                  <div key={wine.id} className="flex justify-start mt-2">
+                    <WineCard wine={wine} onAddToCart={handleAddToCart} />
+                  </div>
+                ))}
               </div>
             ))}
           </div>
         </div>
       )}
+
+      {/* Cart link when items are in cart */}
+      <Link
+        href="/cart"
+        className="fixed bottom-6 right-6 bg-wine-600 text-white p-4 rounded-full shadow-lg hover:bg-wine-700 transition-colors z-50"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+      </Link>
     </div>
   )
 }
@@ -178,7 +338,7 @@ export function VoiceWidget() {
     return (
       <div className="text-center py-20">
         <div className="w-10 h-10 border-2 border-stone-200 border-t-wine-600 rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-stone-500">Loading Sommelier AI...</p>
+        <p className="text-stone-500">Loading SommelierQuest...</p>
       </div>
     )
   }

@@ -67,7 +67,7 @@ export default function CartPage() {
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center gap-2">
               <span className="text-2xl">🍷</span>
-              <span className="font-bold text-xl text-stone-900">Sommelier<span className="text-wine-600">AI</span></span>
+              <span className="font-bold text-xl text-stone-900">Sommelier<span className="text-wine-600">Quest</span></span>
             </Link>
             <Link href="/wines" className="text-stone-600 hover:text-wine-600 transition-colors">
               Browse Wines

@@ -112,7 +112,7 @@ export default function WineDetailPage({ params }: { params: Promise<{ id: strin
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center gap-2">
               <span className="text-2xl">🍷</span>
-              <span className="font-bold text-xl text-stone-900">Sommelier<span className="text-wine-600">AI</span></span>
+              <span className="font-bold text-xl text-stone-900">Sommelier<span className="text-wine-600">Quest</span></span>
             </Link>
             <Link href="/cart" className="relative p-2 hover:bg-stone-50 rounded-full transition-colors">
               <svg className="w-6 h-6 text-stone-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
