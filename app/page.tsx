@@ -61,7 +61,7 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="#"
-                className="inline-flex items-center justify-center bg-wine-500 text-white font-semibold px-8 py-4 rounded-lg hover:bg-wine-600 transition-colors text-lg"
+                className="inline-flex items-center justify-center bg-wine-700 text-white font-semibold px-8 py-4 rounded-lg hover:bg-wine-800 transition-colors text-lg"
               >
                 Ask our Sommelier AI about wine
               </a>
@@ -168,15 +168,15 @@ export default function HomePage() {
         </section>
 
         {/* Sommelier AI for Business */}
-        <section id="sommelier-ai-for-business" className="py-24 bg-stone-900 text-white">
+        <section id="sommelier-ai-for-business" className="py-24 bg-stone-900">
           <div className="max-w-4xl mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-white">
               Sommelier AI for Business
             </h2>
-            <p className="text-lg text-stone-300 max-w-xl mx-auto mb-6">
+            <p className="text-lg text-stone-200 max-w-xl mx-auto mb-6">
               Restaurants, wine retailers, and hospitality businesses can integrate our sommelier AI into their customer experience. Help your guests find the perfect wine with SommelierQuest sommelier AI technology.
             </p>
-            <p className="text-lg text-stone-300 max-w-xl mx-auto mb-10">
+            <p className="text-lg text-stone-200 max-w-xl mx-auto mb-10">
               SommelierQuest offers enterprise sommelier AI solutions including API access, custom integrations, and white-label AI sommelier products. Contact us to learn how our sommelier AI can enhance your business.
             </p>
 
@@ -189,16 +189,16 @@ export default function HomePage() {
 
             <div className="grid grid-cols-3 gap-8 mt-16 max-w-md mx-auto">
               <div>
-                <p className="text-3xl font-bold">24/7</p>
-                <p className="text-stone-400 text-sm">Sommelier AI Always On</p>
+                <p className="text-3xl font-bold text-white">24/7</p>
+                <p className="text-stone-300 text-sm">Sommelier AI Always On</p>
               </div>
               <div>
-                <p className="text-3xl font-bold">API</p>
-                <p className="text-stone-400 text-sm">Sommelier AI Integration</p>
+                <p className="text-3xl font-bold text-white">API</p>
+                <p className="text-stone-300 text-sm">Sommelier AI Integration</p>
               </div>
               <div>
-                <p className="text-3xl font-bold">1000s</p>
-                <p className="text-stone-400 text-sm">Wines in Sommelier AI</p>
+                <p className="text-3xl font-bold text-white">1000s</p>
+                <p className="text-stone-300 text-sm">Wines in Sommelier AI</p>
               </div>
             </div>
           </div>
@@ -260,7 +260,7 @@ export default function HomePage() {
               <span className="font-bold text-xl text-stone-900">Sommelier<span className="text-wine-600">Quest</span></span>
             </div>
 
-            <nav className="flex gap-6 text-sm text-stone-500">
+            <nav className="flex gap-6 text-sm text-stone-600">
               <span>Sommelier AI Wine Recommendations</span>
               <span>•</span>
               <span>Sommelier AI Food Pairings</span>
@@ -269,7 +269,7 @@ export default function HomePage() {
             </nav>
           </div>
 
-          <p className="text-center text-stone-400 text-xs mt-8">
+          <p className="text-center text-stone-600 text-xs mt-8">
             © {new Date().getFullYear()} SommelierQuest - The Best Sommelier AI. All rights reserved. Drink responsibly.
           </p>
         </div>
