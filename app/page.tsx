@@ -168,9 +168,9 @@ export default function HomePage() {
         </section>
 
         {/* Sommelier AI for Business */}
-        <section id="sommelier-ai-for-business" className="py-24 bg-black text-white">
+        <section id="sommelier-ai-for-business" className="py-24 bg-black">
           <div className="max-w-4xl mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-white">
               Sommelier AI for Business
             </h2>
             <p className="text-lg text-gray-200 max-w-xl mx-auto mb-6">
@@ -189,15 +189,15 @@ export default function HomePage() {
 
             <div className="grid grid-cols-3 gap-8 mt-16 max-w-md mx-auto">
               <div>
-                <p className="text-3xl font-bold">24/7</p>
+                <p className="text-3xl font-bold text-white">24/7</p>
                 <p className="text-gray-300 text-sm">Sommelier AI Always On</p>
               </div>
               <div>
-                <p className="text-3xl font-bold">API</p>
+                <p className="text-3xl font-bold text-white">API</p>
                 <p className="text-gray-300 text-sm">Sommelier AI Integration</p>
               </div>
               <div>
-                <p className="text-3xl font-bold">1000s</p>
+                <p className="text-3xl font-bold text-white">1000s</p>
                 <p className="text-gray-300 text-sm">Wines in Sommelier AI</p>
               </div>
             </div>
