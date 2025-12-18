@@ -15,12 +15,21 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <main>
-        <section className="max-w-5xl mx-auto px-4 pt-20 pb-16">
+        <section className="max-w-5xl mx-auto px-4 pt-20 pb-16 relative">
+          {/* Dionysus Watermark Background */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5 z-0">
+            <img
+              src="/dionysus.jpg"
+              alt=""
+              className="w-96 h-96 object-cover rounded-full"
+            />
+          </div>
+
           {/* Voice Widget - Lazy loaded */}
           <LazyVoiceWidget />
 
           {/* Main headline */}
-          <div className="text-center mt-12">
+          <div className="text-center mt-12 relative z-10">
             <h2 className="text-5xl sm:text-6xl md:text-7xl font-serif font-bold text-stone-900 leading-tight mb-8">
               Meet Dionysus
             </h2>
