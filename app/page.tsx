@@ -198,7 +198,7 @@ export default function HomePage() {
                   Is this really a demo? What about the database?
                   <span className="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
-                <p className="px-6 pb-4 text-stone-600"><span className="text-blue-600 font-medium">Important:</span> This is a BETA demo with a limited wine database (~20 wines from France, USA, New Zealand, Australia, Italy, and England). Do not expect robust results—this is for demonstration purposes only. As we mature, we'll integrate additional partners and expand the selection significantly. Recommendations are based on real, available wines from our partner databases.</p>
+                <p className="px-6 pb-4 text-stone-600"><span className="text-blue-600 font-medium">Important:</span> This is a BETA demo with a limited wine database (~20 wines from France, USA, New Zealand, Australia, Italy, and England). Do not expect robust results—this is for demonstration purposes only. If you request a wine we don't have, Dionysus can connect you to our sales team who can source it for you. <span className="text-blue-600 font-medium">Privacy:</span> Any personal information (email, phone) shared during this demo is not retained and will be destroyed after your session.</p>
               </details>
               <details className="bg-white rounded-xl border border-stone-100 group shadow-sm">
                 <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-wine-600">

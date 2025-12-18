@@ -350,8 +350,8 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
           : "Want wine advice? Hit play — Dionysus will help."}
       </p>
 
-      <p className="text-blue-600 text-sm mb-8 font-medium">
-        Please note: demo account with limited wine database for demo purposes only.
+      <p className="text-blue-600 text-sm mb-8 font-medium text-center max-w-md">
+        Demo mode: Limited wine database (~20 wines). Any personal information shared is not retained and will be destroyed after this session.
       </p>
 
       {messages.length > 0 && (
