@@ -167,6 +167,17 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
     // Extract first name from display name (e.g., "Dan Keegan" -> "Dan")
     const firstName = (userProfile?.displayName || 'Friend').split(' ')[0]
 
+    // Build wine database summary for Hume
+    const winesByCountry: Record<string, string[]> = {}
+    wines.forEach(wine => {
+      const country = wine.region?.split(',').pop()?.trim() || 'Other'
+      if (!winesByCountry[country]) winesByCountry[country] = []
+      winesByCountry[country].push(`${wine.name} (${wine.wine_type})`)
+    })
+    const wineSummary = Object.entries(winesByCountry)
+      .map(([country, wineList]) => `${country}: ${wineList.join(', ')}`)
+      .join('. ')
+
     const sessionSettings = {
       type: 'session_settings' as const,
       variables: {
@@ -177,6 +188,10 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
         preferredWineTypes: userProfile?.preferredWineTypes || 'all styles',
         pricePreference: userProfile?.pricePreference || 'premium',
         isNewUser: userProfile?.isNewUser ? 'yes' : 'no',
+        // Wine database context
+        wine_count: wines.length.toString(),
+        wine_countries: [...new Set(wines.map(w => w.region?.split(',').pop()?.trim()))].filter(Boolean).join(', '),
+        wine_database_summary: wineSummary || 'Database loading...',
       }
     }
 
