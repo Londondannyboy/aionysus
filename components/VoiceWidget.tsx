@@ -476,7 +476,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
       </p>
 
       {/* Version & Info Panel */}
-      <div className="text-center mb-8 space-y-2">
+      <div className="text-center mb-6 space-y-2">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-wine-50 rounded-full">
           <span className="text-wine-700 text-xs font-semibold">v0.1</span>
           <span className="text-wine-400">•</span>
@@ -491,6 +491,33 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
           </a>
         </p>
       </div>
+
+      {/* Featured Wine - Show when connected */}
+      {isConnected && (
+        <div className="w-full max-w-md mb-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <p className="text-wine-600 text-xs font-medium text-center mb-3">Featured from our collection</p>
+          <div className="bg-white rounded-2xl border border-wine-100 shadow-lg overflow-hidden">
+            <div className="flex gap-4 p-4">
+              <div className="relative w-24 h-32 flex-shrink-0">
+                <img
+                  src="https://res.cloudinary.com/dc7btom12/image/upload/v1766073925/wines/wine-22-1952-ch-haut-brion.jpg"
+                  alt="1952 Château Haut-Brion"
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="font-serif font-bold text-stone-900 text-sm leading-tight mb-1">
+                  1952 Château Haut-Brion
+                </h3>
+                <p className="text-xs text-wine-600 font-medium mb-1">1er Cru • Pessac-Léognan</p>
+                <p className="text-xs text-stone-500 mb-2">Cabernet Sauvignon, Merlot, Cabernet Franc</p>
+                <p className="font-bold text-wine-700 text-lg">£723.46</p>
+                <p className="text-xs text-stone-400 mt-1">First Growth • 70+ years old</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {messages.length > 0 && (
         <div className="w-full max-w-2xl bg-stone-50 rounded-2xl p-6 max-h-[500px] overflow-y-auto mb-8">
