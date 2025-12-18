@@ -164,11 +164,14 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
     }
 
     // Session settings with variables only - NO systemPrompt (let Hume config handle it)
+    // Extract first name from display name (e.g., "Dan Keegan" -> "Dan")
+    const firstName = (userProfile?.displayName || 'Friend').split(' ')[0]
+
     const sessionSettings = {
       type: 'session_settings' as const,
       variables: {
         user_id: userId || '',
-        userDisplayName: userProfile?.displayName || 'Friend',
+        userDisplayName: firstName,
         is_authenticated: userId ? 'true' : 'false',
         wineExperienceLevel: userProfile?.wineExperienceLevel || 'enthusiast',
         preferredWineTypes: userProfile?.preferredWineTypes || 'all styles',
