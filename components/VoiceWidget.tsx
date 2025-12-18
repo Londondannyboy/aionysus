@@ -229,7 +229,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
           Meet Dionysus
         </h1>
         <p className="text-lg md:text-xl text-stone-600 font-light">
-          The God of Wine and your new Sommelier AI
+          The Goddess of Wine and part-time Sommelier side-hustler
         </p>
       </div>
 
