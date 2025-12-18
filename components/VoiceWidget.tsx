@@ -282,7 +282,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
         </div>
       </div>
 
-      <p className="text-stone-500 text-lg mb-8">
+      <p className="text-stone-500 text-lg mb-4">
         {isConnecting
           ? "Connecting to Dionysus..."
           : isConnected
@@ -290,6 +290,10 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
           : isError
           ? "Connection error — tap to try again."
           : "Want wine advice? Hit play — Dionysus will help."}
+      </p>
+
+      <p className="text-blue-600 text-sm mb-8 font-medium">
+        Please note: demo account with limited wine database for demo purposes only.
       </p>
 
       {messages.length > 0 && (
