@@ -4,10 +4,10 @@ import { Header } from '@/components/Header'
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#faf9f7] via-white to-[#fef7f0] relative">
-      {/* Dionysus Watermark Background - Full Screen */}
+      {/* Aionysus Watermark Background - Full Screen */}
       <div className="fixed inset-0 flex items-center justify-center pointer-events-none opacity-10 z-0">
         <img
-          src="/dionysus.jpg"
+          src="/aionysus.jpg"
           alt=""
           className="w-full h-full object-cover"
         />
@@ -46,11 +46,11 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* How Dionysus Works */}
+        {/* How Aionysus Works */}
         <section id="how-sommelier-ai-works" className="bg-gradient-to-b from-white to-stone-50 py-24">
           <div className="max-w-4xl mx-auto px-4">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-stone-900 text-center mb-6">
-              How Dionysus Works
+              How Aionysus Works
             </h2>
             <p className="text-lg text-stone-600 text-center max-w-2xl mx-auto mb-16">
               Conversational AI meets premium wine curation. Describe your needs and receive intelligent, personalized recommendations from partner wine databases.
@@ -60,12 +60,12 @@ export default function HomePage() {
               <div className="text-center">
                 <div className="w-14 h-14 bg-gradient-to-br from-wine-100 to-wine-200 text-wine-700 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-md">1</div>
                 <h3 className="font-bold text-stone-900 text-lg mb-3">Start Conversation</h3>
-                <p className="text-stone-600 leading-relaxed">Hit play to begin speaking with Dionysus, your AI wine expert. For business inquiries, he'll immediately ask about your event or bulk order needs.</p>
+                <p className="text-stone-600 leading-relaxed">Hit play to begin speaking with Aionysus, your AI wine expert. For business inquiries, he'll immediately ask about your event or bulk order needs.</p>
               </div>
               <div className="text-center">
                 <div className="w-14 h-14 bg-gradient-to-br from-wine-100 to-wine-200 text-wine-700 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-md">2</div>
                 <h3 className="font-bold text-stone-900 text-lg mb-3">Describe Your Needs</h3>
-                <p className="text-stone-600 leading-relaxed">Tell Dionysus about your event size, budget, food pairings, or corporate requirements. Natural conversation at its finest.</p>
+                <p className="text-stone-600 leading-relaxed">Tell Aionysus about your event size, budget, food pairings, or corporate requirements. Natural conversation at its finest.</p>
               </div>
               <div className="text-center">
                 <div className="w-14 h-14 bg-gradient-to-br from-wine-100 to-wine-200 text-wine-700 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-md">3</div>
@@ -76,20 +76,20 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* About Dionysus */}
+        {/* About Aionysus */}
         <section className="py-24 bg-gradient-to-b from-stone-50 to-white">
           <div className="max-w-4xl mx-auto px-4">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-stone-900 text-center mb-6">
-              About Dionysus
+              About Aionysus
             </h2>
             <p className="text-lg text-stone-600 text-center max-w-2xl mx-auto mb-8">
-              Dionysus is an AI sommelier built for modern wine discovery. Unlike traditional wine lists, Dionysus engages in natural conversation to understand your needs—whether you're selecting a bottle for dinner or sourcing 500 bottles for a corporate gala.
+              Aionysus is the <span className="text-wine-600 font-medium">AI</span> goddess of wine—your personal sommelier for investment-grade Bordeaux. Natural conversation, expert knowledge, instant recommendations for collectors, investors, and connoisseurs.
             </p>
             <p className="text-lg text-stone-600 text-center max-w-2xl mx-auto mb-4">
-              <span className="font-semibold">Now in BETA:</span> Dionysus draws from curated partner wine databases, not a proprietary collection. This approach gives you access to premium selections worldwide while maintaining database freshness and accuracy.
+              <span className="font-semibold text-wine-700">Now in BETA:</span> Featuring 40 prestigious Red Bordeaux from legendary châteaux (1952-2000). First Growths, investment-grade vintages, and collector pieces.
             </p>
             <p className="text-base text-stone-500 text-center max-w-2xl mx-auto">
-              Perfect for individual wine lovers, restaurants, corporate events, wine programs, and bulk ordering. Available 24/7, always ready to help.
+              Perfect for wine investors, collectors, corporate events, and premium gifting. Available 24/7.
             </p>
 
             <div className="grid md:grid-cols-2 gap-6 mt-12">
@@ -101,8 +101,8 @@ export default function HomePage() {
                   height="48"
                   className="w-12 h-12 mb-4"
                 />
-                <h3 className="font-bold text-stone-900 text-lg mb-2">Premium Wine Curation</h3>
-                <p className="text-stone-600">Dionysus understands red, white, rosé, and sparkling selections from every major region. Get personalized recommendations matched to your taste, occasion, and budget—from £12 everyday bottles to £500+ investments.</p>
+                <h3 className="font-bold text-stone-900 text-lg mb-2">Investment-Grade Bordeaux</h3>
+                <p className="text-stone-600">Access 40 prestigious Red Bordeaux from legendary châteaux—Lafite, Latour, Margaux, Haut-Brion, and more. Vintages from 1952-2000, priced £360-£25,000+. Perfect for collecting or investment.</p>
               </article>
               <article className="bg-white rounded-xl p-6 border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
                 <img
@@ -113,7 +113,7 @@ export default function HomePage() {
                   className="w-12 h-12 mb-4"
                 />
                 <h3 className="font-bold text-stone-900 text-lg mb-2">Expert Food Pairing</h3>
-                <p className="text-stone-600">Tell Dionysus what you're serving—from casual weeknight dinners to multi-course galas. He delivers perfect wine matches with sommelier-level expertise for every scenario.</p>
+                <p className="text-stone-600">Tell Aionysus what you're serving—from casual weeknight dinners to multi-course galas. He delivers perfect wine matches with sommelier-level expertise for every scenario.</p>
               </article>
               <article className="bg-white rounded-xl p-6 border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
                 <img
@@ -124,7 +124,7 @@ export default function HomePage() {
                   className="w-12 h-12 mb-4"
                 />
                 <h3 className="font-bold text-stone-900 text-lg mb-2">Bulk & B2B Ordering</h3>
-                <p className="text-stone-600">Sourcing wine for 50 guests? 500? Dionysus scales with you, offering corporate pricing, bulk logistics support, and curated wine programs for restaurants and hospitality.</p>
+                <p className="text-stone-600">Sourcing wine for 50 guests? 500? Aionysus scales with you, offering corporate pricing, bulk logistics support, and curated wine programs for restaurants and hospitality.</p>
               </article>
               <article className="bg-white rounded-xl p-6 border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
                 <img
@@ -141,21 +141,21 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Dionysus for Enterprise */}
+        {/* Aionysus for Enterprise */}
         <section id="sommelier-ai-for-business" className="py-24 bg-gradient-to-b from-white to-stone-50 border-y border-stone-200">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6 text-stone-900">
-              Dionysus for Enterprise
+              Aionysus for Enterprise
             </h2>
             <p className="text-lg text-stone-600 max-w-2xl mx-auto mb-6">
-              Restaurants seeking sommelier recommendations. Wine retailers wanting a competitive edge. Hotels, venues, and corporate event teams planning sophisticated gatherings. Dionysus integrates seamlessly into your customer experience.
+              Restaurants seeking sommelier recommendations. Wine retailers wanting a competitive edge. Hotels, venues, and corporate event teams planning sophisticated gatherings. Aionysus integrates seamlessly into your customer experience.
             </p>
             <p className="text-lg text-stone-600 max-w-2xl mx-auto mb-10">
               We offer API access, custom integrations, white-label solutions, and dedicated enterprise support. Connect to partner wine databases, scale ordering infrastructure, and delight your clients with AI-powered wine expertise.
             </p>
 
             <a
-              href="mailto:hello@sommelier.quest?subject=Dionysus Enterprise Inquiry"
+              href="mailto:hello@aionysus.wine?subject=Aionysus Enterprise Inquiry"
               className="inline-flex items-center justify-center bg-wine-700 text-white font-semibold px-10 py-4 rounded-lg hover:bg-wine-800 transition-colors text-lg shadow-lg hover:shadow-xl"
             >
               Inquire About Enterprise Solutions
@@ -178,7 +178,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Dionysus FAQ */}
+        {/* Aionysus FAQ */}
         <section className="py-24 bg-gradient-to-b from-stone-50 to-white">
           <div className="max-w-2xl mx-auto px-4">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-stone-900 text-center mb-12">
@@ -188,38 +188,38 @@ export default function HomePage() {
             <div className="space-y-4">
               <details className="bg-white rounded-xl border border-stone-100 group shadow-sm">
                 <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-wine-600">
-                  Is Dionysus really free to use?
+                  Is Aionysus really free to use?
                   <span className="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
-                <p className="px-6 pb-4 text-stone-600">Yes. Dionysus is free for individuals and organizations during the BETA period. Start conversing immediately by hitting play above. Sign in to save preferences and conversation history. Enterprise SLAs and premium support are available for business customers—contact us for details.</p>
+                <p className="px-6 pb-4 text-stone-600">Yes. Aionysus is free for individuals and organizations during the BETA period. Start conversing immediately by hitting play above. Sign in to save preferences and conversation history. Enterprise SLAs and premium support are available for business customers—contact us for details.</p>
               </details>
               <details className="bg-white rounded-xl border border-stone-100 group shadow-sm">
                 <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-wine-600">
                   Is this really a demo? What about the database?
                   <span className="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
-                <p className="px-6 pb-4 text-stone-600"><span className="text-blue-600 font-medium">Important:</span> This is a BETA demo with a limited wine database (~20 wines from France, USA, New Zealand, Australia, Italy, and England). Do not expect robust results—this is for demonstration purposes only. If you request a wine we don't have, Dionysus can connect you to our sales team who can source it for you. <span className="text-blue-600 font-medium">Privacy:</span> Any personal information (email, phone) shared during this demo is not retained and will be destroyed after your session.</p>
+                <p className="px-6 pb-4 text-stone-600"><span className="text-wine-600 font-medium">Important:</span> This is a BETA demo with a curated collection of 40 investment-grade Red Bordeaux wines. Our current focus is on prestigious châteaux from 1952-2000 vintages. If you're looking for other regions or styles, Aionysus can connect you to our sales team. <span className="text-wine-600 font-medium">Privacy:</span> Personal information shared during this demo is not retained.</p>
               </details>
               <details className="bg-white rounded-xl border border-stone-100 group shadow-sm">
                 <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-wine-600">
-                  How accurate are Dionysus's recommendations?
+                  How accurate are Aionysus's recommendations?
                   <span className="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
-                <p className="px-6 pb-4 text-stone-600">Dionysus draws on sommelier knowledge spanning thousands of wines from major regions worldwide. Recommendations consider your taste preferences, budget, occasion, event size, and food pairings to deliver expert-level suggestions. The AI continuously learns and improves.</p>
+                <p className="px-6 pb-4 text-stone-600">Aionysus draws on sommelier knowledge spanning thousands of wines from major regions worldwide. Recommendations consider your taste preferences, budget, occasion, event size, and food pairings to deliver expert-level suggestions. The AI continuously learns and improves.</p>
               </details>
               <details className="bg-white rounded-xl border border-stone-100 group shadow-sm">
                 <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-wine-600">
-                  Can my restaurant/business use Dionysus?
+                  Can my restaurant/business use Aionysus?
                   <span className="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
-                <p className="px-6 pb-4 text-stone-600">Absolutely. Restaurants, wine retailers, hotels, event venues, and corporates can integrate Dionysus via API, custom integrations, or white-label solutions. We offer dedicated enterprise support, SLAs, and bulk ordering infrastructure. Email us to explore options.</p>
+                <p className="px-6 pb-4 text-stone-600">Absolutely. Restaurants, wine retailers, hotels, event venues, and corporates can integrate Aionysus via API, custom integrations, or white-label solutions. We offer dedicated enterprise support, SLAs, and bulk ordering infrastructure. Email us to explore options.</p>
               </details>
               <details className="bg-white rounded-xl border border-stone-100 group shadow-sm">
                 <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-wine-600">
                   What if I want to place a large order?
                   <span className="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
-                <p className="px-6 pb-4 text-stone-600">Tell Dionysus your event size, quantity, and requirements when you start a conversation. He'll provide recommendations at scale, connect you to wholesale pricing, and coordinate with our partner fulfillment network. Reach out to our team for enterprise-scale logistics.</p>
+                <p className="px-6 pb-4 text-stone-600">Tell Aionysus your event size, quantity, and requirements when you start a conversation. He'll provide recommendations at scale, connect you to wholesale pricing, and coordinate with our partner fulfillment network. Reach out to our team for enterprise-scale logistics.</p>
               </details>
             </div>
           </div>
@@ -233,7 +233,7 @@ export default function HomePage() {
             <div className="flex items-center gap-2">
               <img
                 src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍷%3C/text%3E%3C/svg%3E"
-                alt="SommelierQuest logo"
+                alt="Aionysus logo"
                 width="32"
                 height="32"
                 className="w-8 h-8"
@@ -246,13 +246,13 @@ export default function HomePage() {
               <span className="text-stone-300">•</span>
               <a href="#sommelier-ai-for-business" className="hover:text-wine-600 transition-colors">Enterprise</a>
               <span className="text-stone-300">•</span>
-              <a href="mailto:hello@sommelier.quest" className="hover:text-wine-600 transition-colors">Contact</a>
+              <a href="mailto:hello@aionysus.wine" className="hover:text-wine-600 transition-colors">Contact</a>
             </nav>
           </div>
 
           <div className="border-t border-stone-200 pt-8">
             <p className="text-center text-stone-600 text-xs">
-              © {new Date().getFullYear()} SommelierQuest. AI Sommelier Powered by Dionysus • Partner Database Connected • BETA.<br />
+              © {new Date().getFullYear()} Aionysus • The AI Goddess of Wine • v0.1 BETA • Bordeaux Collection: 40 SKUs<br />
               <span className="text-stone-500">Drink responsibly. For consumers of legal drinking age only.</span>
             </p>
           </div>

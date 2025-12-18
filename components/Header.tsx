@@ -15,14 +15,14 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <img
-              src="/dionysus.jpg"
-              alt="Dionysus AI sommelier"
+              src="/aionysus.jpg"
+              alt="Aionysus AI sommelier"
               width="32"
               height="32"
               className="w-8 h-8 rounded-full object-cover"
             />
             <span className="font-bold text-xl text-wine-600 hidden sm:inline">
-              Dionysus
+              Aionysus
             </span>
           </Link>
 

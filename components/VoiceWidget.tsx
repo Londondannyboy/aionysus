@@ -364,14 +364,14 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
       {/* Title with consistent serif font */}
       <div className="mb-8 text-center">
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-wine-700 tracking-tight mb-2">
-          Dionysus
+          Aionysus
         </h1>
         <p className="text-lg md:text-xl text-stone-600 font-light">
-          The Goddess of Wine and part-time Sommelier side-hustler
+          The <span className="text-wine-600 font-medium">AI</span> Goddess of Wine
         </p>
       </div>
 
-      {/* Dionysus Image with Play Button Centered Inside */}
+      {/* Aionysus Image with Play Button Centered Inside */}
       <div className="relative mb-6">
         {/* Pulsating glow - only when NOT connected */}
         {!isConnected && !isConnecting && (
@@ -411,11 +411,11 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
           onClick={isConnected ? handleDisconnect : handleConnect}
           disabled={isConnecting}
           className="relative z-10 group"
-          aria-label={isConnected ? "Stop conversation with Dionysus" : "Start conversation with Dionysus"}
+          aria-label={isConnected ? "Stop conversation with Aionysus" : "Start conversation with Aionysus"}
         >
           <img
-            src="/dionysus.jpg"
-            alt="Dionysus"
+            src="/aionysus.jpg"
+            alt="Aionysus"
             className={`w-44 h-44 md:w-56 md:h-56 rounded-full object-cover border-4 cursor-pointer ${
               isConnected
                 ? 'border-wine-600 shadow-[0_0_25px_rgba(127,29,29,0.7)]'
@@ -467,18 +467,30 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
       {/* Status Text */}
       <p className="text-wine-700 text-lg font-medium mb-4">
         {isConnecting
-          ? "Connecting to Dionysus..."
+          ? "Connecting to Aionysus..."
           : isConnected
-          ? "Dionysus is listening — describe your needs."
+          ? "Aionysus is listening — describe your needs."
           : isError
           ? "Connection error — tap to try again."
-          : "Tap to speak with Dionysus"}
+          : "Tap to speak with Aionysus"}
       </p>
 
-      {/* Demo Warning */}
-      <p className="text-wine-600/80 text-sm mb-8 text-center max-w-md">
-        Beta: 37 investment-grade Bordeaux wines. Personal information is not retained.
-      </p>
+      {/* Version & Info Panel */}
+      <div className="text-center mb-8 space-y-2">
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-wine-50 rounded-full">
+          <span className="text-wine-700 text-xs font-semibold">v0.1</span>
+          <span className="text-wine-400">•</span>
+          <span className="text-wine-600 text-xs">Bordeaux Collection: 40 SKUs</span>
+        </div>
+        <p className="text-wine-600/70 text-xs max-w-sm">
+          Beta: Currently featuring investment-grade Red Bordeaux only. Personal data is not retained.
+        </p>
+        <p className="text-wine-500/60 text-xs">
+          <a href="mailto:hello@aionysus.wine" className="hover:text-wine-700 transition-colors">
+            hello@aionysus.wine
+          </a>
+        </p>
+      </div>
 
       {messages.length > 0 && (
         <div className="w-full max-w-2xl bg-stone-50 rounded-2xl p-6 max-h-[500px] overflow-y-auto mb-8">

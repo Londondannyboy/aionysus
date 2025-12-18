@@ -210,7 +210,7 @@ h2 {
   }
 }
 
-/* Dionysus Pulsating Glow Effect - Before Connection */
+/* Aionysus Pulsating Glow Effect - Before Connection */
 @keyframes pulse-glow {
   0%, 100% {
     opacity: 0.6;
@@ -256,6 +256,6 @@ h2 {
   }
 }
 
-.dionysus-glow {
+.aionysus-glow {
   animation: neon-pulse 2s ease-in-out infinite;
 }
