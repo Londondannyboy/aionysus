@@ -283,13 +283,13 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
         >
           <img
             src="/dionysus.jpg"
-            alt="Dionysus - Click to speak"
-            className={`w-40 h-40 md:w-52 md:h-52 rounded-full object-cover border-4 ${
+            alt={isConnected ? "Click to stop Dionysus" : "Click to speak with Dionysus"}
+            className={`w-40 h-40 md:w-52 md:h-52 rounded-full object-cover border-4 cursor-pointer ${
               isConnected
-                ? 'border-wine-600 shadow-[0_0_20px_rgba(127,29,29,0.6)]'
+                ? 'border-wine-600 shadow-[0_0_20px_rgba(127,29,29,0.6)] hover:border-wine-400 hover:shadow-[0_0_30px_rgba(127,29,29,0.8)]'
                 : isConnecting
-                ? 'border-gray-400 opacity-70'
-                : 'border-wine-500 shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:shadow-[0_0_40px_rgba(220,38,38,0.8)] cursor-pointer'
+                ? 'border-gray-400 opacity-70 cursor-wait'
+                : 'border-wine-500 shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:shadow-[0_0_40px_rgba(220,38,38,0.8)]'
             } transition-all duration-300`}
           />
           {isConnecting && (
