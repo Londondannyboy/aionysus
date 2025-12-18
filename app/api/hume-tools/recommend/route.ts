@@ -7,47 +7,85 @@ const sql = neon(process.env.DATABASE_URL!)
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { use_case, budget, guest_count, cuisine, occasion } = body
+    const { use_case, budget } = body
 
-    let query = `
-      SELECT
-        id, name, winery, region, country, grape_variety, vintage,
-        wine_type, style, price_retail, price_trade, tasting_notes,
-        critic_scores, drinking_window, image_url, food_pairings
-      FROM wines
-      WHERE is_active = true
-    `
-    const conditions: string[] = []
-    const params: any[] = []
-    let paramIndex = 1
+    let wines: any[]
 
-    // Use case specific filtering
+    // Use case specific filtering with tagged template literals
     if (use_case === 'investment') {
       // Investment wines: higher price, good critic scores, aging potential
-      conditions.push(`price_retail >= 50`)
-      query += ' AND price_retail >= 50 ORDER BY price_retail DESC'
+      wines = await sql`
+        SELECT
+          id, name, winery, region, country, grape_variety, vintage,
+          wine_type, style, price_retail, price_trade, tasting_notes,
+          critic_scores, drinking_window, image_url, food_pairings
+        FROM wines
+        WHERE is_active = true AND price_retail >= 50
+        ORDER BY price_retail DESC
+        LIMIT 3
+      `
     } else if (use_case === 'corporate_event' || use_case === 'event') {
       // Events: good value, crowd pleasers
       if (budget) {
-        conditions.push(`price_retail <= $${paramIndex}`)
-        params.push(budget)
-        paramIndex++
+        wines = await sql`
+          SELECT
+            id, name, winery, region, country, grape_variety, vintage,
+            wine_type, style, price_retail, price_trade, tasting_notes,
+            critic_scores, drinking_window, image_url, food_pairings
+          FROM wines
+          WHERE is_active = true AND price_retail <= ${budget}
+          ORDER BY price_retail ASC
+          LIMIT 3
+        `
+      } else {
+        wines = await sql`
+          SELECT
+            id, name, winery, region, country, grape_variety, vintage,
+            wine_type, style, price_retail, price_trade, tasting_notes,
+            critic_scores, drinking_window, image_url, food_pairings
+          FROM wines
+          WHERE is_active = true
+          ORDER BY price_retail ASC
+          LIMIT 3
+        `
       }
-      query += ' ORDER BY price_retail ASC'
     } else if (use_case === 'fine_dining' || use_case === 'personal') {
       // Fine dining: quality focus
-      query += ' ORDER BY price_retail DESC'
+      wines = await sql`
+        SELECT
+          id, name, winery, region, country, grape_variety, vintage,
+          wine_type, style, price_retail, price_trade, tasting_notes,
+          critic_scores, drinking_window, image_url, food_pairings
+        FROM wines
+        WHERE is_active = true
+        ORDER BY price_retail DESC
+        LIMIT 3
+      `
     } else if (use_case === 'restaurant_program') {
       // Restaurant: variety of price points
-      query += ' ORDER BY wine_type, price_retail ASC'
+      wines = await sql`
+        SELECT
+          id, name, winery, region, country, grape_variety, vintage,
+          wine_type, style, price_retail, price_trade, tasting_notes,
+          critic_scores, drinking_window, image_url, food_pairings
+        FROM wines
+        WHERE is_active = true
+        ORDER BY wine_type, price_retail ASC
+        LIMIT 3
+      `
     } else {
       // Default: mix of options
-      query += ' ORDER BY price_retail ASC'
+      wines = await sql`
+        SELECT
+          id, name, winery, region, country, grape_variety, vintage,
+          wine_type, style, price_retail, price_trade, tasting_notes,
+          critic_scores, drinking_window, image_url, food_pairings
+        FROM wines
+        WHERE is_active = true
+        ORDER BY price_retail ASC
+        LIMIT 3
+      `
     }
-
-    query += ' LIMIT 3'
-
-    const wines = await sql(query, params)
 
     // Format recommendations with context
     const recommendations = wines.map((wine: any, index: number) => ({

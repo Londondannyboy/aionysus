@@ -74,8 +74,40 @@ interface UserProfile {
   isNewUser: boolean
 }
 
+// Tool definitions for Hume
+const WINE_TOOLS = [
+  {
+    type: 'function' as const,
+    name: 'search_wines',
+    description: 'Search wines in our database by country, region, type, or price',
+    parameters: '{ "type": "object", "properties": { "country": { "type": "string", "description": "Country like France, USA, Italy" }, "wine_type": { "type": "string", "description": "Type like red, white, sparkling" }, "max_price": { "type": "number", "description": "Maximum price in GBP" } } }',
+    fallback_content: 'Unable to search wines at the moment.',
+  },
+  {
+    type: 'function' as const,
+    name: 'get_wine',
+    description: 'Get full details for a specific wine by name',
+    parameters: '{ "type": "object", "required": ["wine_name"], "properties": { "wine_name": { "type": "string", "description": "Wine name to search" } } }',
+    fallback_content: 'Unable to get wine details at the moment.',
+  },
+  {
+    type: 'function' as const,
+    name: 'list_wines',
+    description: 'List all wines in our database grouped by country',
+    parameters: '{ "type": "object", "properties": {} }',
+    fallback_content: 'Unable to list wines at the moment.',
+  },
+  {
+    type: 'function' as const,
+    name: 'recommend_wines',
+    description: 'Get wine recommendations for investment, event, or fine dining',
+    parameters: '{ "type": "object", "required": ["use_case"], "properties": { "use_case": { "type": "string", "description": "Use case: investment, event, fine_dining" } } }',
+    fallback_content: 'Unable to get recommendations at the moment.',
+  },
+]
+
 function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?: string }) {
-  const { connect, disconnect, status, messages } = useVoice()
+  const { connect, disconnect, status, messages, sendToolResponse, sendToolError } = useVoice()
   const [manualConnected, setManualConnected] = useState(false)
   const [waveHeights, setWaveHeights] = useState<number[]>([])
   const [wines, setWines] = useState<Wine[]>([])
@@ -112,6 +144,76 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
     }
     fetchData()
   }, [])
+
+  // Handle Hume tool calls
+  useEffect(() => {
+    const lastMessage = messages[messages.length - 1]
+    if (!lastMessage || lastMessage.type !== 'tool_call') return
+
+    const handleToolCall = async (toolCall: any) => {
+      const { name, tool_call_id, parameters } = toolCall
+      console.log('[Hume Tool] Received:', name, parameters)
+
+      try {
+        let response: Response
+        let result: any
+
+        switch (name) {
+          case 'search_wines':
+            response = await fetch('/api/hume-tools/search-wines', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(parameters || {}),
+            })
+            result = await response.json()
+            break
+
+          case 'get_wine':
+            response = await fetch('/api/hume-tools/get-wine', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(parameters || {}),
+            })
+            result = await response.json()
+            break
+
+          case 'list_wines':
+            response = await fetch('/api/hume-tools/list-wines', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({}),
+            })
+            result = await response.json()
+            break
+
+          case 'recommend_wines':
+            response = await fetch('/api/hume-tools/recommend', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(parameters || {}),
+            })
+            result = await response.json()
+            break
+
+          default:
+            console.warn('[Hume Tool] Unknown tool:', name)
+            sendToolError(tool_call_id, `Unknown tool: ${name}`)
+            return
+        }
+
+        console.log('[Hume Tool] Result:', result)
+        sendToolResponse(tool_call_id, JSON.stringify(result))
+      } catch (error) {
+        console.error('[Hume Tool] Error:', error)
+        sendToolError(tool_call_id, 'Tool execution failed')
+      }
+    }
+
+    // Handle the tool call
+    if (lastMessage.tool_call_id && lastMessage.name) {
+      handleToolCall(lastMessage)
+    }
+  }, [messages, sendToolResponse, sendToolError])
 
   // Detect wines in messages
   useEffect(() => {
@@ -197,12 +299,16 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
 
     console.log('[Hume] Connecting:', userProfile?.displayName, 'auth=', !!userId)
     console.log('[Hume] Variables:', sessionSettings.variables)
+    console.log('[Hume] Tools:', WINE_TOOLS.map(t => t.name))
 
     try {
       await connect({
         auth: { type: 'accessToken', value: accessToken },
         configId: '606a18be-4c8e-4877-8fb4-52665831b33d',
-        sessionSettings
+        sessionSettings: {
+          ...sessionSettings,
+          tools: WINE_TOOLS,
+        }
       })
       console.log('[Hume] Connected!')
       setManualConnected(true)
@@ -210,7 +316,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
       console.error('[Hume] Connect error:', e?.message || e)
       setManualConnected(false)
     }
-  }, [connect, accessToken, userId, userProfile])
+  }, [connect, accessToken, userId, userProfile, wines])
 
   const handleDisconnect = useCallback(() => {
     disconnect()

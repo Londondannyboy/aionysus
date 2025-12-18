@@ -9,71 +9,49 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { country, region, wine_type, max_price, min_price, style, grape_variety } = body
 
-    // Build dynamic query
-    let query = `
+    // Fetch all active wines and filter in application
+    // This is simpler and works well for small wine databases (~20-100 wines)
+    const allWines = await sql`
       SELECT
         id, name, winery, region, country, grape_variety, vintage,
         wine_type, style, price_retail, price_trade, bottle_size,
         tasting_notes, critic_scores, drinking_window, image_url, supplier
       FROM wines
       WHERE is_active = true
+      ORDER BY price_retail ASC
     `
-    const conditions: string[] = []
-    const params: any[] = []
-    let paramIndex = 1
 
-    if (country) {
-      conditions.push(`LOWER(country) LIKE LOWER($${paramIndex})`)
-      params.push(`%${country}%`)
-      paramIndex++
-    }
+    // Filter in application based on provided criteria
+    let filteredWines = allWines.filter((wine: any) => {
+      if (country && !wine.country?.toLowerCase().includes(country.toLowerCase())) {
+        return false
+      }
+      if (region && !wine.region?.toLowerCase().includes(region.toLowerCase())) {
+        return false
+      }
+      if (wine_type && wine.wine_type?.toLowerCase() !== wine_type.toLowerCase()) {
+        return false
+      }
+      if (max_price && wine.price_retail > max_price) {
+        return false
+      }
+      if (min_price && wine.price_retail < min_price) {
+        return false
+      }
+      if (style && !wine.style?.toLowerCase().includes(style.toLowerCase())) {
+        return false
+      }
+      if (grape_variety && !wine.grape_variety?.toLowerCase().includes(grape_variety.toLowerCase())) {
+        return false
+      }
+      return true
+    })
 
-    if (region) {
-      conditions.push(`LOWER(region) LIKE LOWER($${paramIndex})`)
-      params.push(`%${region}%`)
-      paramIndex++
-    }
-
-    if (wine_type) {
-      conditions.push(`LOWER(wine_type) = LOWER($${paramIndex})`)
-      params.push(wine_type)
-      paramIndex++
-    }
-
-    if (max_price) {
-      conditions.push(`price_retail <= $${paramIndex}`)
-      params.push(max_price)
-      paramIndex++
-    }
-
-    if (min_price) {
-      conditions.push(`price_retail >= $${paramIndex}`)
-      params.push(min_price)
-      paramIndex++
-    }
-
-    if (style) {
-      conditions.push(`LOWER(style) LIKE LOWER($${paramIndex})`)
-      params.push(`%${style}%`)
-      paramIndex++
-    }
-
-    if (grape_variety) {
-      conditions.push(`LOWER(grape_variety) LIKE LOWER($${paramIndex})`)
-      params.push(`%${grape_variety}%`)
-      paramIndex++
-    }
-
-    if (conditions.length > 0) {
-      query += ' AND ' + conditions.join(' AND ')
-    }
-
-    query += ' ORDER BY price_retail ASC LIMIT 5'
-
-    const wines = await sql(query, params)
+    // Limit to 5 results
+    filteredWines = filteredWines.slice(0, 5)
 
     // Format for Hume voice response
-    const formattedWines = wines.map((wine: any) => ({
+    const formattedWines = filteredWines.map((wine: any) => ({
       id: wine.id,
       name: wine.name,
       winery: wine.winery,
