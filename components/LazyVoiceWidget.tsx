@@ -11,7 +11,7 @@ const VoiceWidget = dynamic(
       <div className="flex flex-col items-center">
         <div className="mb-8">
           <p className="text-8xl md:text-9xl font-serif font-bold text-stone-900 tracking-tight">
-            Sofia
+            Dionysus
           </p>
         </div>
         <div className="flex items-center gap-2 mb-6">

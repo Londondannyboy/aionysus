@@ -23,17 +23,22 @@ const priceMap: Record<string, { price: number; display: string }> = {
   luxury: { price: 199.99, display: '£199.99' },
 }
 
-const SOMMELIER_PROMPT = `You are Sofia, an expert sommelier and wine advisor for SommelierQuest. Your role is to help people discover wines they'll love, understand food pairings, and learn about wine in an approachable, friendly way.
+const SOMMELIER_PROMPT = `You are Dionysus, the AI sommelier for SommelierQuest. You are an expert advisor specializing in wine recommendations for business, hospitality, corporate events, and large-scale orders. Your role is to help discover exceptional wines that elevate experiences, understand premium food pairings, and provide enterprise-scale wine solutions.
+
+IMPORTANT: This is BETA demo data connected to partner wine databases. Recommendations are based on curated wine collections from integrated partners.
 
 Key behaviors:
-- Greet warmly and ask what brings them to you today
-- Ask about their preferences (red/white/rosé, sweet/dry, budget range)
-- Consider the occasion (dinner party, casual evening, special celebration, gift)
-- Suggest food pairings when relevant
-- Explain wine terms in accessible language
-- Be enthusiastic and passionate about wine, but never pretentious
+- Greet professionally and ask about their needs (event type, party size, budget, occasion)
+- FIRST, ask: "Are you here to order for a large party or investment? Or seeking wine advice for a smaller gathering?"
+- For business inquiries: focus on premium selections, bulk ordering, corporate gifting, wine programs
+- For individuals: remain friendly and approachable while suggesting premium selections
+- Ask about their preferences (red/white/rosé, sweet/dry, budget range, event size)
+- Consider the occasion (gala, corporate dinner, wine investment, restaurant program, celebration)
+- Suggest sophisticated food pairings and wine education
+- Explain wine terms in refined, professional language
+- Be knowledgeable and passionate about wine with executive-level expertise
 
-When recommending wines, ALWAYS mention specific wine names from our collection when relevant:
+When recommending wines, ALWAYS mention specific premium wine names from our collection:
 - Blackdown Valley Merlot (English red, medium-bodied)
 - Caymus Cabernet Sauvignon (Napa Valley premium)
 - Kim Crawford Sauvignon Blanc (New Zealand, crisp)
@@ -47,10 +52,11 @@ When recommending wines, ALWAYS mention specific wine names from our collection 
 
 For each wine you suggest:
 - Explain WHY it suits their needs
-- Describe tasting notes they can expect
-- Mention the region and grape variety
+- Describe tasting notes and food pairings
+- Mention the region, grape variety, and investment potential
+- For bulk orders: indicate scalability and corporate program options
 
-Start by warmly greeting the user and asking how you can help them with wine today.`
+Start by greeting professionally and immediately ask if they're looking for large-scale/business ordering or personal recommendations.`
 
 function WineCard({ wine, onAddToCart }: { wine: Wine; onAddToCart: (wine: Wine) => void }) {
   const [added, setAdded] = useState(false)
@@ -210,7 +216,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
     <div className="flex flex-col items-center">
       <div className="mb-8">
         <p className="text-8xl md:text-9xl font-serif font-bold text-stone-900 tracking-tight">
-          Sofia
+          Dionysus
         </p>
       </div>
 
@@ -218,21 +224,21 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
         <button
           onClick={isConnected ? handleDisconnect : handleConnect}
           disabled={isConnecting}
-          className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 ${
+          className={`w-20 h-20 rounded-full flex items-center justify-center transition-all duration-300 ${
             isConnected
               ? 'bg-wine-600 hover:bg-wine-700'
               : 'bg-stone-900 hover:bg-stone-800'
-          } ${isConnecting ? 'opacity-50' : ''}`}
-          aria-label={isConnected ? "Stop SommelierQuest conversation" : "Start SommelierQuest conversation"}
+          } ${isConnecting ? 'opacity-50' : ''} shadow-xl hover:shadow-2xl`}
+          aria-label={isConnected ? "Stop conversation with Dionysus" : "Start conversation with Dionysus"}
         >
           {isConnecting ? (
-            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin" />
           ) : isConnected ? (
-            <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <rect x="6" y="6" width="12" height="12" rx="2" />
+            <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M6 4h3v16H6V4zm9 0h3v16h-3V4z" />
             </svg>
           ) : (
-            <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+            <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z" />
             </svg>
           )}
@@ -253,10 +259,10 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
 
       <p className="text-stone-500 text-lg mb-8">
         {isConnected
-          ? "Sofia is listening — ask about wine."
+          ? "Dionysus is listening — describe your needs."
           : isError
           ? "Connection error — tap to try again."
-          : "Want wine advice? Hit play — Sofia will help."}
+          : "Want wine advice? Hit play — Dionysus will help."}
       </p>
 
       {messages.length > 0 && (

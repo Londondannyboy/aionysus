@@ -3,9 +3,15 @@ import { LazyVoiceWidget } from '@/components/LazyVoiceWidget'
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#faf9f7]">
+    <div className="min-h-screen bg-gradient-to-b from-[#faf9f7] via-white to-[#fef7f0]">
+      {/* BETA Badge */}
+      <div className="fixed top-4 right-4 z-40 flex items-center gap-2 bg-gradient-to-r from-stone-900 to-stone-800 text-white px-4 py-2 rounded-full text-xs font-mono tracking-wider border border-stone-700 shadow-lg">
+        <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+        BETA — DEMO DATABASE
+      </div>
+
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-stone-100">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-stone-100">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center gap-2">
@@ -39,206 +45,220 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <main>
-        <section className="max-w-4xl mx-auto px-4 pt-16 pb-12">
+        <section className="max-w-5xl mx-auto px-4 pt-20 pb-16">
           {/* H1 with keyword - visible */}
-          <h1 className="text-center text-2xl font-bold text-wine-700 mb-4">
-            Sommelier AI - Your Personal AI Wine Expert
+          <h1 className="text-center text-xl font-semibold text-wine-600 mb-6 tracking-wide">
+            SOMMELIER AI — Enterprise Wine Solutions
           </h1>
 
           {/* Voice Widget - Lazy loaded */}
           <LazyVoiceWidget />
 
           {/* Main headline */}
-          <div className="text-center mt-8">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-stone-900 leading-tight mb-6">
-              Never pick the wrong<br />wine again
+          <div className="text-center mt-12">
+            <h2 className="text-5xl sm:text-6xl md:text-7xl font-serif font-bold text-stone-900 leading-tight mb-8">
+              Meet Dionysus
             </h2>
 
-            <p className="text-lg text-stone-500 max-w-xl mx-auto mb-10 leading-relaxed">
-              SommelierQuest is the best sommelier AI for wine recommendations. Our AI sommelier listens to what you want and recommends the perfect wine for any occasion, food pairing, or budget.
+            <p className="text-xl text-stone-600 max-w-2xl mx-auto mb-4 leading-relaxed">
+              Your AI sommelier for premium wine recommendations, corporate events, and large-scale ordering.
+            </p>
+
+            <p className="text-base text-stone-500 max-w-xl mx-auto mb-12 italic">
+              Connected to partner wine databases • Powered by conversational AI • Built for business
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="#"
-                className="inline-flex items-center justify-center bg-wine-700 text-white font-semibold px-8 py-4 rounded-lg hover:bg-wine-800 transition-colors text-lg"
+                className="inline-flex items-center justify-center bg-wine-700 text-white font-semibold px-8 py-4 rounded-lg hover:bg-wine-800 transition-colors text-lg shadow-lg hover:shadow-xl"
               >
-                Ask our Sommelier AI about wine
+                Start Conversation with Dionysus
               </a>
               <a
                 href="#sommelier-ai-for-business"
-                className="inline-flex items-center justify-center bg-stone-900 text-white font-semibold px-8 py-4 rounded-lg hover:bg-stone-800 transition-colors text-lg"
+                className="inline-flex items-center justify-center border-2 border-wine-700 text-wine-700 font-semibold px-8 py-4 rounded-lg hover:bg-wine-50 transition-colors text-lg"
               >
-                Sommelier AI for Business
+                For Business & Events
               </a>
             </div>
           </div>
         </section>
 
-        {/* How Sommelier AI Works */}
-        <section id="how-sommelier-ai-works" className="bg-white py-24">
+        {/* How Dionysus Works */}
+        <section id="how-sommelier-ai-works" className="bg-gradient-to-b from-white to-stone-50 py-24">
           <div className="max-w-4xl mx-auto px-4">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-900 text-center mb-6">
-              How Our Sommelier AI Works
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-stone-900 text-center mb-6">
+              How Dionysus Works
             </h2>
-            <p className="text-lg text-stone-500 text-center max-w-2xl mx-auto mb-16">
-              SommelierQuest uses advanced sommelier AI technology to provide personalized wine recommendations through natural voice conversation. Our AI sommelier is trained on thousands of wines.
+            <p className="text-lg text-stone-600 text-center max-w-2xl mx-auto mb-16">
+              Conversational AI meets premium wine curation. Describe your needs and receive intelligent, personalized recommendations from partner wine databases.
             </p>
 
             <div className="grid md:grid-cols-3 gap-12">
               <div className="text-center">
-                <div className="w-12 h-12 bg-wine-100 text-wine-700 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
-                <h3 className="font-bold text-stone-900 text-xl mb-3">Start the Sommelier AI</h3>
-                <p className="text-stone-500 leading-relaxed">Tap the play button to begin a voice conversation with Sofia, our sommelier AI assistant and personal wine expert.</p>
+                <div className="w-14 h-14 bg-gradient-to-br from-wine-100 to-wine-200 text-wine-700 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-md">1</div>
+                <h3 className="font-bold text-stone-900 text-lg mb-3">Start Conversation</h3>
+                <p className="text-stone-600 leading-relaxed">Hit play to begin speaking with Dionysus, your AI wine expert. For business inquiries, he'll immediately ask about your event or bulk order needs.</p>
               </div>
               <div className="text-center">
-                <div className="w-12 h-12 bg-wine-100 text-wine-700 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
-                <h3 className="font-bold text-stone-900 text-xl mb-3">Tell the Sommelier AI your needs</h3>
-                <p className="text-stone-500 leading-relaxed">Describe the occasion, your taste preferences, budget, or what food you are eating. The sommelier AI understands natural conversation.</p>
+                <div className="w-14 h-14 bg-gradient-to-br from-wine-100 to-wine-200 text-wine-700 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-md">2</div>
+                <h3 className="font-bold text-stone-900 text-lg mb-3">Describe Your Needs</h3>
+                <p className="text-stone-600 leading-relaxed">Tell Dionysus about your event size, budget, food pairings, or corporate requirements. Natural conversation at its finest.</p>
               </div>
               <div className="text-center">
-                <div className="w-12 h-12 bg-wine-100 text-wine-700 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
-                <h3 className="font-bold text-stone-900 text-xl mb-3">Get Sommelier AI recommendations</h3>
-                <p className="text-stone-500 leading-relaxed">Our sommelier AI suggests specific wines with tasting notes, prices, and food pairing suggestions tailored to you.</p>
+                <div className="w-14 h-14 bg-gradient-to-br from-wine-100 to-wine-200 text-wine-700 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-md">3</div>
+                <h3 className="font-bold text-stone-900 text-lg mb-3">Receive Recommendations</h3>
+                <p className="text-stone-600 leading-relaxed">Premium selections with tasting notes, pairings, and scalable ordering options. All from connected partner databases.</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* What is Sommelier AI */}
-        <section className="py-24 bg-[#faf9f7]">
+        {/* About Dionysus */}
+        <section className="py-24 bg-gradient-to-b from-stone-50 to-white">
           <div className="max-w-4xl mx-auto px-4">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-900 text-center mb-6">
-              What is Sommelier AI?
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-stone-900 text-center mb-6">
+              About Dionysus
             </h2>
-            <p className="text-lg text-stone-500 text-center max-w-2xl mx-auto mb-8">
-              Sommelier AI is an artificial intelligence wine advisor that provides expert-level wine recommendations through natural voice conversation. SommelierQuest brings you the best sommelier AI technology - like having a professional sommelier in your pocket, available 24/7.
+            <p className="text-lg text-stone-600 text-center max-w-2xl mx-auto mb-8">
+              Dionysus is an AI sommelier built for modern wine discovery. Unlike traditional wine lists, Dionysus engages in natural conversation to understand your needs—whether you're selecting a bottle for dinner or sourcing 500 bottles for a corporate gala.
             </p>
-            <p className="text-lg text-stone-500 text-center max-w-2xl mx-auto mb-16">
-              Whether you are looking for wine recommendations for a dinner party, trying to find the perfect wine pairing for steak, or want to learn about wine regions, our sommelier AI can help. SommelierQuest makes expert AI sommelier advice accessible to everyone, completely free.
+            <p className="text-lg text-stone-600 text-center max-w-2xl mx-auto mb-4">
+              <span className="font-semibold">Now in BETA:</span> Dionysus draws from curated partner wine databases, not a proprietary collection. This approach gives you access to premium selections worldwide while maintaining database freshness and accuracy.
+            </p>
+            <p className="text-base text-stone-500 text-center max-w-2xl mx-auto">
+              Perfect for individual wine lovers, restaurants, corporate events, wine programs, and bulk ordering. Available 24/7, always ready to help.
             </p>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <article className="bg-white rounded-xl p-6 border border-stone-100">
+            <div className="grid md:grid-cols-2 gap-6 mt-12">
+              <article className="bg-white rounded-xl p-6 border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
                 <img
                   src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍷%3C/text%3E%3C/svg%3E"
-                  alt="Sommelier AI wine recommendations icon"
+                  alt="Premium wine recommendations icon"
                   width="48"
                   height="48"
                   className="w-12 h-12 mb-4"
                 />
-                <h3 className="font-bold text-stone-900 text-lg mb-2">Sommelier AI Wine Recommendations</h3>
-                <p className="text-stone-500">Our sommelier AI knows red wine, white wine, rosé, and sparkling wines from every major wine region. Get personalized AI sommelier recommendations matched to your taste.</p>
+                <h3 className="font-bold text-stone-900 text-lg mb-2">Premium Wine Curation</h3>
+                <p className="text-stone-600">Dionysus understands red, white, rosé, and sparkling selections from every major region. Get personalized recommendations matched to your taste, occasion, and budget—from £12 everyday bottles to £500+ investments.</p>
               </article>
-              <article className="bg-white rounded-xl p-6 border border-stone-100">
+              <article className="bg-white rounded-xl p-6 border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
                 <img
                   src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍽️%3C/text%3E%3C/svg%3E"
-                  alt="Sommelier AI food pairing icon"
+                  alt="Food pairing icon"
                   width="48"
                   height="48"
                   className="w-12 h-12 mb-4"
                 />
-                <h3 className="font-bold text-stone-900 text-lg mb-2">Sommelier AI Food Pairings</h3>
-                <p className="text-stone-500">Tell our sommelier AI what you are eating and get the perfect wine match. The AI sommelier understands food and wine pairing from classic to creative combinations.</p>
+                <h3 className="font-bold text-stone-900 text-lg mb-2">Expert Food Pairing</h3>
+                <p className="text-stone-600">Tell Dionysus what you're serving—from casual weeknight dinners to multi-course galas. He delivers perfect wine matches with sommelier-level expertise for every scenario.</p>
               </article>
-              <article className="bg-white rounded-xl p-6 border border-stone-100">
+              <article className="bg-white rounded-xl p-6 border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
                 <img
-                  src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💰%3C/text%3E%3C/svg%3E"
-                  alt="Sommelier AI budget wine icon"
+                  src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📦%3C/text%3E%3C/svg%3E"
+                  alt="Bulk ordering icon"
                   width="48"
                   height="48"
                   className="w-12 h-12 mb-4"
                 />
-                <h3 className="font-bold text-stone-900 text-lg mb-2">Sommelier AI for Any Budget</h3>
-                <p className="text-stone-500">Our sommelier AI recommends wines at every price point. From everyday bottles under £15 to special occasion splurges, the AI sommelier finds great wines within your budget.</p>
+                <h3 className="font-bold text-stone-900 text-lg mb-2">Bulk & B2B Ordering</h3>
+                <p className="text-stone-600">Sourcing wine for 50 guests? 500? Dionysus scales with you, offering corporate pricing, bulk logistics support, and curated wine programs for restaurants and hospitality.</p>
               </article>
-              <article className="bg-white rounded-xl p-6 border border-stone-100">
+              <article className="bg-white rounded-xl p-6 border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
                 <img
                   src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌍%3C/text%3E%3C/svg%3E"
-                  alt="Sommelier AI wine regions icon"
+                  alt="Global wine access icon"
                   width="48"
                   height="48"
                   className="w-12 h-12 mb-4"
                 />
-                <h3 className="font-bold text-stone-900 text-lg mb-2">Sommelier AI Wine Education</h3>
-                <p className="text-stone-500">Our sommelier AI teaches you about wine regions including Bordeaux, Burgundy, Napa Valley, and Tuscany. Learn about grape varieties, tasting notes, and wine terminology with our AI sommelier.</p>
+                <h3 className="font-bold text-stone-900 text-lg mb-2">Global Wine Access</h3>
+                <p className="text-stone-600">Curated access to premium wines from partner databases worldwide. From iconic Bordeaux to emerging boutique regions, discover wines beyond what's on your local shelf.</p>
               </article>
             </div>
           </div>
         </section>
 
-        {/* Sommelier AI for Business */}
-        <section id="sommelier-ai-for-business" className="py-24 bg-white border-y border-stone-200">
+        {/* Dionysus for Enterprise */}
+        <section id="sommelier-ai-for-business" className="py-24 bg-gradient-to-b from-white to-stone-50 border-y border-stone-200">
           <div className="max-w-4xl mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-stone-900">
-              Sommelier AI for Business
+            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6 text-stone-900">
+              Dionysus for Enterprise
             </h2>
-            <p className="text-lg text-stone-600 max-w-xl mx-auto mb-6">
-              Restaurants, wine retailers, and hospitality businesses can integrate our sommelier AI into their customer experience. Help your guests find the perfect wine with SommelierQuest sommelier AI technology.
+            <p className="text-lg text-stone-600 max-w-2xl mx-auto mb-6">
+              Restaurants seeking sommelier recommendations. Wine retailers wanting a competitive edge. Hotels, venues, and corporate event teams planning sophisticated gatherings. Dionysus integrates seamlessly into your customer experience.
             </p>
-            <p className="text-lg text-stone-600 max-w-xl mx-auto mb-10">
-              SommelierQuest offers enterprise sommelier AI solutions including API access, custom integrations, and white-label AI sommelier products. Contact us to learn how our sommelier AI can enhance your business.
+            <p className="text-lg text-stone-600 max-w-2xl mx-auto mb-10">
+              We offer API access, custom integrations, white-label solutions, and dedicated enterprise support. Connect to partner wine databases, scale ordering infrastructure, and delight your clients with AI-powered wine expertise.
             </p>
 
             <a
-              href="mailto:hello@sommelier.quest?subject=Sommelier AI for Business Inquiry"
-              className="inline-flex items-center justify-center bg-wine-700 text-white font-semibold px-8 py-4 rounded-lg hover:bg-wine-800 transition-colors text-lg"
+              href="mailto:hello@sommelier.quest?subject=Dionysus Enterprise Inquiry"
+              className="inline-flex items-center justify-center bg-wine-700 text-white font-semibold px-10 py-4 rounded-lg hover:bg-wine-800 transition-colors text-lg shadow-lg hover:shadow-xl"
             >
-              Contact Us About Sommelier AI Enterprise
+              Inquire About Enterprise Solutions
             </a>
 
-            <div className="grid grid-cols-3 gap-8 mt-16 max-w-md mx-auto">
-              <div>
-                <p className="text-3xl font-bold text-stone-900">24/7</p>
-                <p className="text-stone-600 text-sm">Sommelier AI Always On</p>
+            <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
+              <div className="p-4 bg-white rounded-lg border border-stone-100">
+                <p className="text-3xl font-bold text-wine-600">24/7</p>
+                <p className="text-stone-600 text-sm mt-1">Always Available</p>
               </div>
-              <div>
-                <p className="text-3xl font-bold text-stone-900">API</p>
-                <p className="text-stone-600 text-sm">Sommelier AI Integration</p>
+              <div className="p-4 bg-white rounded-lg border border-stone-100">
+                <p className="text-3xl font-bold text-wine-600">API</p>
+                <p className="text-stone-600 text-sm mt-1">Full Integration</p>
               </div>
-              <div>
-                <p className="text-3xl font-bold text-stone-900">1000s</p>
-                <p className="text-stone-600 text-sm">Wines in Sommelier AI</p>
+              <div className="p-4 bg-white rounded-lg border border-stone-100">
+                <p className="text-3xl font-bold text-wine-600">Global</p>
+                <p className="text-stone-600 text-sm mt-1">Partner Databases</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Sommelier AI FAQ */}
-        <section className="py-24 bg-[#faf9f7]">
+        {/* Dionysus FAQ */}
+        <section className="py-24 bg-gradient-to-b from-stone-50 to-white">
           <div className="max-w-2xl mx-auto px-4">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-900 text-center mb-12">
-              Sommelier AI FAQ
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-stone-900 text-center mb-12">
+              Frequently Asked Questions
             </h2>
 
             <div className="space-y-4">
-              <details className="bg-white rounded-xl border border-stone-100 group">
-                <summary className="px-6 py-4 cursor-pointer font-medium text-stone-900 flex justify-between items-center">
-                  Is the Sommelier AI free to use?
+              <details className="bg-white rounded-xl border border-stone-100 group shadow-sm">
+                <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-wine-600">
+                  Is Dionysus really free to use?
                   <span className="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
-                <p className="px-6 pb-4 text-stone-500">Yes, our sommelier AI is completely free to use. Start using the SommelierQuest sommelier AI immediately by tapping the play button above. Sign in to save your preferences and get even more personalized AI sommelier recommendations over time.</p>
+                <p className="px-6 pb-4 text-stone-600">Yes. Dionysus is free for individuals and organizations during the BETA period. Start conversing immediately by hitting play above. Sign in to save preferences and conversation history. Enterprise SLAs and premium support are available for business customers—contact us for details.</p>
               </details>
-              <details className="bg-white rounded-xl border border-stone-100 group">
-                <summary className="px-6 py-4 cursor-pointer font-medium text-stone-900 flex justify-between items-center">
-                  How accurate is the Sommelier AI?
+              <details className="bg-white rounded-xl border border-stone-100 group shadow-sm">
+                <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-wine-600">
+                  Is this really a demo? What about the database?
                   <span className="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
-                <p className="px-6 pb-4 text-stone-500">Our sommelier AI is trained on professional sommelier knowledge covering thousands of wines from wine regions worldwide. The AI sommelier recommendations consider your taste preferences, budget, occasion, and food pairings to provide relevant, expert-level wine suggestions.</p>
+                <p className="px-6 pb-4 text-stone-600">Yes, we're in BETA. Dionysus is powered by curated partner wine databases, not a proprietary collection. This gives you access to real, up-to-date wine selections worldwide. As we mature, we'll integrate additional partners and expand the selection. Recommendations are based on real, available wines.</p>
               </details>
-              <details className="bg-white rounded-xl border border-stone-100 group">
-                <summary className="px-6 py-4 cursor-pointer font-medium text-stone-900 flex justify-between items-center">
-                  What is Sommelier AI?
+              <details className="bg-white rounded-xl border border-stone-100 group shadow-sm">
+                <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-wine-600">
+                  How accurate are Dionysus's recommendations?
                   <span className="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
-                <p className="px-6 pb-4 text-stone-500">Sommelier AI is an artificial intelligence sommelier that uses advanced AI technology to provide personalized wine recommendations through natural voice conversation. SommelierQuest brings you the best sommelier AI - like having a professional sommelier available on demand to help you discover wines you will love.</p>
+                <p className="px-6 pb-4 text-stone-600">Dionysus draws on sommelier knowledge spanning thousands of wines from major regions worldwide. Recommendations consider your taste preferences, budget, occasion, event size, and food pairings to deliver expert-level suggestions. The AI continuously learns and improves.</p>
               </details>
-              <details className="bg-white rounded-xl border border-stone-100 group">
-                <summary className="px-6 py-4 cursor-pointer font-medium text-stone-900 flex justify-between items-center">
-                  Can businesses integrate the Sommelier AI?
+              <details className="bg-white rounded-xl border border-stone-100 group shadow-sm">
+                <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-wine-600">
+                  Can my restaurant/business use Dionysus?
                   <span className="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
-                <p className="px-6 pb-4 text-stone-500">Absolutely. SommelierQuest offers enterprise sommelier AI solutions for restaurants, wine retailers, and hospitality businesses. Contact us for sommelier AI API access, custom integrations, and white-label AI sommelier products tailored to your business needs.</p>
+                <p className="px-6 pb-4 text-stone-600">Absolutely. Restaurants, wine retailers, hotels, event venues, and corporates can integrate Dionysus via API, custom integrations, or white-label solutions. We offer dedicated enterprise support, SLAs, and bulk ordering infrastructure. Email us to explore options.</p>
+              </details>
+              <details className="bg-white rounded-xl border border-stone-100 group shadow-sm">
+                <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-wine-600">
+                  What if I want to place a large order?
+                  <span className="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <p className="px-6 pb-4 text-stone-600">Tell Dionysus your event size, quantity, and requirements when you start a conversation. He'll provide recommendations at scale, connect you to wholesale pricing, and coordinate with our partner fulfillment network. Reach out to our team for enterprise-scale logistics.</p>
               </details>
             </div>
           </div>
@@ -246,32 +266,35 @@ export default function HomePage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-stone-100 py-12">
+      <footer className="bg-gradient-to-b from-white to-stone-50 border-t border-stone-100 py-12">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-8">
             <div className="flex items-center gap-2">
               <img
                 src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍷%3C/text%3E%3C/svg%3E"
-                alt="Sommelier AI logo"
+                alt="SommelierQuest logo"
                 width="32"
                 height="32"
                 className="w-8 h-8"
               />
-              <span className="font-bold text-xl text-stone-900">Sommelier<span className="text-wine-600">Quest</span></span>
+              <span className="font-bold text-lg text-stone-900">Sommelier<span className="text-wine-600">Quest</span></span>
             </div>
 
-            <nav className="flex gap-6 text-sm text-stone-600">
-              <span>Sommelier AI Wine Recommendations</span>
-              <span>•</span>
-              <span>Sommelier AI Food Pairings</span>
-              <span>•</span>
-              <span>Sommelier AI Enterprise</span>
+            <nav className="flex gap-6 text-sm text-stone-600 flex-wrap justify-center">
+              <a href="#how-sommelier-ai-works" className="hover:text-wine-600 transition-colors">How It Works</a>
+              <span className="text-stone-300">•</span>
+              <a href="#sommelier-ai-for-business" className="hover:text-wine-600 transition-colors">Enterprise</a>
+              <span className="text-stone-300">•</span>
+              <a href="mailto:hello@sommelier.quest" className="hover:text-wine-600 transition-colors">Contact</a>
             </nav>
           </div>
 
-          <p className="text-center text-stone-600 text-xs mt-8">
-            © {new Date().getFullYear()} SommelierQuest - The Best Sommelier AI. All rights reserved. Drink responsibly.
-          </p>
+          <div className="border-t border-stone-200 pt-8">
+            <p className="text-center text-stone-600 text-xs">
+              © {new Date().getFullYear()} SommelierQuest. AI Sommelier Powered by Dionysus • Partner Database Connected • BETA.<br />
+              <span className="text-stone-500">Drink responsibly. For consumers of legal drinking age only.</span>
+            </p>
+          </div>
         </div>
       </footer>
     </div>
