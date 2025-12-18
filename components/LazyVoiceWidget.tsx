@@ -9,13 +9,16 @@ const VoiceWidget = dynamic(
     ssr: false,
     loading: () => (
       <div className="flex flex-col items-center">
-        <div className="mb-8">
-          <p className="text-8xl md:text-9xl font-serif font-bold text-stone-900 tracking-tight">
+        <div className="mb-6">
+          <div className="w-30 h-30 rounded-full bg-stone-200 animate-pulse border-4 border-stone-300" />
+        </div>
+        <div className="mb-4">
+          <p className="text-4xl md:text-5xl font-serif font-bold text-stone-900 tracking-tight">
             Dionysus
           </p>
         </div>
         <div className="flex items-center gap-2 mb-6">
-          <div className="w-16 h-16 rounded-full bg-stone-200 animate-pulse" />
+          <div className="w-20 h-20 rounded-full bg-stone-200 animate-pulse" />
           <div className="flex items-center gap-[2px] h-12 w-64">
             {[...Array(40)].map((_, i) => (
               <div

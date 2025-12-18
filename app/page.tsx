@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import { LazyVoiceWidget } from '@/components/LazyVoiceWidget'
+import { Header } from '@/components/Header'
 
 export default function HomePage() {
   return (
@@ -11,37 +11,7 @@ export default function HomePage() {
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-stone-100">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-2">
-              <img
-                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍷%3C/text%3E%3C/svg%3E"
-                alt="Sommelier AI wine glass logo"
-                width="32"
-                height="32"
-                className="w-8 h-8"
-              />
-              <span className="font-bold text-xl text-stone-900">Sommelier<span className="text-wine-600">Quest</span></span>
-            </Link>
-
-            <nav className="hidden md:flex items-center gap-8">
-              <a href="#how-sommelier-ai-works" className="text-stone-600 hover:text-stone-900 transition-colors">How it works</a>
-              <a href="#sommelier-ai-for-business" className="text-stone-600 hover:text-stone-900 transition-colors">For Business</a>
-              <Link href="/handler/sign-in" className="text-stone-600 hover:text-stone-900 transition-colors">Sign in</Link>
-            </nav>
-
-            <div className="flex items-center gap-3">
-              <Link
-                href="/handler/sign-up"
-                className="hidden sm:inline-flex bg-wine-600 text-white font-medium px-5 py-2.5 rounded-full hover:bg-wine-700 transition-colors"
-              >
-                Sign in to beta
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <main>
