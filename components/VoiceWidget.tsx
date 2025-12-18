@@ -168,8 +168,10 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
       }
 
       console.log('Connecting to Hume with variables:', variables)
+      console.log('Access token exists:', !!accessToken)
+      console.log('User status:', userId ? 'Authenticated' : 'Guest')
 
-      await connect({
+      const connectionPromise = connect({
         auth: { type: 'accessToken', value: accessToken },
         configId: '606a18be-4c8e-4877-8fb4-52665831b33d',
         sessionSettings: {
@@ -179,6 +181,8 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
         },
       })
 
+      console.log('Waiting for Hume connection...')
+      await connectionPromise
       console.log('Connected successfully')
     } catch (error) {
       console.error('Failed to connect to Hume:', error)
