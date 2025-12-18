@@ -240,29 +240,41 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
         </p>
       </div>
 
-      {/* Large Dionysus Image with Pulsating Border */}
+      {/* Large Dionysus Image with Animated Border */}
       <div className="relative mb-8">
-        <div
-          className={`absolute inset-0 rounded-full ${
-            isConnected
-              ? 'animate-pulse bg-wine-500'
-              : 'animate-[pulse-glow_2s_ease-in-out_infinite]'
-          }`}
-          style={{
-            background: isConnected
-              ? 'radial-gradient(circle, rgba(127,29,29,0.8) 0%, rgba(127,29,29,0) 70%)'
-              : 'radial-gradient(circle, rgba(220,38,38,0.6) 0%, rgba(220,38,38,0) 70%)',
-            transform: 'scale(1.15)',
-            filter: 'blur(8px)',
-          }}
-        />
-        <div
-          className="absolute inset-0 rounded-full animate-[ping_2s_ease-in-out_infinite]"
-          style={{
-            border: '3px solid rgba(220,38,38,0.5)',
-            transform: 'scale(1.05)',
-          }}
-        />
+        {/* Pulsating glow - only when NOT connected */}
+        {!isConnected && !isConnecting && (
+          <>
+            <div
+              className="absolute inset-0 rounded-full animate-[pulse-glow_2s_ease-in-out_infinite]"
+              style={{
+                background: 'radial-gradient(circle, rgba(220,38,38,0.6) 0%, rgba(220,38,38,0) 70%)',
+                transform: 'scale(1.15)',
+                filter: 'blur(8px)',
+              }}
+            />
+            <div
+              className="absolute inset-0 rounded-full animate-[ping_2s_ease-in-out_infinite]"
+              style={{
+                border: '3px solid rgba(220,38,38,0.5)',
+                transform: 'scale(1.05)',
+              }}
+            />
+          </>
+        )}
+
+        {/* Rotating shine border - when connected */}
+        {isConnected && (
+          <div
+            className="absolute inset-0 rounded-full animate-[rotate-shine_3s_linear_infinite]"
+            style={{
+              background: 'conic-gradient(from 0deg, transparent 0deg, rgba(127,29,29,0.8) 60deg, rgba(220,38,38,1) 120deg, rgba(127,29,29,0.8) 180deg, transparent 240deg, transparent 360deg)',
+              transform: 'scale(1.08)',
+              filter: 'blur(3px)',
+            }}
+          />
+        )}
+
         <button
           onClick={isConnected ? handleDisconnect : handleConnect}
           disabled={isConnecting}
@@ -274,7 +286,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
             alt="Dionysus - Click to speak"
             className={`w-40 h-40 md:w-52 md:h-52 rounded-full object-cover border-4 ${
               isConnected
-                ? 'border-wine-600 shadow-[0_0_30px_rgba(127,29,29,0.8)]'
+                ? 'border-wine-600 shadow-[0_0_20px_rgba(127,29,29,0.6)]'
                 : isConnecting
                 ? 'border-gray-400 opacity-70'
                 : 'border-wine-500 shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:shadow-[0_0_40px_rgba(220,38,38,0.8)] cursor-pointer'

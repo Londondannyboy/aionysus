@@ -210,7 +210,7 @@ h2 {
   }
 }
 
-/* Dionysus Pulsating Glow Effect */
+/* Dionysus Pulsating Glow Effect - Before Connection */
 @keyframes pulse-glow {
   0%, 100% {
     opacity: 0.6;
@@ -234,6 +234,25 @@ h2 {
       0 0 20px rgba(220, 38, 38, 0.8),
       0 0 40px rgba(220, 38, 38, 0.5),
       0 0 60px rgba(220, 38, 38, 0.3);
+  }
+}
+
+/* Rotating Shine Effect - When Connected */
+@keyframes rotate-shine {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes border-shine {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
   }
 }
 
