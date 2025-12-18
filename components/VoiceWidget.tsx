@@ -237,17 +237,6 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
 
   return (
     <div className="flex flex-col items-center">
-      {/* Dionysus Avatar */}
-      <div className="mb-6">
-        <img
-          src="/dionysus.jpg"
-          alt="Dionysus AI sommelier"
-          width="120"
-          height="120"
-          className="w-30 h-30 rounded-full object-cover border-4 border-wine-600 shadow-lg"
-        />
-      </div>
-
       <div className="mb-4">
         <p className="text-4xl md:text-5xl font-serif font-bold text-stone-900 tracking-tight">
           Dionysus

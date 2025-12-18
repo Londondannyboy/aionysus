@@ -3,7 +3,16 @@ import { Header } from '@/components/Header'
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#faf9f7] via-white to-[#fef7f0]">
+    <div className="min-h-screen bg-gradient-to-b from-[#faf9f7] via-white to-[#fef7f0] relative">
+      {/* Dionysus Watermark Background - Full Screen */}
+      <div className="fixed inset-0 flex items-center justify-center pointer-events-none opacity-10 z-0">
+        <img
+          src="/dionysus.jpg"
+          alt=""
+          className="w-full h-full object-cover"
+        />
+      </div>
+
       {/* BETA Badge */}
       <div className="fixed top-4 right-4 z-40 flex items-center gap-2 bg-gradient-to-r from-stone-900 to-stone-800 text-white px-4 py-2 rounded-full text-xs font-mono tracking-wider border border-stone-700 shadow-lg">
         <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
@@ -14,24 +23,16 @@ export default function HomePage() {
       <Header />
 
       {/* Hero Section */}
-      <main>
+      <main className="relative z-10">
         <section className="max-w-5xl mx-auto px-4 pt-20 pb-16 relative">
-          {/* Dionysus Watermark Background */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-10 z-0">
-            <img
-              src="/dionysus.jpg"
-              alt=""
-              className="w-full h-full object-cover"
-            />
-          </div>
 
           {/* Voice Widget - Lazy loaded */}
           <LazyVoiceWidget />
 
           {/* Main headline */}
           <div className="text-center mt-12 relative z-10">
-            <h2 className="text-5xl sm:text-6xl md:text-7xl font-serif font-bold text-stone-900 leading-tight mb-8">
-              Meet Dionysus
+            <h2 className="text-7xl sm:text-8xl md:text-9xl font-serif font-bold text-stone-900 leading-tight mb-8">
+              Dionysus
             </h2>
 
             <p className="text-xl text-stone-600 max-w-2xl mx-auto mb-4 leading-relaxed">

@@ -28,8 +28,8 @@ export function Header() {
 
           {/* Nav */}
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#how-sommelier-ai-works" className="text-stone-600 hover:text-stone-900 transition-colors">How it works</a>
-            <a href="#sommelier-ai-for-business" className="text-stone-600 hover:text-stone-900 transition-colors">For Business</a>
+            <a href="#how-sommelier-ai-works" className="text-stone-600 hover:text-stone-900 transition-colors text-sm">How it works</a>
+            <a href="#sommelier-ai-for-business" className="text-stone-600 hover:text-stone-900 transition-colors text-sm">For Business</a>
           </nav>
 
           {/* Auth Section */}
@@ -79,20 +79,12 @@ export function Header() {
                 </div>
               </div>
             ) : (
-              <>
-                <Link
-                  href="/handler/sign-in"
-                  className="hidden sm:inline text-stone-600 hover:text-stone-900 transition-colors text-sm"
-                >
-                  Sign in
-                </Link>
-                <Link
-                  href="/handler/sign-up"
-                  className="bg-wine-600 text-white font-medium px-5 py-2.5 rounded-full hover:bg-wine-700 transition-colors text-sm"
-                >
-                  Sign in to beta
-                </Link>
-              </>
+              <Link
+                href="/handler/sign-up"
+                className="bg-wine-600 text-white font-medium px-5 py-2.5 rounded-full hover:bg-wine-700 transition-colors text-sm"
+              >
+                Sign in to beta
+              </Link>
             )}
           </div>
         </div>
