@@ -36,8 +36,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         displayName: user.displayName || user.primaryEmail?.split('@')[0] || 'Friend',
         email: user.primaryEmail,
-        wineExperienceLevel: 'not_specified',
-        preferredWineTypes: [],
+        wineExperienceLevel: 'enthusiast',
+        preferredWineTypes: 'all styles',
         pricePreference: 'premium',
         isNewUser: true,
       })
