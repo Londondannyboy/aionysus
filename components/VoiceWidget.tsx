@@ -5,6 +5,7 @@ import { VoiceProvider, useVoice } from '@humeai/voice-react'
 import { useUser } from '@stackframe/stack'
 import Image from 'next/image'
 import Link from 'next/link'
+import { DIONYSUS_SYSTEM_PROMPT } from '@/constants/dionysus-prompt'
 
 interface Wine {
   id: number
@@ -22,41 +23,6 @@ const priceMap: Record<string, { price: number; display: string }> = {
   premium: { price: 49.99, display: '£49.99' },
   luxury: { price: 199.99, display: '£199.99' },
 }
-
-const SOMMELIER_PROMPT = `You are Dionysus, the AI sommelier for SommelierQuest. You are an expert advisor specializing in wine recommendations for business, hospitality, corporate events, and large-scale orders. Your role is to help discover exceptional wines that elevate experiences, understand premium food pairings, and provide enterprise-scale wine solutions.
-
-IMPORTANT: This is BETA demo data connected to partner wine databases. Recommendations are based on curated wine collections from integrated partners.
-
-Key behaviors:
-- Greet professionally and ask about their needs (event type, party size, budget, occasion)
-- FIRST, ask: "Are you here to order for a large party or investment? Or seeking wine advice for a smaller gathering?"
-- For business inquiries: focus on premium selections, bulk ordering, corporate gifting, wine programs
-- For individuals: remain friendly and approachable while suggesting premium selections
-- Ask about their preferences (red/white/rosé, sweet/dry, budget range, event size)
-- Consider the occasion (gala, corporate dinner, wine investment, restaurant program, celebration)
-- Suggest sophisticated food pairings and wine education
-- Explain wine terms in refined, professional language
-- Be knowledgeable and passionate about wine with executive-level expertise
-
-When recommending wines, ALWAYS mention specific premium wine names from our collection:
-- Blackdown Valley Merlot (English red, medium-bodied)
-- Caymus Cabernet Sauvignon (Napa Valley premium)
-- Kim Crawford Sauvignon Blanc (New Zealand, crisp)
-- Meiomi Pinot Noir (California, smooth)
-- Whispering Angel Rose (Provence rosé)
-- Veuve Clicquot (Champagne)
-- Chateau Margaux (Bordeaux luxury)
-- La Crema Chardonnay (Sonoma, creamy)
-- 19 Crimes Red Blend (Australian, budget-friendly)
-- Apothic Red (California, smooth blend)
-
-For each wine you suggest:
-- Explain WHY it suits their needs
-- Describe tasting notes and food pairings
-- Mention the region, grape variety, and investment potential
-- For bulk orders: indicate scalability and corporate program options
-
-Start by greeting professionally and immediately ask if they're looking for large-scale/business ordering or personal recommendations.`
 
 function WineCard({ wine, onAddToCart }: { wine: Wine; onAddToCart: (wine: Wine) => void }) {
   const [added, setAdded] = useState(false)
@@ -99,27 +65,45 @@ function WineCard({ wine, onAddToCart }: { wine: Wine; onAddToCart: (wine: Wine)
   )
 }
 
+interface UserProfile {
+  displayName: string
+  email?: string
+  wineExperienceLevel: string
+  preferredWineTypes: string
+  pricePreference: string
+  isNewUser: boolean
+}
+
 function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?: string }) {
   const { connect, disconnect, status, messages } = useVoice()
   const [isConnecting, setIsConnecting] = useState(false)
   const [waveHeights, setWaveHeights] = useState<number[]>([])
   const [wines, setWines] = useState<Wine[]>([])
   const [detectedWines, setDetectedWines] = useState<Map<number, Wine[]>>(new Map())
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
 
-  // Fetch wines on mount
+  // Fetch wines and user profile on mount
   useEffect(() => {
-    async function fetchWines() {
+    async function fetchData() {
       try {
-        const response = await fetch('/api/wines')
-        if (response.ok) {
-          const data = await response.json()
-          setWines(data)
+        // Fetch wines
+        const winesResponse = await fetch('/api/wines')
+        if (winesResponse.ok) {
+          const winesData = await winesResponse.json()
+          setWines(winesData)
+        }
+
+        // Fetch user profile for personalization
+        const profileResponse = await fetch('/api/user-profile')
+        if (profileResponse.ok) {
+          const profileData = await profileResponse.json()
+          setUserProfile(profileData)
         }
       } catch (error) {
-        console.error('Error fetching wines:', error)
+        console.error('Error fetching data:', error)
       }
     }
-    fetchWines()
+    fetchData()
   }, [])
 
   // Detect wines in messages
@@ -169,20 +153,29 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
   const handleConnect = useCallback(async () => {
     setIsConnecting(true)
     try {
+      const variables: Record<string, string> = {
+        userDisplayName: userProfile?.displayName || 'Friend',
+        accountStatus: userId ? 'Authenticated' : 'Guest',
+        wineExperienceLevel: userProfile?.wineExperienceLevel || 'enthusiast',
+        preferredWineTypes: userProfile?.preferredWineTypes || 'all styles',
+        pricePreference: userProfile?.pricePreference || 'premium',
+        isNewUser: userProfile?.isNewUser ? 'yes' : 'no',
+      }
+
       await connect({
         auth: { type: 'accessToken', value: accessToken },
         configId: '606a18be-4c8e-4877-8fb4-52665831b33d',
         sessionSettings: {
           type: 'session_settings',
-          systemPrompt: SOMMELIER_PROMPT,
-          ...(userId && { variables: { user_id: userId } }),
+          systemPrompt: DIONYSUS_SYSTEM_PROMPT,
+          variables: variables,
         },
       })
     } catch (error) {
       console.error('Failed to connect:', error)
     }
     setIsConnecting(false)
-  }, [connect, accessToken, userId])
+  }, [connect, accessToken, userId, userProfile])
 
   const handleDisconnect = useCallback(() => {
     disconnect()
