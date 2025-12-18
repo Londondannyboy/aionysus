@@ -29,27 +29,13 @@ export default function HomePage() {
           {/* Voice Widget - Lazy loaded */}
           <LazyVoiceWidget />
 
-          {/* Main headline */}
-          <div className="text-center mt-12 relative z-10">
-            <h2 className="text-7xl sm:text-8xl md:text-9xl font-serif font-bold text-stone-900 leading-tight mb-8">
-              Dionysus
-            </h2>
-
-            <p className="text-xl text-stone-600 max-w-2xl mx-auto mb-4 leading-relaxed">
-              Your AI sommelier for premium wine recommendations, corporate events, and large-scale ordering.
-            </p>
-
-            <p className="text-base text-stone-500 max-w-xl mx-auto mb-12 italic">
+          {/* Supporting text */}
+          <div className="text-center mt-8 relative z-10">
+            <p className="text-base text-stone-500 max-w-xl mx-auto mb-8 italic">
               Connected to partner wine databases • Powered by conversational AI • Built for business
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="#"
-                className="inline-flex items-center justify-center bg-wine-700 text-white font-semibold px-8 py-4 rounded-lg hover:bg-wine-800 transition-colors text-lg shadow-lg hover:shadow-xl"
-              >
-                Start Conversation with Dionysus
-              </a>
               <a
                 href="#sommelier-ai-for-business"
                 className="inline-flex items-center justify-center border-2 border-wine-700 text-wine-700 font-semibold px-8 py-4 rounded-lg hover:bg-wine-50 transition-colors text-lg"

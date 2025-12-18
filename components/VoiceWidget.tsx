@@ -82,6 +82,11 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
   const [detectedWines, setDetectedWines] = useState<Map<number, Wine[]>>(new Map())
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
 
+  // Log status changes for debugging
+  useEffect(() => {
+    console.log('[Hume] Status changed:', status.value)
+  }, [status.value])
+
   // Fetch wines and user profile on mount
   useEffect(() => {
     async function fetchData() {
@@ -219,9 +224,12 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
 
   return (
     <div className="flex flex-col items-center">
-      <div className="mb-4">
-        <p className="text-4xl md:text-5xl font-serif font-bold text-stone-900 tracking-tight">
-          Dionysus
+      <div className="mb-6 text-center">
+        <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-stone-900 tracking-tight mb-2">
+          Meet Dionysus
+        </h1>
+        <p className="text-lg md:text-xl text-stone-600 font-light">
+          The God of Wine and your new Sommelier AI
         </p>
       </div>
 
