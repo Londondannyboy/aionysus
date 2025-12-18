@@ -182,12 +182,27 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
       })
 
       console.log('Waiting for Hume connection...')
-      await connectionPromise
+
+      const connectionResult = await Promise.race([
+        connectionPromise,
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Hume connection timeout after 10s')), 10000)
+        )
+      ])
+
       console.log('Connected successfully')
       console.log('Current status after connect:', status.value)
+
+      // Wait a moment for status to update
+      await new Promise(resolve => setTimeout(resolve, 500))
+      console.log('Status after delay:', status.value)
+
+      if (status.value === 'disconnected') {
+        throw new Error('Connection established but status still disconnected - Hume may have rejected connection')
+      }
     } catch (error) {
       console.error('Failed to connect to Hume:', error)
-      console.error('Error details:', error instanceof Error ? error.message : String(error))
+      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace')
       setIsConnecting(false)
     }
   }, [connect, accessToken, userId, userProfile])
