@@ -146,7 +146,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
     if (!lastMessage || lastMessage.type !== 'tool_call') return
 
     const handleToolCall = async (toolCall: any) => {
-      const { name, tool_call_id, parameters } = toolCall
+      const { name, toolCallId, parameters } = toolCall
       console.log('[Hume Tool] Received:', name, parameters)
 
       try {
@@ -194,7 +194,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
             console.warn('[Hume Tool] Unknown tool:', name)
             sendToolMessage({
               type: 'tool_error',
-              toolCallId: tool_call_id,
+              toolCallId: toolCallId,
               error: `Unknown tool: ${name}`,
               content: '',
             })
@@ -204,14 +204,14 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
         console.log('[Hume Tool] Result:', result)
         sendToolMessage({
           type: 'tool_response',
-          toolCallId: tool_call_id,
+          toolCallId: toolCallId,
           content: JSON.stringify(result),
         })
       } catch (error) {
         console.error('[Hume Tool] Error:', error)
         sendToolMessage({
           type: 'tool_error',
-          toolCallId: tool_call_id,
+          toolCallId: toolCallId,
           error: 'Tool execution failed',
           content: '',
         })
@@ -219,7 +219,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
     }
 
     // Handle the tool call
-    if (lastMessage.tool_call_id && lastMessage.name) {
+    if (lastMessage.toolCallId && lastMessage.name) {
       handleToolCall(lastMessage)
     }
   }, [messages, sendToolMessage])
