@@ -44,9 +44,23 @@ export default function CartPage() {
           }
         }
       } else {
-        // Load local cart
-        const savedCart = JSON.parse(localStorage.getItem('sommelier-cart') || '[]')
-        setLocalCart(savedCart)
+        // Load local cart with error handling
+        try {
+          const savedCart = JSON.parse(localStorage.getItem('sommelier-cart') || '[]')
+          // Filter out any invalid items
+          const validCart = savedCart.filter((item: any) =>
+            item && item.id && item.name && typeof item.price === 'number'
+          )
+          setLocalCart(validCart)
+          // Clean up localStorage if we filtered items
+          if (validCart.length !== savedCart.length) {
+            localStorage.setItem('sommelier-cart', JSON.stringify(validCart))
+          }
+        } catch (e) {
+          console.error('Error loading cart:', e)
+          localStorage.removeItem('sommelier-cart')
+          setLocalCart([])
+        }
       }
 
       setLoading(false)
