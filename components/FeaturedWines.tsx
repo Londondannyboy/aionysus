@@ -35,10 +35,17 @@ export function FeaturedWines() {
   useEffect(() => {
     async function fetchWines() {
       try {
-        const response = await fetch('/api/wines?limit=12&featured=true')
+        // Fetch more wines to ensure we have 12 with images after filtering
+        const response = await fetch('/api/wines?limit=50&featured=true')
         if (response.ok) {
           const data = await response.json()
-          setWines(data.slice(0, 12))
+          // Filter to only wines with real images (not null, empty, or placeholder)
+          const winesWithImages = data.filter((wine: Wine) =>
+            wine.image_url &&
+            wine.image_url.trim() !== '' &&
+            !wine.image_url.includes('placeholder')
+          )
+          setWines(winesWithImages.slice(0, 12))
         }
       } catch (error) {
         console.error('Error fetching wines:', error)
