@@ -1,4 +1,5 @@
 import { LazyVoiceWidget } from '@/components/LazyVoiceWidget'
+import { ScrollToTopButton } from '@/components/ScrollToTopButton'
 import Link from 'next/link'
 
 export default function HomePage() {
@@ -212,9 +213,7 @@ export default function HomePage() {
             <p className="text-gold-200/70 mb-8">
               Scroll back up and tap that golden face. She's waiting.
             </p>
-            <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }} className="inline-block bg-gradient-to-r from-gold-500 to-gold-600 text-black font-bold px-8 py-4 rounded-full hover:from-gold-400 hover:to-gold-500 transition-all shadow-[0_0_30px_rgba(212,165,10,0.4)] hover:shadow-[0_0_50px_rgba(212,165,10,0.6)]">
-              Talk to Aionysus
-            </a>
+            <ScrollToTopButton />
           </div>
         </section>
       </main>
