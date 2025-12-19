@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { SaveWineButton } from '@/components/SaveWineButton'
 
 interface Wine {
   id: number
@@ -35,6 +36,7 @@ export default function WinesPage() {
   const [wines, setWines] = useState<Wine[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<string>('all')
+  const [searchQuery, setSearchQuery] = useState<string>('')
 
   useEffect(() => {
     async function fetchWines() {
@@ -53,15 +55,22 @@ export default function WinesPage() {
     fetchWines()
   }, [])
 
-  // Filter wines by wine_type (red, white, rose, sparkling, dessert)
-  const filteredWines = filter === 'all'
-    ? wines
-    : wines.filter(w => {
-        const wineType = (w.wine_type || '').toLowerCase()
-        const color = (w.color || '').toLowerCase()
-        // Match against both wine_type and color fields
-        return wineType === filter || color === filter
-      })
+  // Filter wines by wine_type and search query
+  const filteredWines = wines.filter(w => {
+    // Type filter
+    const matchesType = filter === 'all' ||
+      (w.wine_type || '').toLowerCase() === filter ||
+      (w.color || '').toLowerCase() === filter
+
+    // Search filter (name, winery, region)
+    const query = searchQuery.toLowerCase().trim()
+    const matchesSearch = !query ||
+      (w.name || '').toLowerCase().includes(query) ||
+      (w.winery || '').toLowerCase().includes(query) ||
+      (w.region || '').toLowerCase().includes(query)
+
+    return matchesType && matchesSearch
+  })
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-stone-950 to-black">
@@ -78,6 +87,37 @@ export default function WinesPage() {
             Wine Collection
           </h1>
           <p className="text-gold-200/60 mt-3">Curated wines recommended by your divine sommelier</p>
+        </div>
+
+        {/* Search Input */}
+        <div className="max-w-md mx-auto mb-8">
+          <div className="relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search wines, wineries, regions..."
+              className="w-full px-5 py-3 pl-12 rounded-full bg-stone-900/50 border border-gold-700/30 text-gold-100 placeholder:text-gold-400/40 focus:outline-none focus:border-gold-500 focus:shadow-[0_0_20px_rgba(212,165,10,0.2)] transition-all"
+            />
+            <svg
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gold-500/50"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gold-400/60 hover:text-gold-300 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Filters - Golden themed */}
@@ -118,6 +158,10 @@ export default function WinesPage() {
                   />
                   {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  {/* Save button */}
+                  <div className="absolute top-2 right-2 z-10">
+                    <SaveWineButton wineId={wine.id} size="sm" />
+                  </div>
                 </div>
                 <div className="p-4">
                   <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium mb-2 ${

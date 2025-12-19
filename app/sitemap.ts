@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { neon } from '@neondatabase/serverless'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://sommelier.quest'
+  const baseUrl = 'https://aionysus.wine'
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
@@ -26,14 +26,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
-  // Dynamic wine pages - fetch wine IDs from database
+  // Dynamic wine pages - fetch wine slugs from database for SEO-friendly URLs
   let winePages: MetadataRoute.Sitemap = []
   try {
     if (process.env.DATABASE_URL) {
       const sql = neon(process.env.DATABASE_URL)
-      const wines = await sql`SELECT id FROM wines WHERE is_active = true ORDER BY id`
+      const wines = await sql`
+        SELECT slug, id
+        FROM wines
+        WHERE is_active = true
+        ORDER BY id
+      `
       winePages = wines.map((wine) => ({
-        url: `${baseUrl}/wines/${wine.id}`,
+        url: `${baseUrl}/wines/${wine.slug || wine.id}`,
         lastModified: new Date(),
         changeFrequency: 'monthly' as const,
         priority: 0.7,

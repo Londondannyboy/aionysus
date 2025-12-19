@@ -492,29 +492,44 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
           </>
         )}
 
-        {/* The Goddess - clickable face, no overlay button */}
+        {/* The Goddess - clickable with gold background */}
         <button
           onClick={isConnected ? handleDisconnect : handleConnect}
           disabled={isConnecting}
           className="relative z-10 group focus:outline-none"
           aria-label={isConnected ? "Stop conversation with Aionysus" : "Tap to speak with Aionysus"}
         >
-          <img
-            src="/aionysus-classic-icon.png"
-            alt="Aionysus - Goddess of Wine"
-            className={`w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-full object-cover object-[center_20%] border-4 cursor-pointer ${
-              isConnected
-                ? 'border-gold-400 shadow-[0_0_50px_rgba(212,165,10,0.8)] scale-105'
-                : isConnecting
-                ? 'border-gold-300 opacity-80 cursor-wait'
-                : 'border-gold-400 shadow-[0_0_40px_rgba(212,165,10,0.6)] group-hover:shadow-[0_0_60px_rgba(212,165,10,0.9)] group-hover:scale-[1.02]'
-            } transition-all duration-300`}
-          />
+          {/* Gold circular border/glow container */}
+          <div className={`relative rounded-full p-4 ${
+            isConnected
+              ? 'shadow-[0_0_60px_rgba(212,165,10,0.9)]'
+              : 'shadow-[0_0_40px_rgba(212,165,10,0.5)] group-hover:shadow-[0_0_70px_rgba(212,165,10,0.8)]'
+          } transition-all duration-300`}
+            style={{
+              border: '3px solid rgba(212,165,10,0.8)',
+              background: 'radial-gradient(circle, rgba(212,165,10,0.15) 0%, transparent 70%)'
+            }}
+          >
+            {/* Icon with gold background - square with rounded corners */}
+            <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-3xl overflow-hidden bg-gradient-to-br from-amber-500 via-yellow-500 to-amber-600">
+              <img
+                src="/aionysus-classic-icon.png"
+                alt="Aionysus - Goddess of Wine"
+                className={`w-full h-full object-contain cursor-pointer ${
+                  isConnected
+                    ? 'scale-105'
+                    : isConnecting
+                    ? 'opacity-80 cursor-wait'
+                    : 'group-hover:scale-[1.02]'
+                } transition-all duration-300`}
+              />
+            </div>
+          </div>
 
           {/* Subtle connecting spinner overlay */}
           {isConnecting && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-12 h-12 border-3 border-gold-400 border-t-transparent rounded-full animate-spin" />
+              <div className="w-16 h-16 border-4 border-gold-400 border-t-transparent rounded-full animate-spin" />
             </div>
           )}
         </button>
@@ -549,7 +564,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z" />
             </svg>
-            Speak with the Goddess
+            Speak with Aionysus
           </>
         )}
       </button>
