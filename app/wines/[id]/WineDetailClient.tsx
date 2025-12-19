@@ -25,7 +25,6 @@ interface Wine {
 
 interface WineDetailClientProps {
   wine: Wine
-  vintage: string
 }
 
 // Format price with proper currency
@@ -42,7 +41,7 @@ function formatPrice(price: number | null): string {
 // Placeholder image for wines without images
 const PLACEHOLDER_IMAGE = '/wine-placeholder.svg'
 
-export default function WineDetailClient({ wine, vintage }: WineDetailClientProps) {
+export default function WineDetailClient({ wine }: WineDetailClientProps) {
   const [quantity, setQuantity] = useState(1)
   const [addedToCart, setAddedToCart] = useState(false)
 
@@ -126,7 +125,7 @@ export default function WineDetailClient({ wine, vintage }: WineDetailClientProp
             </li>
             <span className="mx-2">/</span>
             <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-              <span itemProp="name" className="text-gold-200">{vintage}{wine.name}</span>
+              <span itemProp="name" className="text-gold-200">{wine.name}</span>
               <meta itemProp="position" content="3" />
             </li>
           </ol>
@@ -137,19 +136,20 @@ export default function WineDetailClient({ wine, vintage }: WineDetailClientProp
       <main className="relative z-10 max-w-6xl mx-auto px-4 pb-16">
         <article itemScope itemType="https://schema.org/Product">
           <div className="grid md:grid-cols-2 gap-12">
-            {/* Wine Image */}
-            <div className="bg-gradient-to-b from-stone-900/80 to-stone-950/90 rounded-2xl p-8 flex items-center justify-center border border-gold-700/20">
-              <figure className="relative w-48 h-72">
+            {/* Wine Image - Larger size for better display */}
+            <div className="bg-gradient-to-b from-stone-900/80 to-stone-950/90 rounded-2xl p-8 md:p-12 flex items-center justify-center border border-gold-700/20 min-h-[500px]">
+              <figure className="relative w-64 h-96 md:w-80 md:h-[480px]">
                 <Image
                   src={wine.image_url || PLACEHOLDER_IMAGE}
-                  alt={`${vintage}${wine.name} - ${wine.wine_type} wine from ${wine.region}, ${wine.country} by ${wine.winery}`}
+                  alt={`${wine.name} - ${wine.wine_type} wine from ${wine.region}, ${wine.country} by ${wine.winery}`}
                   fill
-                  className="object-cover rounded-lg"
+                  className="object-contain rounded-lg"
                   itemProp="image"
                   priority
+                  sizes="(max-width: 768px) 256px, 320px"
                 />
                 <figcaption className="sr-only">
-                  {vintage}{wine.name} wine bottle from {wine.winery}
+                  {wine.name} wine bottle from {wine.winery}
                 </figcaption>
               </figure>
             </div>
@@ -174,7 +174,7 @@ export default function WineDetailClient({ wine, vintage }: WineDetailClientProp
                 className="text-3xl md:text-4xl font-serif font-bold text-gold-100 mb-3"
                 itemProp="name"
               >
-                {vintage}{wine.name}
+                {wine.name}
               </h1>
 
               {/* Producer & Region - H2 subheading */}
@@ -231,18 +231,18 @@ export default function WineDetailClient({ wine, vintage }: WineDetailClientProp
                       : 'bg-gradient-to-r from-gold-500 to-gold-600 text-black hover:from-gold-400 hover:to-gold-500 shadow-[0_0_20px_rgba(212,165,10,0.3)]'
                   }`}
                 >
-                  {addedToCart ? 'Added to Cart!' : `Add ${vintage}${wine.name} to Cart`}
+                  {addedToCart ? 'Added to Cart!' : `Add ${wine.name} to Cart`}
                 </button>
               </div>
 
               {/* About This Wine - SEO Content Section */}
               <section className="bg-gradient-to-b from-stone-900/80 to-stone-950/90 rounded-xl p-6 border border-gold-700/20 mb-6">
                 <h3 className="font-bold text-gold-200 mb-3 text-lg">
-                  About {vintage}{wine.name}
+                  About {wine.name}
                 </h3>
                 <div itemProp="description" className="text-gold-300/80 leading-relaxed space-y-4">
                   <p>
-                    {vintage}{wine.name} is a distinguished {wine.wine_type} wine produced by {wine.winery} in the renowned {wine.region} region of {wine.country}.
+                    {wine.name} is a distinguished {wine.wine_type} wine produced by {wine.winery} in the renowned {wine.region} region of {wine.country}.
                     {wine.grape_variety && ` Crafted from ${wine.grape_variety} grapes, this wine exemplifies the finest traditions of winemaking.`}
                   </p>
                   <p>
@@ -258,7 +258,7 @@ export default function WineDetailClient({ wine, vintage }: WineDetailClientProp
               {wine.tasting_notes && (
                 <section className="bg-gradient-to-b from-stone-900/80 to-stone-950/90 rounded-xl p-6 border border-gold-700/20 mb-6">
                   <h3 className="font-bold text-gold-200 mb-3 text-lg">
-                    Tasting Notes for {vintage}{wine.name}
+                    Tasting Notes for {wine.name}
                   </h3>
                   <p className="text-gold-300/80 leading-relaxed">{wine.tasting_notes}</p>
                 </section>
@@ -267,7 +267,7 @@ export default function WineDetailClient({ wine, vintage }: WineDetailClientProp
               {/* Wine Details */}
               <section className="bg-gradient-to-b from-stone-900/80 to-stone-950/90 rounded-xl p-6 border border-gold-700/20 mb-6">
                 <h3 className="font-bold text-gold-200 mb-4 text-lg">
-                  {vintage}{wine.name} Wine Details
+                  {wine.name} Wine Details
                 </h3>
                 <dl className="grid grid-cols-2 gap-4 text-sm">
                   <div>
@@ -309,7 +309,7 @@ export default function WineDetailClient({ wine, vintage }: WineDetailClientProp
               {wine.food_pairings && wine.food_pairings.length > 0 && (
                 <section className="bg-gradient-to-b from-stone-900/80 to-stone-950/90 rounded-xl p-6 border border-gold-700/20 mb-6">
                   <h3 className="font-bold text-gold-200 mb-3 text-lg">
-                    Food Pairings for {vintage}{wine.name}
+                    Food Pairings for {wine.name}
                   </h3>
                   <p className="text-gold-300/80 mb-4">
                     This {wine.wine_type} wine pairs beautifully with a variety of dishes. Our sommelier recommends:
@@ -330,7 +330,7 @@ export default function WineDetailClient({ wine, vintage }: WineDetailClientProp
               {/* Why Buy From Aionysus - SEO Content */}
               <section className="bg-gradient-to-b from-stone-900/80 to-stone-950/90 rounded-xl p-6 border border-gold-700/20">
                 <h3 className="font-bold text-gold-200 mb-3 text-lg">
-                  Why Buy {vintage}{wine.name} from Aionysus?
+                  Why Buy {wine.name} from Aionysus?
                 </h3>
                 <ul className="text-gold-300/80 space-y-2 list-disc list-inside">
                   <li>AI-powered sommelier recommendations tailored to your preferences</li>
@@ -346,20 +346,20 @@ export default function WineDetailClient({ wine, vintage }: WineDetailClientProp
           {/* Additional SEO Content - Wine Investment & Collecting */}
           <section className="mt-12 bg-gradient-to-b from-stone-900/80 to-stone-950/90 rounded-xl p-8 border border-gold-700/20">
             <h3 className="font-bold text-gold-200 mb-4 text-xl">
-              Investing in {vintage}{wine.name}
+              Investing in {wine.name}
             </h3>
             <div className="text-gold-300/80 leading-relaxed space-y-4">
               <p>
-                Fine wines like {vintage}{wine.name} from {wine.region} have historically demonstrated strong investment potential.
+                Fine wines like {wine.name} from {wine.region} have historically demonstrated strong investment potential.
                 Collectors and investors appreciate wines from {wine.winery} for their consistent quality, aging potential, and market demand.
               </p>
               <p>
-                When considering {vintage}{wine.name} for your collection, factors such as provenance, storage conditions, and vintage quality all play crucial roles.
+                When considering {wine.name} for your collection, factors such as provenance, storage conditions, and vintage quality all play crucial roles.
                 The {wine.vintage || 'current'} vintage from {wine.region} represents an excellent opportunity for both enjoyment and long-term appreciation.
               </p>
               <p>
                 At Aionysus, we provide expert guidance through our AI sommelier to help you make informed decisions about building your wine collection.
-                Whether you're purchasing {vintage}{wine.name} for immediate enjoyment or cellaring, our team ensures every bottle meets the highest standards of quality and authenticity.
+                Whether you're purchasing {wine.name} for immediate enjoyment or cellaring, our team ensures every bottle meets the highest standards of quality and authenticity.
               </p>
             </div>
           </section>

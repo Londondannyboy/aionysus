@@ -67,15 +67,18 @@ export async function generateMetadata({
     }
   }
 
+  // Check if wine name already starts with vintage to avoid duplication like "1982 1982 Ch..."
+  const nameStartsWithVintage = wine.vintage && wine.name.trim().startsWith(String(wine.vintage))
+  const displayName = wine.name // Use the wine name as-is (it already contains vintage if applicable)
+
   // Build keyword-rich title (30-60 characters optimal)
-  const vintage = wine.vintage ? `${wine.vintage} ` : ''
-  const title = `${vintage}${wine.name} | Buy Fine Wine | Aionysus`
+  const title = `${displayName} | Buy Fine Wine | Aionysus`
 
   // Build comprehensive meta description (150-160 characters)
   const priceText = wine.price_retail
     ? `£${wine.price_retail.toLocaleString('en-GB')}`
     : 'Price on request'
-  const description = `Buy ${vintage}${wine.name} from ${wine.region}, ${wine.country}. ${wine.wine_type.charAt(0).toUpperCase() + wine.wine_type.slice(1)} wine by ${wine.winery}. ${priceText}. Expert wine recommendations from Aionysus.`
+  const description = `Buy ${displayName} from ${wine.region}, ${wine.country}. ${wine.wine_type.charAt(0).toUpperCase() + wine.wine_type.slice(1)} wine by ${wine.winery}. ${priceText}. Expert wine recommendations from Aionysus.`
 
   // Canonical URL using slug
   const canonicalSlug = wine.slug || wine.id.toString()
@@ -90,13 +93,13 @@ export async function generateMetadata({
       wine.country,
       wine.wine_type,
       wine.grape_variety,
-      vintage ? `${wine.vintage} wine` : 'fine wine',
+      wine.vintage ? `${wine.vintage} wine` : 'fine wine',
       'buy wine online',
       'fine wine',
       'investment wine'
     ].filter(Boolean).join(', '),
     openGraph: {
-      title: `${vintage}${wine.name} - Fine Wine from ${wine.region}`,
+      title: `${displayName} - Fine Wine from ${wine.region}`,
       description,
       type: 'website',
       url: `https://aionysus.wine/wines/${canonicalSlug}`,
@@ -105,14 +108,14 @@ export async function generateMetadata({
           url: wine.image_url,
           width: 400,
           height: 600,
-          alt: `${vintage}${wine.name} - ${wine.wine_type} wine from ${wine.region}, ${wine.country}`
+          alt: `${displayName} - ${wine.wine_type} wine from ${wine.region}, ${wine.country}`
         }
       ] : undefined,
       siteName: 'Aionysus - AI Wine Sommelier'
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${vintage}${wine.name}`,
+      title: displayName,
       description,
       images: wine.image_url ? [wine.image_url] : undefined
     },
@@ -151,11 +154,11 @@ export default async function WineDetailPage({
         : wine.food_pairings)
     : []
 
-  // Build structured data for SEO (JSON-LD)
+  // Build structured data for SEO (JSON-LD) - use wine.name directly as it already includes vintage
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: `${wine.vintage ? `${wine.vintage} ` : ''}${wine.name}`,
+    name: wine.name,
     description: wine.tasting_notes || `Fine ${wine.wine_type} wine from ${wine.region}, ${wine.country}`,
     image: wine.image_url,
     brand: {
@@ -179,8 +182,6 @@ export default async function WineDetailPage({
     }
   }
 
-  const vintage = wine.vintage ? `${wine.vintage} ` : ''
-
   return (
     <>
       {/* JSON-LD Structured Data for SEO */}
@@ -194,7 +195,6 @@ export default async function WineDetailPage({
           ...wine,
           food_pairings: foodPairings
         }}
-        vintage={vintage}
       />
     </>
   )
