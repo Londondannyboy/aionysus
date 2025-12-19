@@ -436,7 +436,17 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
   return (
     <div className="flex flex-col items-center">
       {/* Large Goddess Image - THE Main Tap Target */}
-      <div className="relative mb-6">
+      <div className="relative mb-8">
+        {/* Champagne fizz bubbles rising around the goddess */}
+        <div className="goddess-fizz">
+          <div className="fizz-bubble"></div>
+          <div className="fizz-bubble"></div>
+          <div className="fizz-bubble"></div>
+          <div className="fizz-bubble"></div>
+          <div className="fizz-bubble"></div>
+          <div className="fizz-bubble"></div>
+        </div>
+
         {/* Golden divine glow - pulsating when idle */}
         {!isConnected && !isConnecting && (
           <>
@@ -444,30 +454,41 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
               className="absolute inset-0 rounded-full animate-[divine-pulse_3s_ease-in-out_infinite]"
               style={{
                 background: 'radial-gradient(circle, rgba(212,165,10,0.5) 0%, rgba(212,165,10,0) 70%)',
-                transform: 'scale(1.2)',
-                filter: 'blur(15px)',
+                transform: 'scale(1.25)',
+                filter: 'blur(20px)',
               }}
             />
             <div
               className="absolute inset-0 rounded-full animate-[ping_3s_ease-in-out_infinite]"
               style={{
                 border: '2px solid rgba(212,165,10,0.4)',
-                transform: 'scale(1.08)',
+                transform: 'scale(1.1)',
               }}
             />
           </>
         )}
 
-        {/* Active golden aura - when connected */}
+        {/* Active golden aura - when connected, more fizzy */}
         {isConnected && (
-          <div
-            className="absolute inset-0 rounded-full animate-[rotate-shine_4s_linear_infinite]"
-            style={{
-              background: 'conic-gradient(from 0deg, transparent 0deg, rgba(212,165,10,0.6) 60deg, rgba(245,197,24,0.9) 120deg, rgba(212,165,10,0.6) 180deg, transparent 240deg, transparent 360deg)',
-              transform: 'scale(1.12)',
-              filter: 'blur(4px)',
-            }}
-          />
+          <>
+            <div
+              className="absolute inset-0 rounded-full animate-[rotate-shine_4s_linear_infinite]"
+              style={{
+                background: 'conic-gradient(from 0deg, transparent 0deg, rgba(212,165,10,0.6) 60deg, rgba(245,197,24,0.9) 120deg, rgba(212,165,10,0.6) 180deg, transparent 240deg, transparent 360deg)',
+                transform: 'scale(1.15)',
+                filter: 'blur(4px)',
+              }}
+            />
+            {/* Extra fizz when active */}
+            <div className="goddess-fizz">
+              <div className="fizz-bubble"></div>
+              <div className="fizz-bubble"></div>
+              <div className="fizz-bubble"></div>
+              <div className="fizz-bubble"></div>
+              <div className="fizz-bubble"></div>
+              <div className="fizz-bubble"></div>
+            </div>
+          </>
         )}
 
         {/* The Goddess - clickable face, no overlay button */}
@@ -478,7 +499,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
           aria-label={isConnected ? "Stop conversation with Aionysus" : "Tap to speak with Aionysus"}
         >
           <img
-            src="/goddess.png"
+            src="/goddess.jpg"
             alt="Aionysus - Goddess of Wine"
             onError={(e) => { e.currentTarget.src = '/aionysus.jpg'; e.currentTarget.className = 'w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-full object-cover object-[center_15%] border-4 cursor-pointer border-gold-400 shadow-[0_0_40px_rgba(212,165,10,0.6)] group-hover:shadow-[0_0_60px_rgba(212,165,10,0.9)] transition-all duration-300'; }}
             className={`w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-full object-cover border-4 cursor-pointer ${
@@ -551,31 +572,28 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
         "Where there is no wine, there is no love"
       </p>
 
-      {/* Status Text */}
-      <p className="text-gold-600 text-lg font-bold mb-4">
+      {/* Status Text - LARGER */}
+      <p className="text-gold-500 text-2xl md:text-3xl font-bold mb-6 text-center tracking-wide">
         {isConnecting
           ? "Connecting to Aionysus..."
           : isConnected
-          ? "Aionysus is listening — describe your needs."
+          ? "Aionysus is listening..."
           : isError
-          ? "Connection error — tap to try again."
+          ? "Connection error — tap to try again"
           : "Tap to speak with Aionysus"}
       </p>
 
-      {/* Version & Info Panel */}
-      <div className="text-center mb-6 space-y-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold-900/10 rounded-full">
-          <span className="text-gold-600 text-xs font-semibold">v0.1</span>
-          <span className="text-gold-400">•</span>
-          <span className="text-gold-500 text-xs">Bordeaux Collection: 40 SKUs</span>
+      {/* Version & Info Panel - Updated SKU count, no email */}
+      <div className="text-center mb-8 space-y-3">
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold-900/20 rounded-full border border-gold-700/30">
+          <span className="text-gold-400 text-sm font-semibold">BETA</span>
+          <span className="text-gold-600">•</span>
+          <span className="text-gold-300 text-sm">1,300+ Wines</span>
+          <span className="text-gold-600">•</span>
+          <span className="text-gold-300 text-sm">All Types</span>
         </div>
-        <p className="text-gold-500/70 text-xs max-w-sm">
-          Beta: Currently featuring investment-grade Red Bordeaux only. Personal data is not retained.
-        </p>
-        <p className="text-gold-500/60 text-xs">
-          <a href="mailto:hello@aionysus.wine" className="hover:text-gold-600 transition-colors">
-            hello@aionysus.wine
-          </a>
+        <p className="text-gold-400/60 text-sm max-w-md">
+          Red, White, Rosé, Sparkling & Dessert wines from Bordeaux, Champagne, and fine wine regions worldwide.
         </p>
       </div>
 

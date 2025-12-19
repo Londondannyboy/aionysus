@@ -673,3 +673,118 @@ blockquote.divine-quote::after {
   transform: translateY(-5px);
   box-shadow: 0 10px 40px rgba(212, 165, 10, 0.3);
 }
+
+/* ===========================================
+   CHAMPAGNE BUBBLES - Rising UP like fizz
+   =========================================== */
+
+/* Single bubble rising animation */
+@keyframes bubble-rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  95% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-500px) scale(0.4);
+    opacity: 0;
+  }
+}
+
+/* Wobble for organic movement */
+@keyframes bubble-wobble {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(3px);
+  }
+  75% {
+    transform: translateX(-3px);
+  }
+}
+
+/* Champagne bubble container */
+.champagne-bubbles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 2;
+}
+
+/* Individual bubbles */
+.champagne-bubbles .bubble {
+  position: absolute;
+  bottom: -20px;
+  background: radial-gradient(circle at 30% 30%,
+    rgba(255, 255, 255, 0.9),
+    rgba(212, 165, 10, 0.4) 50%,
+    rgba(212, 165, 10, 0.1));
+  border-radius: 50%;
+  box-shadow:
+    inset 0 -2px 4px rgba(212, 165, 10, 0.3),
+    0 0 8px rgba(212, 165, 10, 0.5);
+  animation: bubble-rise linear infinite, bubble-wobble 2s ease-in-out infinite;
+}
+
+/* Multiple bubble sizes and positions */
+.champagne-bubbles .bubble:nth-child(1) { left: 5%; width: 16px; height: 16px; animation-duration: 6s, 2s; animation-delay: 0s; }
+.champagne-bubbles .bubble:nth-child(2) { left: 15%; width: 10px; height: 10px; animation-duration: 5s, 1.8s; animation-delay: 0.5s; }
+.champagne-bubbles .bubble:nth-child(3) { left: 25%; width: 14px; height: 14px; animation-duration: 7s, 2.2s; animation-delay: 1s; }
+.champagne-bubbles .bubble:nth-child(4) { left: 35%; width: 8px; height: 8px; animation-duration: 5.5s, 1.5s; animation-delay: 1.5s; }
+.champagne-bubbles .bubble:nth-child(5) { left: 45%; width: 12px; height: 12px; animation-duration: 6.5s, 2s; animation-delay: 0.3s; }
+.champagne-bubbles .bubble:nth-child(6) { left: 55%; width: 18px; height: 18px; animation-duration: 7.5s, 2.5s; animation-delay: 2s; }
+.champagne-bubbles .bubble:nth-child(7) { left: 65%; width: 10px; height: 10px; animation-duration: 5s, 1.6s; animation-delay: 0.8s; }
+.champagne-bubbles .bubble:nth-child(8) { left: 75%; width: 14px; height: 14px; animation-duration: 6s, 2.1s; animation-delay: 1.2s; }
+.champagne-bubbles .bubble:nth-child(9) { left: 85%; width: 12px; height: 12px; animation-duration: 5.8s, 1.9s; animation-delay: 0.6s; }
+.champagne-bubbles .bubble:nth-child(10) { left: 95%; width: 16px; height: 16px; animation-duration: 7s, 2.3s; animation-delay: 1.8s; }
+
+/* ===========================================
+   GODDESS FIZZ - Bubbles around the circle
+   =========================================== */
+
+@keyframes goddess-fizz-rise {
+  0% {
+    transform: translateY(0) translateX(var(--x-offset, 0)) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-120px) translateX(var(--x-offset, 0)) scale(0.3);
+    opacity: 0;
+  }
+}
+
+.goddess-fizz {
+  position: absolute;
+  inset: -30px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.goddess-fizz .fizz-bubble {
+  position: absolute;
+  bottom: 15%;
+  background: radial-gradient(circle at 30% 30%,
+    rgba(255, 255, 255, 0.95),
+    rgba(245, 197, 24, 0.6) 60%,
+    rgba(212, 165, 10, 0.2));
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(212, 165, 10, 0.8);
+  animation: goddess-fizz-rise ease-out infinite;
+}
+
+.goddess-fizz .fizz-bubble:nth-child(1) { left: 10%; width: 8px; height: 8px; --x-offset: 5px; animation-duration: 2.5s; animation-delay: 0s; }
+.goddess-fizz .fizz-bubble:nth-child(2) { left: 25%; width: 6px; height: 6px; --x-offset: -3px; animation-duration: 2s; animation-delay: 0.3s; }
+.goddess-fizz .fizz-bubble:nth-child(3) { left: 40%; width: 7px; height: 7px; --x-offset: 4px; animation-duration: 2.2s; animation-delay: 0.6s; }
+.goddess-fizz .fizz-bubble:nth-child(4) { right: 40%; width: 5px; height: 5px; --x-offset: -5px; animation-duration: 1.8s; animation-delay: 0.2s; }
+.goddess-fizz .fizz-bubble:nth-child(5) { right: 25%; width: 8px; height: 8px; --x-offset: 3px; animation-duration: 2.4s; animation-delay: 0.5s; }
+.goddess-fizz .fizz-bubble:nth-child(6) { right: 10%; width: 6px; height: 6px; --x-offset: -4px; animation-duration: 2.1s; animation-delay: 0.8s; }

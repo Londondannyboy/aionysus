@@ -3,8 +3,19 @@ import { LazyVoiceWidget } from '@/components/LazyVoiceWidget'
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-stone-950 to-black relative overflow-hidden">
-      {/* Golden particles floating effect */}
-      <div className="golden-particles" aria-hidden="true" />
+      {/* Champagne bubbles rising UP like fizz in a glass */}
+      <div className="champagne-bubbles" aria-hidden="true">
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+      </div>
 
       {/* Dramatic radial gradient background */}
       <div className="fixed inset-0 pointer-events-none z-0">
