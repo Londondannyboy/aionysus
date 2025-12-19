@@ -20,6 +20,7 @@ interface Wine {
   grape_variety?: string
 }
 
+// Inline wine card shown within conversation
 function WineCard({ wine, onAddToCart }: { wine: Wine; onAddToCart: (wine: Wine) => void }) {
   const [added, setAdded] = useState(false)
   const price = typeof wine.price_retail === 'string' ? parseFloat(wine.price_retail) : wine.price_retail
@@ -35,7 +36,7 @@ function WineCard({ wine, onAddToCart }: { wine: Wine; onAddToCart: (wine: Wine)
     <div className="flex gap-3 bg-white rounded-xl border border-stone-200 p-3 mt-2 max-w-sm">
       <Link href={`/wines/${wine.slug || wine.id}`} className="relative w-16 h-24 flex-shrink-0">
         <img
-          src={wine.image_url || 'https://res.cloudinary.com/dc7btom12/image/upload/v1766073925/wines/wine-22-1952-ch-haut-brion.jpg'}
+          src={wine.image_url || '/wine-placeholder.svg'}
           alt={wine.name}
           className="w-full h-full object-cover rounded-lg"
         />
@@ -58,6 +59,51 @@ function WineCard({ wine, onAddToCart }: { wine: Wine; onAddToCart: (wine: Wine)
         </button>
       </div>
     </div>
+  )
+}
+
+// Compact wine card for the history strip
+function WineHistoryCard({ wine, onAddToCart }: { wine: Wine; onAddToCart: (wine: Wine) => void }) {
+  const [added, setAdded] = useState(false)
+  const price = typeof wine.price_retail === 'string' ? parseFloat(wine.price_retail) : wine.price_retail
+  const displayPrice = price ? `£${price.toLocaleString('en-GB', { minimumFractionDigits: 0 })}` : 'POA'
+
+  const handleAdd = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    onAddToCart(wine)
+    setAdded(true)
+    setTimeout(() => setAdded(false), 2000)
+  }
+
+  return (
+    <Link
+      href={`/wines/${wine.slug || wine.id}`}
+      className="flex-shrink-0 w-32 bg-gradient-to-b from-stone-900 to-stone-950 rounded-lg border border-gold-700/30 overflow-hidden hover:border-gold-500/50 transition-all group"
+    >
+      <div className="aspect-[3/4] relative">
+        <img
+          src={wine.image_url || '/wine-placeholder.svg'}
+          alt={wine.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+      </div>
+      <div className="p-2">
+        <p className="text-white text-xs font-medium line-clamp-2 leading-tight mb-1">{wine.name}</p>
+        <p className="text-gold-400 text-xs font-bold">{displayPrice}</p>
+        <button
+          onClick={handleAdd}
+          className={`mt-1.5 w-full px-2 py-1 text-[10px] font-bold rounded transition-all ${
+            added
+              ? 'bg-green-600 text-white'
+              : 'bg-gold-500 text-black hover:bg-gold-400'
+          }`}
+        >
+          {added ? 'Added!' : 'Add to Cart'}
+        </button>
+      </div>
+    </Link>
   )
 }
 
@@ -129,6 +175,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
   const [waveHeights, setWaveHeights] = useState<number[]>([])
   const [wines, setWines] = useState<Wine[]>([])
   const [detectedWines, setDetectedWines] = useState<Map<number, Wine[]>>(new Map())
+  const [discussedWines, setDiscussedWines] = useState<Wine[]>([])
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [shopifyCartId, setShopifyCartId] = useState<string | null>(null)
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null)
@@ -300,11 +347,12 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
     }
   }, [messages, sendToolMessage])
 
-  // Detect wines in messages
+  // Detect wines in messages and accumulate discussed wines
   useEffect(() => {
     if (wines.length === 0) return
 
     const newDetected = new Map<number, Wine[]>()
+    const allDiscussed: Wine[] = [...discussedWines]
 
     messages.forEach((msg, index) => {
       if (msg.type === 'assistant_message' && msg.message?.content) {
@@ -320,6 +368,10 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
               wineName.split(' ').some(word => word.length > 4 && content.includes(word))) {
             if (!foundWines.find(w => w.id === wine.id)) {
               foundWines.push(wine)
+              // Add to discussed wines if not already there
+              if (!allDiscussed.find(w => w.id === wine.id)) {
+                allDiscussed.push(wine)
+              }
             }
           }
         })
@@ -331,6 +383,10 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
     })
 
     setDetectedWines(newDetected)
+    // Only update if we found new wines
+    if (allDiscussed.length > discussedWines.length) {
+      setDiscussedWines(allDiscussed)
+    }
   }, [messages, wines])
 
   useEffect(() => {
@@ -649,33 +705,6 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
         </p>
       </div>
 
-      {/* Featured Wine - Show when connected */}
-      {isConnected && (
-        <div className="w-full max-w-md mb-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <p className="text-gold-500 text-xs font-medium text-center mb-3">Featured from our collection</p>
-          <div className="bg-white rounded-2xl border border-gold-800/30 shadow-lg overflow-hidden">
-            <div className="flex gap-4 p-4">
-              <div className="relative w-24 h-32 flex-shrink-0">
-                <img
-                  src="https://res.cloudinary.com/dc7btom12/image/upload/v1766073925/wines/wine-22-1952-ch-haut-brion.jpg"
-                  alt="1952 Château Haut-Brion"
-                  className="w-full h-full object-cover rounded-lg"
-                />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-serif font-bold text-stone-900 text-sm leading-tight mb-1">
-                  1952 Château Haut-Brion
-                </h3>
-                <p className="text-xs text-gold-500 font-medium mb-1">1er Cru • Pessac-Léognan</p>
-                <p className="text-xs text-stone-500 mb-2">Cabernet Sauvignon, Merlot, Cabernet Franc</p>
-                <p className="font-bold text-gold-600 text-lg">£723.46</p>
-                <p className="text-xs text-stone-400 mt-1">First Growth • 70+ years old</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {messages.length > 0 && (
         <div className="w-full max-w-2xl bg-stone-50 rounded-2xl p-6 max-h-[500px] overflow-y-auto mb-8">
           <div className="space-y-3">
@@ -706,6 +735,23 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
                 ))}
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Wine History Strip - Shows all wines discussed */}
+      {discussedWines.length > 0 && (
+        <div className="w-full max-w-2xl mb-8">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-gold-400 text-sm font-medium">Wines Discussed</p>
+            <span className="text-gold-500/60 text-xs">{discussedWines.length} wine{discussedWines.length !== 1 ? 's' : ''}</span>
+          </div>
+          <div className="overflow-x-auto scrollbar-hide">
+            <div className="flex gap-3 pb-2">
+              {discussedWines.map((wine) => (
+                <WineHistoryCard key={wine.id} wine={wine} onAddToCart={handleAddToCart} />
+              ))}
+            </div>
           </div>
         </div>
       )}
