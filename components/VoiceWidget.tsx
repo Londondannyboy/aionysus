@@ -40,17 +40,17 @@ function WineCard({ wine, onAddToCart }: { wine: Wine; onAddToCart: (wine: Wine)
         />
       </Link>
       <div className="flex-1 min-w-0">
-        <Link href={`/wines/${wine.id}`} className="font-semibold text-stone-900 text-sm hover:text-wine-600 line-clamp-2">
+        <Link href={`/wines/${wine.id}`} className="font-semibold text-stone-900 text-sm hover:text-gold-600 line-clamp-2">
           {wine.name}
         </Link>
         <p className="text-xs text-stone-500">{wine.winery} · {wine.country}</p>
-        <p className="font-bold text-wine-600 text-sm mt-1">{displayPrice}</p>
+        <p className="font-bold text-gold-600 text-sm mt-1">{displayPrice}</p>
         <button
           onClick={handleAdd}
           className={`mt-2 px-3 py-1 text-xs font-medium rounded-full transition-all ${
             added
               ? 'bg-green-600 text-white'
-              : 'bg-wine-600 text-white hover:bg-wine-700'
+              : 'bg-gold-600 text-black hover:bg-gold-500'
           }`}
         >
           {added ? 'Added!' : 'Add to Cart'}
@@ -437,11 +437,11 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
     <div className="flex flex-col items-center">
       {/* Title with consistent serif font */}
       <div className="mb-8 text-center">
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-wine-700 tracking-tight mb-2">
+        <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-gold-600 tracking-tight mb-2">
           Aionysus
         </h1>
-        <p className="text-lg md:text-xl text-stone-600 font-light">
-          The <span className="text-wine-600 font-medium">AI</span> Goddess of Wine
+        <p className="text-lg md:text-xl text-gold-500/80 font-light italic">
+          Goddess of Wine
         </p>
       </div>
 
@@ -492,10 +492,10 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
             alt="Aionysus"
             className={`w-44 h-44 md:w-56 md:h-56 rounded-full object-cover border-4 cursor-pointer ${
               isConnected
-                ? 'border-wine-600 shadow-[0_0_25px_rgba(127,29,29,0.7)]'
+                ? 'border-gold-500 shadow-[0_0_25px_rgba(212,165,10,0.7)]'
                 : isConnecting
-                ? 'border-wine-400 opacity-70 cursor-wait'
-                : 'border-wine-600 shadow-[0_0_20px_rgba(127,29,29,0.5)] group-hover:shadow-[0_0_40px_rgba(127,29,29,0.8)]'
+                ? 'border-gold-400 opacity-70 cursor-wait'
+                : 'border-gold-500 shadow-[0_0_20px_rgba(212,165,10,0.5)] group-hover:shadow-[0_0_40px_rgba(212,165,10,0.8)]'
             } transition-all duration-300`}
           />
           {/* Centered Play/Stop Button Overlay */}
@@ -503,10 +503,10 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
             <div
               className={`w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center transition-all duration-300 ${
                 isConnected
-                  ? 'bg-wine-600/90 group-hover:bg-wine-700/95'
+                  ? 'bg-gold-600/90 group-hover:bg-gold-700/95'
                   : isConnecting
-                  ? 'bg-wine-400/80'
-                  : 'bg-wine-600/85 group-hover:bg-wine-600/95 group-hover:scale-110'
+                  ? 'bg-gold-400/80'
+                  : 'bg-gold-600/85 group-hover:bg-gold-600/95 group-hover:scale-110'
               } shadow-lg backdrop-blur-sm`}
             >
               {isConnecting ? (
@@ -531,7 +531,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
           <div
             key={i}
             className={`w-[3px] rounded-full transition-all duration-100 ${
-              isConnected ? 'bg-wine-500' : 'bg-wine-300'
+              isConnected ? 'bg-gold-500' : 'bg-gold-300'
             }`}
             style={{ height: `${height}%` }}
           />
@@ -539,12 +539,12 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
       </div>
 
       {/* Wine Proverb */}
-      <p className="text-wine-600 text-sm italic mb-2">
+      <p className="text-gold-500 text-sm italic mb-2">
         "Where there is no wine, there is no love"
       </p>
 
       {/* Status Text */}
-      <p className="text-wine-700 text-lg font-bold mb-4">
+      <p className="text-gold-600 text-lg font-bold mb-4">
         {isConnecting
           ? "Connecting to Aionysus..."
           : isConnected
@@ -556,16 +556,16 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
 
       {/* Version & Info Panel */}
       <div className="text-center mb-6 space-y-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-wine-50 rounded-full">
-          <span className="text-wine-700 text-xs font-semibold">v0.1</span>
-          <span className="text-wine-400">•</span>
-          <span className="text-wine-600 text-xs">Bordeaux Collection: 40 SKUs</span>
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold-900/10 rounded-full">
+          <span className="text-gold-600 text-xs font-semibold">v0.1</span>
+          <span className="text-gold-400">•</span>
+          <span className="text-gold-500 text-xs">Bordeaux Collection: 40 SKUs</span>
         </div>
-        <p className="text-wine-600/70 text-xs max-w-sm">
+        <p className="text-gold-500/70 text-xs max-w-sm">
           Beta: Currently featuring investment-grade Red Bordeaux only. Personal data is not retained.
         </p>
-        <p className="text-wine-500/60 text-xs">
-          <a href="mailto:hello@aionysus.wine" className="hover:text-wine-700 transition-colors">
+        <p className="text-gold-500/60 text-xs">
+          <a href="mailto:hello@aionysus.wine" className="hover:text-gold-600 transition-colors">
             hello@aionysus.wine
           </a>
         </p>
@@ -574,8 +574,8 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
       {/* Featured Wine - Show when connected */}
       {isConnected && (
         <div className="w-full max-w-md mb-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <p className="text-wine-600 text-xs font-medium text-center mb-3">Featured from our collection</p>
-          <div className="bg-white rounded-2xl border border-wine-100 shadow-lg overflow-hidden">
+          <p className="text-gold-500 text-xs font-medium text-center mb-3">Featured from our collection</p>
+          <div className="bg-white rounded-2xl border border-gold-800/30 shadow-lg overflow-hidden">
             <div className="flex gap-4 p-4">
               <div className="relative w-24 h-32 flex-shrink-0">
                 <img
@@ -588,9 +588,9 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
                 <h3 className="font-serif font-bold text-stone-900 text-sm leading-tight mb-1">
                   1952 Château Haut-Brion
                 </h3>
-                <p className="text-xs text-wine-600 font-medium mb-1">1er Cru • Pessac-Léognan</p>
+                <p className="text-xs text-gold-500 font-medium mb-1">1er Cru • Pessac-Léognan</p>
                 <p className="text-xs text-stone-500 mb-2">Cabernet Sauvignon, Merlot, Cabernet Franc</p>
-                <p className="font-bold text-wine-700 text-lg">£723.46</p>
+                <p className="font-bold text-gold-600 text-lg">£723.46</p>
                 <p className="text-xs text-stone-400 mt-1">First Growth • 70+ years old</p>
               </div>
             </div>
@@ -609,7 +609,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
                   <div
                     className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
                       msg.type === 'user_message'
-                        ? 'bg-wine-600 text-white'
+                        ? 'bg-gold-600 text-white'
                         : 'bg-white border border-stone-200 text-stone-700'
                     }`}
                   >
@@ -650,7 +650,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
       {/* Cart link */}
       <Link
         href="/cart"
-        className="fixed bottom-6 right-6 bg-wine-600 text-white p-4 rounded-full shadow-lg hover:bg-wine-700 transition-colors z-50"
+        className="fixed bottom-6 right-6 bg-gold-600 text-white p-4 rounded-full shadow-lg hover:bg-gold-700 transition-colors z-50"
         aria-label="View shopping cart"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -697,7 +697,7 @@ export function VoiceWidget() {
   if (!accessToken) {
     return (
       <div className="text-center py-20">
-        <div className="w-10 h-10 border-2 border-stone-200 border-t-wine-600 rounded-full animate-spin mx-auto mb-4" />
+        <div className="w-10 h-10 border-2 border-stone-200 border-t-gold-500 rounded-full animate-spin mx-auto mb-4" />
         <p className="text-stone-500">Loading SommelierQuest...</p>
       </div>
     )

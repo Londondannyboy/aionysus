@@ -78,8 +78,8 @@ export default function WinesPage() {
               onClick={() => setFilter(type)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 filter === type
-                  ? 'bg-wine-600 text-white'
-                  : 'bg-white text-stone-600 border border-stone-200 hover:border-wine-300'
+                  ? 'bg-gold-600 text-white'
+                  : 'bg-white text-stone-600 border border-stone-200 hover:border-gold-300'
               }`}
             >
               {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -89,7 +89,7 @@ export default function WinesPage() {
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <div className="w-10 h-10 border-2 border-stone-200 border-t-wine-600 rounded-full animate-spin" />
+            <div className="w-10 h-10 border-2 border-stone-200 border-t-gold-500 rounded-full animate-spin" />
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -119,7 +119,7 @@ export default function WinesPage() {
                   </span>
                   <h3 className="font-semibold text-stone-900 mb-1 line-clamp-2">{wine.name}</h3>
                   <p className="text-sm text-stone-500 mb-2">{wine.region}</p>
-                  <p className="font-bold text-wine-600">{formatPrice(wine.price_retail)}</p>
+                  <p className="font-bold text-gold-500">{formatPrice(wine.price_retail)}</p>
                 </div>
               </Link>
             ))}

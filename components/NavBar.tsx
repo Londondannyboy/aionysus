@@ -43,41 +43,62 @@ export function NavBar() {
   }, [])
 
   return (
-    <header className="sticky top-0 z-50 bg-black/95 backdrop-blur-sm border-b border-gold-800/30">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            {/* Golden goddess portrait icon */}
-            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gold-500/50 shadow-[0_0_15px_rgba(212,165,10,0.3)] group-hover:shadow-[0_0_25px_rgba(212,165,10,0.5)] transition-shadow">
-              <img
-                src="/aionysus.jpg"
-                alt="Aionysus"
-                className="w-full h-full object-cover object-[center_15%]"
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-serif font-bold text-2xl bg-gradient-to-r from-gold-400 to-gold-600 bg-clip-text text-transparent">
-                Aionysus
-              </span>
-              <span className="text-[10px] text-gold-500/70 italic -mt-1 hidden sm:block">
-                Where there is no wine, there is no love
-              </span>
-            </div>
-          </Link>
-
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-6">
-            <Link
-              href="/wines"
-              className="text-stone-300 hover:text-gold-400 transition-colors font-medium"
-            >
-              Wines
+    <header className="sticky top-0 z-50">
+      {/* Main header bar */}
+      <div className="bg-black/95 backdrop-blur-sm border-b border-gold-800/30">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center justify-center h-16">
+            {/* Logo - Centered */}
+            <Link href="/" className="flex items-center gap-3 group">
+              {/* Golden goddess portrait icon */}
+              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gold-500/50 shadow-[0_0_20px_rgba(212,165,10,0.4)] group-hover:shadow-[0_0_30px_rgba(212,165,10,0.6)] transition-shadow">
+                <img
+                  src="/aionysus.jpg"
+                  alt="Aionysus"
+                  className="w-full h-full object-cover object-[center_15%]"
+                />
+              </div>
+              <div className="flex flex-col items-center">
+                <span className="font-serif font-bold text-3xl bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300 bg-clip-text text-transparent">
+                  Aionysus
+                </span>
+                <span className="text-[11px] text-gold-500/80 italic -mt-1">
+                  Goddess of Wine
+                </span>
+              </div>
             </Link>
-          </nav>
+          </div>
+        </div>
+      </div>
 
-          {/* Right Section: Cart & Auth */}
-          <div className="flex items-center gap-4">
+      {/* Sub-menu strip */}
+      <div className="bg-black/80 backdrop-blur-sm border-b border-gold-900/50">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center justify-between h-10">
+            {/* Left nav links */}
+            <nav className="flex items-center gap-6">
+              <Link
+                href="/"
+                className="text-sm text-stone-400 hover:text-gold-400 transition-colors font-medium"
+              >
+                Home
+              </Link>
+              <Link
+                href="/wines"
+                className="text-sm text-stone-400 hover:text-gold-400 transition-colors font-medium"
+              >
+                Wines
+              </Link>
+              <Link
+                href="/cart"
+                className="text-sm text-stone-400 hover:text-gold-400 transition-colors font-medium"
+              >
+                Basket
+              </Link>
+            </nav>
+
+            {/* Right Section: Cart count & Auth */}
+            <div className="flex items-center gap-4">
             {/* Cart Icon */}
             <Link
               href="/cart"
@@ -150,6 +171,7 @@ export function NavBar() {
                 Sign in
               </Link>
             )}
+            </div>
           </div>
         </div>
       </div>

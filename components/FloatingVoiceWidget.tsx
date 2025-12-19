@@ -45,7 +45,7 @@ export function FloatingVoiceWidget() {
                 </div>
                 <div>
                   <h3 className="font-serif font-bold bg-gradient-to-r from-gold-400 to-gold-600 bg-clip-text text-transparent">Aionysus</h3>
-                  <p className="text-xs text-gold-500/60 italic">Goddess of Wine</p>
+                  <p className="text-xs text-gold-500/60 italic">Talk to the Goddess</p>
                 </div>
               </div>
               <button

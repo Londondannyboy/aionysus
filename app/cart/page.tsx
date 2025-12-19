@@ -155,7 +155,7 @@ export default function CartPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#faf9f7] flex items-center justify-center">
-        <div className="w-10 h-10 border-2 border-stone-200 border-t-wine-600 rounded-full animate-spin" />
+        <div className="w-10 h-10 border-2 border-stone-200 border-t-gold-500 rounded-full animate-spin" />
       </div>
     )
   }
@@ -182,7 +182,7 @@ export default function CartPage() {
             <div className="flex justify-center gap-4">
               <Link
                 href="/"
-                className="px-6 py-3 bg-wine-600 text-white rounded-lg font-semibold hover:bg-wine-700 transition-colors"
+                className="px-6 py-3 bg-gold-600 text-white rounded-lg font-semibold hover:bg-gold-700 transition-colors"
               >
                 Talk to Aionysus
               </Link>
@@ -215,11 +215,11 @@ export default function CartPage() {
                     </div>
 
                     <div className="flex-1">
-                      <Link href={`/wines`} className="font-semibold text-stone-900 hover:text-wine-600">
+                      <Link href={`/wines`} className="font-semibold text-stone-900 hover:text-gold-500">
                         {item.merchandise.product.title}
                       </Link>
                       <p className="text-sm text-stone-500">{item.merchandise.title}</p>
-                      <p className="font-bold text-wine-600 mt-1">
+                      <p className="font-bold text-gold-500 mt-1">
                         {formatPrice(item.merchandise.price.amount, item.merchandise.price.currencyCode)}
                       </p>
 
@@ -274,11 +274,11 @@ export default function CartPage() {
                     </div>
 
                     <div className="flex-1">
-                      <Link href={`/wines/${item.id}`} className="font-semibold text-stone-900 hover:text-wine-600">
+                      <Link href={`/wines/${item.id}`} className="font-semibold text-stone-900 hover:text-gold-500">
                         {item.name}
                       </Link>
                       <p className="text-sm text-stone-500">{item.winery}</p>
-                      <p className="font-bold text-wine-600 mt-1">£{item.price.toFixed(2)}</p>
+                      <p className="font-bold text-gold-500 mt-1">£{item.price.toFixed(2)}</p>
 
                       <div className="flex items-center justify-between mt-3">
                         <div className="flex items-center border border-stone-200 rounded-lg">
@@ -346,12 +346,12 @@ export default function CartPage() {
                     href={cartData.checkoutUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full py-3 bg-wine-600 text-white text-center rounded-lg font-semibold hover:bg-wine-700 transition-colors mb-3"
+                    className="block w-full py-3 bg-gold-600 text-white text-center rounded-lg font-semibold hover:bg-gold-700 transition-colors mb-3"
                   >
                     Checkout
                   </a>
                 ) : (
-                  <button className="w-full py-3 bg-wine-600 text-white rounded-lg font-semibold hover:bg-wine-700 transition-colors mb-3">
+                  <button className="w-full py-3 bg-gold-600 text-white rounded-lg font-semibold hover:bg-gold-700 transition-colors mb-3">
                     Checkout
                   </button>
                 )}

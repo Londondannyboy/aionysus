@@ -100,7 +100,7 @@ export default function WineDetailPage({ params }: { params: Promise<{ id: strin
   if (loading) {
     return (
       <div className="min-h-screen bg-[#faf9f7] flex items-center justify-center">
-        <div className="w-10 h-10 border-2 border-stone-200 border-t-wine-600 rounded-full animate-spin" />
+        <div className="w-10 h-10 border-2 border-stone-200 border-t-gold-500 rounded-full animate-spin" />
       </div>
     )
   }
@@ -109,7 +109,7 @@ export default function WineDetailPage({ params }: { params: Promise<{ id: strin
     return (
       <div className="min-h-screen bg-[#faf9f7] flex flex-col items-center justify-center">
         <p className="text-stone-500 mb-4">Wine not found</p>
-        <Link href="/" className="text-wine-600 hover:underline">Back to home</Link>
+        <Link href="/" className="text-gold-500 hover:underline">Back to home</Link>
       </div>
     )
   }
@@ -119,9 +119,9 @@ export default function WineDetailPage({ params }: { params: Promise<{ id: strin
       {/* Breadcrumb */}
       <div className="max-w-6xl mx-auto px-4 py-4 pt-20">
         <nav className="text-sm text-stone-500">
-          <Link href="/" className="hover:text-wine-600">Home</Link>
+          <Link href="/" className="hover:text-gold-500">Home</Link>
           <span className="mx-2">/</span>
-          <Link href="/wines" className="hover:text-wine-600">Wines</Link>
+          <Link href="/wines" className="hover:text-gold-500">Wines</Link>
           <span className="mx-2">/</span>
           <span className="text-stone-900">{wine.name}</span>
         </nav>
@@ -168,7 +168,7 @@ export default function WineDetailPage({ params }: { params: Promise<{ id: strin
               <p className="text-stone-600 mb-4">Vintage: {wine.vintage}</p>
             )}
 
-            <p className="text-3xl font-bold text-wine-600 mb-6">
+            <p className="text-3xl font-bold text-gold-500 mb-6">
               {formatPrice(wine.price_retail)}
             </p>
 
@@ -195,7 +195,7 @@ export default function WineDetailPage({ params }: { params: Promise<{ id: strin
                 className={`flex-1 py-3 px-6 rounded-lg font-semibold transition-all ${
                   addedToCart
                     ? 'bg-green-600 text-white'
-                    : 'bg-wine-600 text-white hover:bg-wine-700'
+                    : 'bg-gold-600 text-white hover:bg-gold-700'
                 }`}
               >
                 {addedToCart ? 'Added to Cart!' : 'Add to Cart'}

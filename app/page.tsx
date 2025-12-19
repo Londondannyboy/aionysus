@@ -47,17 +47,17 @@ export default function HomePage() {
 
             <div className="grid md:grid-cols-3 gap-12">
               <div className="text-center">
-                <div className="w-14 h-14 bg-gradient-to-br from-wine-100 to-wine-200 text-wine-700 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-md">1</div>
+                <div className="w-14 h-14 bg-gradient-to-br from-gold-800/30 to-gold-700/40 text-gold-600 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-md">1</div>
                 <h3 className="font-bold text-stone-900 text-lg mb-3">Hit Play</h3>
                 <p className="text-stone-600 leading-relaxed">Start speaking with Aionysus. No forms, no menus, no filters. Just conversation.</p>
               </div>
               <div className="text-center">
-                <div className="w-14 h-14 bg-gradient-to-br from-wine-100 to-wine-200 text-wine-700 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-md">2</div>
+                <div className="w-14 h-14 bg-gradient-to-br from-gold-800/30 to-gold-700/40 text-gold-600 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-md">2</div>
                 <h3 className="font-bold text-stone-900 text-lg mb-3">Tell Her What You Want</h3>
                 <p className="text-stone-600 leading-relaxed">Budget, occasion, food pairing, investment goals—whatever's on your mind. She'll understand.</p>
               </div>
               <div className="text-center">
-                <div className="w-14 h-14 bg-gradient-to-br from-wine-100 to-wine-200 text-wine-700 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-md">3</div>
+                <div className="w-14 h-14 bg-gradient-to-br from-gold-800/30 to-gold-700/40 text-gold-600 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-md">3</div>
                 <h3 className="font-bold text-stone-900 text-lg mb-3">Get Your Wine</h3>
                 <p className="text-stone-600 leading-relaxed">Expert picks with tasting notes, drinking windows, and real prices. No upsells, no games.</p>
               </div>
@@ -107,32 +107,32 @@ export default function HomePage() {
 
             <div className="space-y-4">
               <details className="bg-white rounded-xl border border-stone-100 group shadow-sm">
-                <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-wine-600">
+                <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-gold-500">
                   Is this free?
                   <span className="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
                 <p className="px-6 pb-4 text-stone-600">Yes. Free during BETA. Hit play and start talking.</p>
               </details>
               <details className="bg-white rounded-xl border border-stone-100 group shadow-sm">
-                <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-wine-600">
+                <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-gold-500">
                   What wines do you have?
                   <span className="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
                 <p className="px-6 pb-4 text-stone-600">Over 500 wines and growing. Investment-grade Bordeaux, legendary vintages, First Growths, and Grand Cru Classé. Ask Aionysus—she'll tell you what's available.</p>
               </details>
               <details className="bg-white rounded-xl border border-stone-100 group shadow-sm">
-                <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-wine-600">
+                <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-gold-500">
                   Can I actually buy wine here?
                   <span className="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
                 <p className="px-6 pb-4 text-stone-600">Not yet—this is a demo. We're building the purchasing experience. For now, Aionysus helps you discover and learn. When you find something you want, she'll connect you to our team.</p>
               </details>
               <details className="bg-white rounded-xl border border-stone-100 group shadow-sm">
-                <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-wine-600">
+                <summary className="px-6 py-4 cursor-pointer font-semibold text-stone-900 flex justify-between items-center hover:text-gold-500">
                   Enterprise or API access?
                   <span className="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
                 </summary>
-                <p className="px-6 pb-4 text-stone-600">Sure. Drop us a line at <a href="mailto:hello@aionysus.wine" className="text-wine-600 hover:underline">hello@aionysus.wine</a></p>
+                <p className="px-6 pb-4 text-stone-600">Sure. Drop us a line at <a href="mailto:hello@aionysus.wine" className="text-gold-500 hover:underline">hello@aionysus.wine</a></p>
               </details>
             </div>
           </div>
@@ -151,28 +151,28 @@ export default function HomePage() {
             {/* Timeline */}
             <div className="relative">
               {/* Timeline line */}
-              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-wine-200 -translate-x-1/2"></div>
+              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gold-800/30 -translate-x-1/2"></div>
 
               <div className="space-y-12 md:space-y-0">
                 {/* Step 1 */}
                 <div className="md:grid md:grid-cols-2 md:gap-8 md:items-center md:mb-16">
                   <div className="md:text-right md:pr-12">
-                    <span className="inline-block text-wine-600 font-mono text-sm mb-2">01</span>
+                    <span className="inline-block text-gold-500 font-mono text-sm mb-2">01</span>
                     <h3 className="font-bold text-stone-900 text-xl mb-2">Search</h3>
                     <p className="text-stone-600">Tell our AI wine taster what you're looking for. Budget, occasion, food pairing, or investment goal—speak naturally, and Aionysus understands.</p>
                   </div>
                   <div className="hidden md:flex items-center justify-start pl-12">
-                    <div className="w-12 h-12 bg-wine-100 rounded-full flex items-center justify-center text-2xl">🔍</div>
+                    <div className="w-12 h-12 bg-gold-900/20 rounded-full flex items-center justify-center text-2xl">🔍</div>
                   </div>
                 </div>
 
                 {/* Step 2 */}
                 <div className="md:grid md:grid-cols-2 md:gap-8 md:items-center md:mb-16">
                   <div className="hidden md:flex items-center justify-end pr-12">
-                    <div className="w-12 h-12 bg-wine-100 rounded-full flex items-center justify-center text-2xl">💡</div>
+                    <div className="w-12 h-12 bg-gold-900/20 rounded-full flex items-center justify-center text-2xl">💡</div>
                   </div>
                   <div className="md:pl-12">
-                    <span className="inline-block text-wine-600 font-mono text-sm mb-2">02</span>
+                    <span className="inline-block text-gold-500 font-mono text-sm mb-2">02</span>
                     <h3 className="font-bold text-stone-900 text-xl mb-2">Advise</h3>
                     <p className="text-stone-600">Your AI sommelier analyses 500+ wines instantly. She considers vintage, classification, drinking window, and investment potential to find your perfect match.</p>
                   </div>
@@ -181,22 +181,22 @@ export default function HomePage() {
                 {/* Step 3 */}
                 <div className="md:grid md:grid-cols-2 md:gap-8 md:items-center md:mb-16">
                   <div className="md:text-right md:pr-12">
-                    <span className="inline-block text-wine-600 font-mono text-sm mb-2">03</span>
+                    <span className="inline-block text-gold-500 font-mono text-sm mb-2">03</span>
                     <h3 className="font-bold text-stone-900 text-xl mb-2">Select</h3>
                     <p className="text-stone-600">Receive one expert recommendation at a time—complete with tasting notes, food pairings, critic scores, and real pricing. No walls of bottles to scroll through.</p>
                   </div>
                   <div className="hidden md:flex items-center justify-start pl-12">
-                    <div className="w-12 h-12 bg-wine-100 rounded-full flex items-center justify-center text-2xl">🍷</div>
+                    <div className="w-12 h-12 bg-gold-900/20 rounded-full flex items-center justify-center text-2xl">🍷</div>
                   </div>
                 </div>
 
                 {/* Step 4 */}
                 <div className="md:grid md:grid-cols-2 md:gap-8 md:items-center md:mb-16">
                   <div className="hidden md:flex items-center justify-end pr-12">
-                    <div className="w-12 h-12 bg-wine-100 rounded-full flex items-center justify-center text-2xl">🛒</div>
+                    <div className="w-12 h-12 bg-gold-900/20 rounded-full flex items-center justify-center text-2xl">🛒</div>
                   </div>
                   <div className="md:pl-12">
-                    <span className="inline-block text-wine-600 font-mono text-sm mb-2">04</span>
+                    <span className="inline-block text-gold-500 font-mono text-sm mb-2">04</span>
                     <h3 className="font-bold text-stone-900 text-xl mb-2">Checkout</h3>
                     <p className="text-stone-600">Add to cart and complete your purchase. Case discounts, trade pricing, and delivery handled seamlessly. Collecting or investing—we've got you covered.</p>
                   </div>
@@ -205,12 +205,12 @@ export default function HomePage() {
                 {/* Step 5 */}
                 <div className="md:grid md:grid-cols-2 md:gap-8 md:items-center">
                   <div className="md:text-right md:pr-12">
-                    <span className="inline-block text-wine-600 font-mono text-sm mb-2">05</span>
+                    <span className="inline-block text-gold-500 font-mono text-sm mb-2">05</span>
                     <h3 className="font-bold text-stone-900 text-xl mb-2">Enjoy</h3>
                     <p className="text-stone-600">Savour a perfectly chosen bottle. Whether it's a Tuesday night treat or a milestone celebration, your AI wine taster helped you find something special.</p>
                   </div>
                   <div className="hidden md:flex items-center justify-start pl-12">
-                    <div className="w-12 h-12 bg-wine-100 rounded-full flex items-center justify-center text-2xl">✨</div>
+                    <div className="w-12 h-12 bg-gold-900/20 rounded-full flex items-center justify-center text-2xl">✨</div>
                   </div>
                 </div>
               </div>
