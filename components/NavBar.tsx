@@ -47,23 +47,15 @@ export function NavBar() {
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            {/* Wine glass icon */}
-            <svg className="w-8 h-8" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="wine-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#9f1239"/>
-                  <stop offset="100%" stopColor="#7f1d1d"/>
-                </linearGradient>
-              </defs>
-              <path d="M8 6 C8 6 7 14 10 17 C12 19 14 20 16 20 C18 20 20 19 22 17 C25 14 24 6 24 6 Z" fill="url(#wine-gradient)" opacity="0.9"/>
-              <rect x="15" y="20" width="2" height="6" fill="#78716c"/>
-              <ellipse cx="16" cy="28" rx="5" ry="2" fill="#78716c"/>
-              <circle cx="10" cy="4" r="2" fill="#9f1239" opacity="0.6"/>
-              <circle cx="14" cy="3" r="1.5" fill="#9f1239" opacity="0.5"/>
-              <circle cx="7" cy="6" r="1.5" fill="#9f1239" opacity="0.4"/>
-              <ellipse cx="11" cy="10" rx="1.5" ry="3" fill="white" opacity="0.3"/>
-            </svg>
+          <Link href="/" className="flex items-center gap-3">
+            {/* Dionysus portrait icon */}
+            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-wine-200 shadow-sm">
+              <img
+                src="/aionysus.jpg"
+                alt="Aionysus"
+                className="w-full h-full object-cover object-[center_15%]"
+              />
+            </div>
             <div className="flex flex-col">
               <span className="font-serif font-bold text-2xl text-wine-700">
                 Aionysus
