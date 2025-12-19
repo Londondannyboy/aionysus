@@ -1,8 +1,31 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist, Playfair_Display } from "next/font/google";
 import { StackProvider, StackTheme } from "@stackframe/stack";
 import { stackServerApp } from "@/stack/server";
+import { NavBar } from "@/components/NavBar";
+import { FloatingVoiceWidget } from "@/components/FloatingVoiceWidget";
 import "./globals.css";
+
+// Skeleton for NavBar during SSR
+function NavBarSkeleton() {
+  return (
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-stone-100">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex flex-col">
+            <div className="h-7 w-24 bg-stone-200 rounded animate-pulse" />
+            <div className="h-3 w-32 bg-stone-100 rounded animate-pulse mt-1 hidden sm:block" />
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 bg-stone-100 rounded-full animate-pulse" />
+            <div className="w-20 h-9 bg-stone-100 rounded-full animate-pulse" />
+          </div>
+        </div>
+      </div>
+    </header>
+  )
+}
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -66,7 +89,14 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${playfair.variable} antialiased`}>
         <StackProvider app={stackServerApp}>
           <StackTheme>
+            <Suspense fallback={<NavBarSkeleton />}>
+              <NavBar />
+            </Suspense>
             {children}
+            {/* Floating Voice Widget - accessible from all pages */}
+            <Suspense fallback={null}>
+              <FloatingVoiceWidget />
+            </Suspense>
           </StackTheme>
         </StackProvider>
       </body>

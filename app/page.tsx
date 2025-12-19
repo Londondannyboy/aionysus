@@ -1,5 +1,4 @@
 import { LazyVoiceWidget } from '@/components/LazyVoiceWidget'
-import { Header } from '@/components/Header'
 
 export default function HomePage() {
   return (
@@ -14,17 +13,14 @@ export default function HomePage() {
       </div>
 
       {/* BETA Badge */}
-      <div className="fixed top-4 right-4 z-40 flex items-center gap-2 bg-gradient-to-r from-stone-900 to-stone-800 text-white px-4 py-2 rounded-full text-xs font-mono tracking-wider border border-stone-700 shadow-lg">
+      <div className="fixed top-20 right-4 z-40 flex items-center gap-2 bg-gradient-to-r from-stone-900 to-stone-800 text-white px-4 py-2 rounded-full text-xs font-mono tracking-wider border border-stone-700 shadow-lg">
         <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
         BETA
       </div>
 
-      {/* Header */}
-      <Header />
-
       {/* Hero Section */}
       <main className="relative z-10">
-        <section className="max-w-5xl mx-auto px-4 pt-20 pb-16 relative">
+        <section className="max-w-5xl mx-auto px-4 pt-24 pb-16 relative">
           {/* H1 for SEO */}
           <h1 className="sr-only">AI Sommelier & AI Wine Taster - Aionysus</h1>
 

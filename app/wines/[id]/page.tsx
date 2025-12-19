@@ -14,18 +14,26 @@ interface Wine {
   vintage: number | null
   wine_type: string
   style: string
-  price_range: string
+  color: string | null
+  price_retail: number | null
   tasting_notes: string
   food_pairings: string[]
   image_url: string
 }
 
-const priceMap: Record<string, { price: number; display: string }> = {
-  budget: { price: 12.99, display: '£12.99' },
-  mid: { price: 24.99, display: '£24.99' },
-  premium: { price: 49.99, display: '£49.99' },
-  luxury: { price: 199.99, display: '£199.99' },
+// Format price with proper currency
+function formatPrice(price: number | null): string {
+  if (!price) return 'Price on request'
+  return new Intl.NumberFormat('en-GB', {
+    style: 'currency',
+    currency: 'GBP',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price)
 }
+
+// Placeholder image for wines without images
+const PLACEHOLDER_IMAGE = '/wine-placeholder.svg'
 
 export default function WineDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const [wine, setWine] = useState<Wine | null>(null)
@@ -74,13 +82,17 @@ export default function WineDetailPage({ params }: { params: Promise<{ id: strin
         id: wine.id,
         name: wine.name,
         winery: wine.winery,
-        price: priceMap[wine.price_range]?.price || 19.99,
+        price: wine.price_retail || 0,
         quantity,
         image_url: wine.image_url,
       })
     }
 
     localStorage.setItem('sommelier-cart', JSON.stringify(existingCart))
+
+    // Dispatch custom event to update cart count in NavBar
+    window.dispatchEvent(new Event('cart-updated'))
+
     setAddedToCart(true)
     setTimeout(() => setAddedToCart(false), 2000)
   }
@@ -102,29 +114,10 @@ export default function WineDetailPage({ params }: { params: Promise<{ id: strin
     )
   }
 
-  const pricing = priceMap[wine.price_range] || { price: 19.99, display: '£19.99' }
-
   return (
     <div className="min-h-screen bg-[#faf9f7]">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-stone-100">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-2xl">🍷</span>
-              <span className="font-bold text-xl text-stone-900">Sommelier<span className="text-wine-600">Quest</span></span>
-            </Link>
-            <Link href="/cart" className="relative p-2 hover:bg-stone-50 rounded-full transition-colors">
-              <svg className="w-6 h-6 text-stone-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </header>
-
       {/* Breadcrumb */}
-      <div className="max-w-6xl mx-auto px-4 py-4">
+      <div className="max-w-6xl mx-auto px-4 py-4 pt-20">
         <nav className="text-sm text-stone-500">
           <Link href="/" className="hover:text-wine-600">Home</Link>
           <span className="mx-2">/</span>
@@ -141,7 +134,7 @@ export default function WineDetailPage({ params }: { params: Promise<{ id: strin
           <div className="bg-white rounded-2xl p-8 flex items-center justify-center border border-stone-100">
             <div className="relative w-48 h-72">
               <Image
-                src={wine.image_url || 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=600&fit=crop'}
+                src={wine.image_url || PLACEHOLDER_IMAGE}
                 alt={wine.name}
                 fill
                 className="object-cover rounded-lg"
@@ -176,7 +169,7 @@ export default function WineDetailPage({ params }: { params: Promise<{ id: strin
             )}
 
             <p className="text-3xl font-bold text-wine-600 mb-6">
-              {pricing.display}
+              {formatPrice(wine.price_retail)}
             </p>
 
             {/* Quantity & Add to Cart */}

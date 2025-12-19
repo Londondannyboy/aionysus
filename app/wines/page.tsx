@@ -10,16 +10,25 @@ interface Wine {
   winery: string
   region: string
   wine_type: string
-  price_range: string
+  color: string | null
+  price_retail: number | null
   image_url: string
+  vintage: number | null
 }
 
-const priceMap: Record<string, string> = {
-  budget: '£12.99',
-  mid: '£24.99',
-  premium: '£49.99',
-  luxury: '£199.99',
+// Format price with proper currency
+function formatPrice(price: number | null): string {
+  if (!price) return 'Price on request'
+  return new Intl.NumberFormat('en-GB', {
+    style: 'currency',
+    currency: 'GBP',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price)
 }
+
+// Placeholder image for wines without images
+const PLACEHOLDER_IMAGE = '/wine-placeholder.svg'
 
 export default function WinesPage() {
   const [wines, setWines] = useState<Wine[]>([])
@@ -43,30 +52,19 @@ export default function WinesPage() {
     fetchWines()
   }, [])
 
+  // Filter wines by wine_type (red, white, rose, sparkling, dessert)
   const filteredWines = filter === 'all'
     ? wines
-    : wines.filter(w => w.wine_type === filter)
+    : wines.filter(w => {
+        const wineType = (w.wine_type || '').toLowerCase()
+        const color = (w.color || '').toLowerCase()
+        // Match against both wine_type and color fields
+        return wineType === filter || color === filter
+      })
 
   return (
     <div className="min-h-screen bg-[#faf9f7]">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-stone-100">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-2xl">🍷</span>
-              <span className="font-bold text-xl text-stone-900">Sommelier<span className="text-wine-600">Quest</span></span>
-            </Link>
-            <Link href="/cart" className="relative p-2 hover:bg-stone-50 rounded-full transition-colors">
-              <svg className="w-6 h-6 text-stone-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-6xl mx-auto px-4 py-8">
+      <main className="max-w-6xl mx-auto px-4 py-8 pt-24">
         <h1 className="text-3xl md:text-4xl font-serif font-bold text-stone-900 mb-2">
           Wine Collection
         </h1>
@@ -103,7 +101,7 @@ export default function WinesPage() {
               >
                 <div className="aspect-[3/4] relative bg-stone-50">
                   <Image
-                    src={wine.image_url || 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=600&fit=crop'}
+                    src={wine.image_url || PLACEHOLDER_IMAGE}
                     alt={wine.name}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform"
@@ -111,17 +109,17 @@ export default function WinesPage() {
                 </div>
                 <div className="p-4">
                   <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium mb-2 ${
-                    wine.wine_type === 'red' ? 'bg-red-100 text-red-800' :
-                    wine.wine_type === 'white' ? 'bg-yellow-100 text-yellow-800' :
-                    wine.wine_type === 'rose' ? 'bg-pink-100 text-pink-800' :
-                    wine.wine_type === 'sparkling' ? 'bg-amber-100 text-amber-800' :
+                    (wine.color || wine.wine_type || '').toLowerCase() === 'red' ? 'bg-red-100 text-red-800' :
+                    (wine.color || wine.wine_type || '').toLowerCase() === 'white' ? 'bg-yellow-100 text-yellow-800' :
+                    (wine.color || wine.wine_type || '').toLowerCase() === 'rose' ? 'bg-pink-100 text-pink-800' :
+                    (wine.color || wine.wine_type || '').toLowerCase() === 'sparkling' ? 'bg-amber-100 text-amber-800' :
                     'bg-purple-100 text-purple-800'
                   }`}>
-                    {wine.wine_type}
+                    {wine.color || wine.wine_type || 'Wine'}
                   </span>
                   <h3 className="font-semibold text-stone-900 mb-1 line-clamp-2">{wine.name}</h3>
                   <p className="text-sm text-stone-500 mb-2">{wine.region}</p>
-                  <p className="font-bold text-wine-600">{priceMap[wine.price_range] || '£19.99'}</p>
+                  <p className="font-bold text-wine-600">{formatPrice(wine.price_retail)}</p>
                 </div>
               </Link>
             ))}

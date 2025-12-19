@@ -164,22 +164,7 @@ export default function CartPage() {
 
   return (
     <div className="min-h-screen bg-[#faf9f7]">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-stone-100">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-2xl">🍷</span>
-              <span className="font-bold text-xl text-stone-900">Aionysus</span>
-            </Link>
-            <Link href="/wines" className="text-stone-600 hover:text-wine-600 transition-colors">
-              Browse Wines
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-4xl mx-auto px-4 py-8">
+      <main className="max-w-4xl mx-auto px-4 py-8 pt-24">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-serif font-bold text-stone-900">Your Cart</h1>
           {isShopifyEnabled && (
@@ -222,7 +207,7 @@ export default function CartPage() {
                   >
                     <div className="w-20 h-28 relative flex-shrink-0">
                       <Image
-                        src={item.merchandise.product.featuredImage?.url || 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=600&fit=crop'}
+                        src={item.merchandise.product.featuredImage?.url || '/wine-placeholder.svg'}
                         alt={item.merchandise.product.title}
                         fill
                         className="object-cover rounded-lg"
@@ -281,7 +266,7 @@ export default function CartPage() {
                   >
                     <div className="w-20 h-28 relative flex-shrink-0">
                       <Image
-                        src={item.image_url || 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=600&fit=crop'}
+                        src={item.image_url || '/wine-placeholder.svg'}
                         alt={item.name}
                         fill
                         className="object-cover rounded-lg"

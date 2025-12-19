@@ -12,7 +12,7 @@ export async function GET(
 
     const results = await sql`
       SELECT id, name, winery, region, country, grape_variety,
-             vintage, wine_type, style, price_range,
+             vintage, wine_type, style, color, price_retail,
              tasting_notes, food_pairings, alcohol_percentage, image_url
       FROM wines
       WHERE id = ${id} AND is_active = true
