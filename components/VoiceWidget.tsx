@@ -374,10 +374,9 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
         preferredWineTypes: userProfile?.preferredWineTypes || 'all styles',
         pricePreference: userProfile?.pricePreference || 'premium',
         isNewUser: userProfile?.isNewUser ? 'yes' : 'no',
-        // Wine database context
+        // Wine database context (summary only - full list available via tools)
         wine_count: wines.length.toString(),
-        wine_countries: [...new Set(wines.map(w => w.region?.split(',').pop()?.trim()))].filter(Boolean).join(', '),
-        wine_database_summary: wineSummary || 'Database loading...',
+        wine_regions: 'Bordeaux, Champagne, and other fine wine regions',
       }
     }
 
