@@ -112,22 +112,18 @@ function VoiceShoppingInterface({ accessToken, userId }: { accessToken: string; 
     }
   }, [status.value])
 
-  // Log when wines change
+  // Log when wines change - and show immediately (simpler approach)
   useEffect(() => {
     console.log('[Wine Rack] pendingWines:', pendingWines.length, pendingWines.map(w => w.name))
 
-    // Fallback: If pending wines exist, show them after 3 seconds if nothing matched
+    // Show wines immediately when they come from tools (no transcript sync for now)
     if (pendingWines.length > 0) {
-      const timeout = setTimeout(() => {
-        console.log('[Wine Rack] Fallback: Moving pending wines to display after timeout')
-        setDisplayedWines(prev => {
-          const newWines = pendingWines.filter(pw => !prev.find(dw => dw.id === pw.id))
-          return [...newWines, ...prev]
-        })
-        setPendingWines([])
-      }, 3000) // 3 second fallback
-
-      return () => clearTimeout(timeout)
+      console.log('[Wine Rack] Showing wines immediately')
+      setDisplayedWines(prev => {
+        const newWines = pendingWines.filter(pw => !prev.find(dw => dw.id === pw.id))
+        return [...newWines, ...prev]
+      })
+      setPendingWines([])
     }
   }, [pendingWines])
 
@@ -211,43 +207,6 @@ function VoiceShoppingInterface({ accessToken, userId }: { accessToken: string; 
 
     return false
   }
-
-  // Transcript listener: Watch for assistant messages and match wines
-  useEffect(() => {
-    const lastMessage = messages[messages.length - 1]
-    if (!lastMessage) return
-
-    // Log all message types for debugging
-    console.log('[Wine Rack] Message type:', (lastMessage as any).type)
-
-    // Try multiple message type formats (Hume SDK varies)
-    const msgType = (lastMessage as any).type
-    if (msgType !== 'assistant_message' && msgType !== 'assistant_end') return
-
-    // Extract transcript from various possible locations
-    const transcript =
-      (lastMessage as any).message?.content ||
-      (lastMessage as any).content ||
-      (lastMessage as any).text ||
-      ''
-
-    if (!transcript || pendingWines.length === 0) return
-
-    console.log('[Wine Rack] Checking transcript:', transcript.substring(0, 100) + '...')
-
-    // Check if any pending wines are mentioned in this transcript chunk
-    for (const wine of pendingWines) {
-      if (isWineMentioned(wine, transcript)) {
-        // Move from pending to displayed (if not already displayed)
-        if (!displayedWines.find(w => w.id === wine.id)) {
-          console.log('[Wine Rack] Wine mentioned! Revealing:', wine.name)
-          setDisplayedWines(prev => [wine, ...prev])
-          // Remove from pending
-          setPendingWines(prev => prev.filter(w => w.id !== wine.id))
-        }
-      }
-    }
-  }, [messages, pendingWines, displayedWines])
 
   // Handle Hume tool calls
   useEffect(() => {
