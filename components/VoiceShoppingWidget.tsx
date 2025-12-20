@@ -93,6 +93,9 @@ function VoiceShoppingInterface({ accessToken, userId }: { accessToken: string; 
   const [wines, setWines] = useState<Wine[]>([])
   // Wines to display in the rack
   const [displayedWines, setDisplayedWines] = useState<Wine[]>([])
+  // Live transcript for entertainment
+  const [transcript, setTranscript] = useState<string>('')
+  const [isThinking, setIsThinking] = useState(false)
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({})
   const [localCart, setLocalCart] = useState<Array<{ id: number; name: string; winery: string; price: number; quantity: number; image_url: string }>>([])
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
@@ -111,13 +114,69 @@ function VoiceShoppingInterface({ accessToken, userId }: { accessToken: string; 
     }
   }, [status.value])
 
-  // Log ALL Hume messages for debugging
+  // Process ALL Hume messages - extract transcript, show thinking, find wines
   useEffect(() => {
-    if (messages.length > 0) {
-      const lastMsg = messages[messages.length - 1]
-      console.log('[Hume Message]', (lastMsg as any).type, lastMsg)
+    if (messages.length === 0) return
+    const lastMsg = messages[messages.length - 1] as any
+    console.log('[Hume Message]', lastMsg.type, lastMsg)
+
+    switch (lastMsg.type) {
+      case 'user_message':
+        // User is speaking - goddess is about to think
+        setIsThinking(true)
+        break
+
+      case 'assistant_message':
+        // Goddess is speaking - extract transcript
+        setIsThinking(false)
+        const content = lastMsg.message?.content || ''
+        if (content) {
+          setTranscript(content)
+          // Try to find wines mentioned in what she says
+          findWinesInTranscript(content)
+        }
+        break
+
+      case 'assistant_end':
+        // Goddess finished speaking
+        setIsThinking(false)
+        break
+
+      case 'tool_call':
+        // Tool called - this is what we want but isn't happening
+        console.log('[Tool Call]', lastMsg.name, lastMsg.parameters)
+        break
     }
   }, [messages])
+
+  // Find wines mentioned in transcript and add to display
+  async function findWinesInTranscript(text: string) {
+    if (!wines.length) return
+
+    const lowerText = text.toLowerCase()
+
+    // Check each wine in our database
+    for (const wine of wines) {
+      // Already displayed?
+      if (displayedWines.find(dw => dw.id === wine.id)) continue
+
+      // Check if wine name or winery is mentioned
+      const wineName = wine.name.toLowerCase()
+      const winery = (wine.winery || '').toLowerCase()
+
+      // Match on significant parts of name
+      const nameWords = wineName.split(/\s+/).filter(w => w.length > 3)
+      const matchCount = nameWords.filter(word => lowerText.includes(word)).length
+
+      if (matchCount >= 2 || lowerText.includes(winery)) {
+        console.log('[Transcript Match] Found wine:', wine.name)
+        setDisplayedWines(prev => {
+          if (prev.find(w => w.id === wine.id)) return prev
+          return [wine, ...prev]
+        })
+      }
+    }
+  }
 
   // Log when wines change
   useEffect(() => {
@@ -591,11 +650,13 @@ function VoiceShoppingInterface({ accessToken, userId }: { accessToken: string; 
       </div>
 
       {/* Status Text */}
-      <p className={`text-base md:text-lg font-medium mb-4 text-center transition-all ${
+      <p className={`text-base md:text-lg font-medium mb-2 text-center transition-all ${
         isPlaying ? 'text-gold-300' : 'text-gold-500'
       }`}>
         {isConnecting
           ? "Summoning the Goddess..."
+          : isThinking
+          ? "The Goddess contemplates..."
           : isPlaying
           ? "The Goddess speaks..."
           : isConnected
@@ -604,6 +665,28 @@ function VoiceShoppingInterface({ accessToken, userId }: { accessToken: string; 
           ? "The connection fades — tap to try again"
           : "Tap to commune with Aionysus"}
       </p>
+
+      {/* Live Transcript - Show what the Goddess is saying */}
+      {isConnected && (
+        <div className="w-full max-w-md mx-auto mb-4">
+          {isThinking ? (
+            <div className="flex items-center justify-center gap-2 py-3 px-4 bg-stone-900/60 rounded-xl border border-gold-700/30">
+              <div className="flex gap-1">
+                <span className="w-2 h-2 bg-gold-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                <span className="w-2 h-2 bg-gold-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                <span className="w-2 h-2 bg-gold-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+              </div>
+              <span className="text-gold-400 text-sm italic">Consulting the divine cellar...</span>
+            </div>
+          ) : transcript ? (
+            <div className="py-3 px-4 bg-stone-900/60 rounded-xl border border-gold-700/30 transition-all">
+              <p className="text-stone-300 text-sm italic text-center leading-relaxed">
+                "{transcript}"
+              </p>
+            </div>
+          ) : null}
+        </div>
+      )}
 
       {/* Wine Proverb - Only show when not connected */}
       {!isConnected && (
