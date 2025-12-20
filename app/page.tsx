@@ -1,4 +1,4 @@
-import { LazyVoiceWidget } from '@/components/LazyVoiceWidget'
+import { LazyVoiceShoppingWidget } from '@/components/LazyVoiceShoppingWidget'
 import { ScrollToTopButton } from '@/components/ScrollToTopButton'
 import { FeaturedWines } from '@/components/FeaturedWines'
 import Link from 'next/link'
@@ -94,8 +94,8 @@ export default function HomePage() {
 
       {/* Main Content */}
       <main className="relative z-10">
-        {/* Hero - Voice Widget First (above the fold) */}
-        <section className="max-w-5xl mx-auto px-4 pt-20 pb-16">
+        {/* Hero - Voice Shopping Experience (above the fold) */}
+        <section className="max-w-7xl mx-auto px-4 pt-20 pb-16">
           {/* Visible H1 with primary keyword */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-center mb-3 bg-gradient-to-r from-gold-300 via-gold-400 to-gold-300 bg-clip-text text-transparent">
             Buy Wine Online
@@ -111,9 +111,9 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Voice Widget - THE STAR - with clear breathing room */}
+          {/* Voice Shopping Experience - Split-screen with Wine Rack */}
           <div className="my-8">
-            <LazyVoiceWidget />
+            <LazyVoiceShoppingWidget />
           </div>
 
         </section>

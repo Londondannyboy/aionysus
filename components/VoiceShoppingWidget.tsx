@@ -1,15 +1,14 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { VoiceProvider, useVoice } from '@humeai/voice-react'
 import { useUser } from '@stackframe/stack'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import { VoiceShoppingLayout, ActiveFilters } from './VoiceShopping'
 
 // Dynamically import animation components to avoid SSR issues
 const LottieGoddess = dynamic(() => import('./LottieGoddess'), { ssr: false })
-
-// NOTE: System prompt should be configured in Hume dashboard for config ID 606a18be-4c8e-4877-8fb4-52665831b33d
 
 interface Wine {
   id: number
@@ -23,93 +22,6 @@ interface Wine {
   image_url: string
   vintage?: number
   grape_variety?: string
-}
-
-// Inline wine card shown within conversation
-function WineCard({ wine, onAddToCart }: { wine: Wine; onAddToCart: (wine: Wine) => void }) {
-  const [added, setAdded] = useState(false)
-  const price = typeof wine.price_retail === 'string' ? parseFloat(wine.price_retail) : wine.price_retail
-  const displayPrice = price ? `£${price.toLocaleString('en-GB', { minimumFractionDigits: 2 })}` : 'Price on request'
-
-  const handleAdd = () => {
-    onAddToCart(wine)
-    setAdded(true)
-    setTimeout(() => setAdded(false), 2000)
-  }
-
-  return (
-    <div className="flex gap-3 bg-white rounded-xl border border-stone-200 p-3 mt-2 max-w-sm">
-      <Link href={`/wines/${wine.slug || wine.id}`} className="relative w-16 h-24 flex-shrink-0">
-        <img
-          src={wine.image_url || '/wine-placeholder.svg'}
-          alt={wine.name}
-          className="w-full h-full object-cover rounded-lg"
-        />
-      </Link>
-      <div className="flex-1 min-w-0">
-        <Link href={`/wines/${wine.slug || wine.id}`} className="font-semibold text-stone-900 text-sm hover:text-gold-600 line-clamp-2">
-          {wine.name}
-        </Link>
-        <p className="text-xs text-stone-500">{wine.winery} · {wine.country}</p>
-        <p className="font-bold text-gold-600 text-sm mt-1">{displayPrice}</p>
-        <button
-          onClick={handleAdd}
-          className={`mt-2 px-3 py-1 text-xs font-medium rounded-full transition-all ${
-            added
-              ? 'bg-green-600 text-white'
-              : 'bg-gold-600 text-black hover:bg-gold-500'
-          }`}
-        >
-          {added ? 'Added!' : 'Add to Cart'}
-        </button>
-      </div>
-    </div>
-  )
-}
-
-// Compact wine card for the history strip
-function WineHistoryCard({ wine, onAddToCart }: { wine: Wine; onAddToCart: (wine: Wine) => void }) {
-  const [added, setAdded] = useState(false)
-  const price = typeof wine.price_retail === 'string' ? parseFloat(wine.price_retail) : wine.price_retail
-  const displayPrice = price ? `£${price.toLocaleString('en-GB', { minimumFractionDigits: 0 })}` : 'POA'
-
-  const handleAdd = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    onAddToCart(wine)
-    setAdded(true)
-    setTimeout(() => setAdded(false), 2000)
-  }
-
-  return (
-    <Link
-      href={`/wines/${wine.slug || wine.id}`}
-      className="flex-shrink-0 w-32 bg-gradient-to-b from-stone-900 to-stone-950 rounded-lg border border-gold-700/30 overflow-hidden hover:border-gold-500/50 transition-all group"
-    >
-      <div className="aspect-[3/4] relative">
-        <img
-          src={wine.image_url || '/wine-placeholder.svg'}
-          alt={wine.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-      </div>
-      <div className="p-2">
-        <p className="text-white text-xs font-medium line-clamp-2 leading-tight mb-1">{wine.name}</p>
-        <p className="text-gold-400 text-xs font-bold">{displayPrice}</p>
-        <button
-          onClick={handleAdd}
-          className={`mt-1.5 w-full px-2 py-1 text-[10px] font-bold rounded transition-all ${
-            added
-              ? 'bg-green-600 text-white'
-              : 'bg-gold-500 text-black hover:bg-gold-400'
-          }`}
-        >
-          {added ? 'Added!' : 'Add to Cart'}
-        </button>
-      </div>
-    </Link>
-  )
 }
 
 interface UserProfile {
@@ -127,7 +39,7 @@ const WINE_TOOLS = [
     type: 'function' as const,
     name: 'search_wines',
     description: 'Search wines in our database by country, region, type, or price',
-    parameters: '{ "type": "object", "properties": { "country": { "type": "string", "description": "Country like France, USA, Italy" }, "wine_type": { "type": "string", "description": "Type like red, white, sparkling" }, "max_price": { "type": "number", "description": "Maximum price in GBP" } } }',
+    parameters: '{ "type": "object", "properties": { "country": { "type": "string", "description": "Country like France, USA, Italy" }, "region": { "type": "string", "description": "Region like Bordeaux, Burgundy, Champagne" }, "wine_type": { "type": "string", "description": "Type like red, white, sparkling" }, "color": { "type": "string", "description": "Color like red, white, rose" }, "max_price": { "type": "number", "description": "Maximum price in GBP" }, "min_price": { "type": "number", "description": "Minimum price in GBP" }, "grape_variety": { "type": "string", "description": "Grape variety like Pinot Noir, Chardonnay" } } }',
     fallback_content: 'Unable to search wines at the moment.',
   },
   {
@@ -174,12 +86,15 @@ const WINE_TOOLS = [
   },
 ]
 
-function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?: string }) {
+function VoiceShoppingInterface({ accessToken, userId }: { accessToken: string; userId?: string }) {
   const { connect, disconnect, status, messages, sendToolMessage, isPlaying } = useVoice()
   const [manualConnected, setManualConnected] = useState(false)
   const [waveHeights, setWaveHeights] = useState<number[]>([])
   const [wines, setWines] = useState<Wine[]>([])
-  const [discussedWines, setDiscussedWines] = useState<Wine[]>([])
+  // Transcript-synced wine display: pending (hidden) → displayed (visible)
+  const [pendingWines, setPendingWines] = useState<Wine[]>([])      // Hidden, from tool response
+  const [displayedWines, setDisplayedWines] = useState<Wine[]>([])  // Visible in rack, matched from transcript
+  const [activeFilters, setActiveFilters] = useState<ActiveFilters>({})
   const [localCart, setLocalCart] = useState<Array<{ id: number; name: string; winery: string; price: number; quantity: number; image_url: string }>>([])
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [shopifyCartId, setShopifyCartId] = useState<string | null>(null)
@@ -190,8 +105,35 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
   useEffect(() => {
     console.log('[Hume] Status changed:', status.value)
     if (status.value === 'connected') setManualConnected(true)
-    if (status.value === 'disconnected') setManualConnected(false)
+    if (status.value === 'disconnected') {
+      setManualConnected(false)
+      // Clear filters when disconnected
+      setActiveFilters({})
+    }
   }, [status.value])
+
+  // Log when wines change
+  useEffect(() => {
+    console.log('[Wine Rack] pendingWines:', pendingWines.length, pendingWines.map(w => w.name))
+
+    // Fallback: If pending wines exist, show them after 3 seconds if nothing matched
+    if (pendingWines.length > 0) {
+      const timeout = setTimeout(() => {
+        console.log('[Wine Rack] Fallback: Moving pending wines to display after timeout')
+        setDisplayedWines(prev => {
+          const newWines = pendingWines.filter(pw => !prev.find(dw => dw.id === pw.id))
+          return [...newWines, ...prev]
+        })
+        setPendingWines([])
+      }, 3000) // 3 second fallback
+
+      return () => clearTimeout(timeout)
+    }
+  }, [pendingWines])
+
+  useEffect(() => {
+    console.log('[Wine Rack] displayedWines:', displayedWines.length, displayedWines.map(w => w.name))
+  }, [displayedWines])
 
   // Sync local cart from localStorage
   useEffect(() => {
@@ -216,21 +158,18 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
   useEffect(() => {
     async function fetchData() {
       try {
-        // Fetch wines
         const winesResponse = await fetch('/api/wines')
         if (winesResponse.ok) {
           const winesData = await winesResponse.json()
           setWines(winesData)
         }
 
-        // Fetch user profile for personalization
         const profileResponse = await fetch('/api/user-profile')
         if (profileResponse.ok) {
           const profileData = await profileResponse.json()
           setUserProfile(profileData)
         }
 
-        // Load Shopify cart ID from localStorage
         const savedCartId = localStorage.getItem('sommelier-shopify-cart-id')
         if (savedCartId) {
           setShopifyCartId(savedCartId)
@@ -241,6 +180,74 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
     }
     fetchData()
   }, [])
+
+  // Fuzzy matching: Check if a wine is mentioned in transcript
+  function isWineMentioned(wine: Wine, transcript: string): boolean {
+    const text = transcript.toLowerCase()
+
+    // Check full name
+    if (text.includes(wine.name.toLowerCase())) return true
+
+    // Check partial matches (significant words from wine name)
+    const words = wine.name.toLowerCase().split(/\s+/)
+    const significantWords = words.filter(w =>
+      w.length > 3 && !['the', 'and', 'wine', 'from', 'with'].includes(w)
+    )
+
+    // If 2+ significant words match, consider it mentioned
+    const matchCount = significantWords.filter(word => text.includes(word)).length
+    if (matchCount >= 2) return true
+
+    // Check winery name
+    if (wine.winery && text.includes(wine.winery.toLowerCase())) return true
+
+    // Check vintage + region combo (e.g., "2018 Bordeaux")
+    if (wine.vintage && wine.region) {
+      const regionFirst = wine.region.toLowerCase().split(',')[0].trim()
+      if (text.includes(wine.vintage.toString()) && text.includes(regionFirst)) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  // Transcript listener: Watch for assistant messages and match wines
+  useEffect(() => {
+    const lastMessage = messages[messages.length - 1]
+    if (!lastMessage) return
+
+    // Log all message types for debugging
+    console.log('[Wine Rack] Message type:', (lastMessage as any).type)
+
+    // Try multiple message type formats (Hume SDK varies)
+    const msgType = (lastMessage as any).type
+    if (msgType !== 'assistant_message' && msgType !== 'assistant_end') return
+
+    // Extract transcript from various possible locations
+    const transcript =
+      (lastMessage as any).message?.content ||
+      (lastMessage as any).content ||
+      (lastMessage as any).text ||
+      ''
+
+    if (!transcript || pendingWines.length === 0) return
+
+    console.log('[Wine Rack] Checking transcript:', transcript.substring(0, 100) + '...')
+
+    // Check if any pending wines are mentioned in this transcript chunk
+    for (const wine of pendingWines) {
+      if (isWineMentioned(wine, transcript)) {
+        // Move from pending to displayed (if not already displayed)
+        if (!displayedWines.find(w => w.id === wine.id)) {
+          console.log('[Wine Rack] Wine mentioned! Revealing:', wine.name)
+          setDisplayedWines(prev => [wine, ...prev])
+          // Remove from pending
+          setPendingWines(prev => prev.filter(w => w.id !== wine.id))
+        }
+      }
+    }
+  }, [messages, pendingWines, displayedWines])
 
   // Handle Hume tool calls
   useEffect(() => {
@@ -257,19 +264,35 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
 
         switch (name) {
           case 'search_wines':
+            // Extract filter params for display
+            if (parameters) {
+              setActiveFilters({
+                region: parameters.region,
+                country: parameters.country,
+                wine_type: parameters.wine_type,
+                color: parameters.color,
+                max_price: parameters.max_price,
+                min_price: parameters.min_price,
+                grape_variety: parameters.grape_variety,
+              })
+            }
+
             response = await fetch('/api/hume-tools/search-wines', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(parameters || {}),
             })
             result = await response.json()
-            // Capture wines from search results
+            console.log('[Wine Rack] search_wines result:', result)
+            // Add wines to pending (hidden) - will be revealed when mentioned in transcript
             if (result.wines && Array.isArray(result.wines)) {
+              console.log('[Wine Rack] Adding to pendingWines:', result.wines.length)
               const newWines = result.wines.filter((w: Wine) =>
-                !discussedWines.find(dw => dw.id === w.id)
+                !pendingWines.find(pw => pw.id === w.id) &&
+                !displayedWines.find(dw => dw.id === w.id)
               )
               if (newWines.length > 0) {
-                setDiscussedWines(prev => [...prev, ...newWines.slice(0, 3)])
+                setPendingWines(prev => [...newWines, ...prev])
               }
             }
             break
@@ -281,9 +304,13 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
               body: JSON.stringify(parameters || {}),
             })
             result = await response.json()
-            // Capture the wine from get_wine result
-            if (result.wine && !discussedWines.find(w => w.id === result.wine.id)) {
-              setDiscussedWines(prev => [...prev, result.wine])
+            console.log('[Wine Rack] get_wine result:', result)
+            // Add to pending - will be revealed when mentioned in transcript
+            if (result.wine &&
+                !pendingWines.find(w => w.id === result.wine.id) &&
+                !displayedWines.find(w => w.id === result.wine.id)) {
+              console.log('[Wine Rack] Adding to pendingWines:', result.wine.name)
+              setPendingWines(prev => [result.wine, ...prev])
             }
             break
 
@@ -303,13 +330,17 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
               body: JSON.stringify(parameters || {}),
             })
             result = await response.json()
-            // Capture wines from recommendations
-            if (result.wines && Array.isArray(result.wines)) {
-              const newWines = result.wines.filter((w: Wine) =>
-                !discussedWines.find(dw => dw.id === w.id)
+            console.log('[Wine Rack] recommend_wines result:', result)
+            // API returns recommendations array - add to pending
+            const recWines = result.recommendations || result.wines || []
+            if (Array.isArray(recWines) && recWines.length > 0) {
+              console.log('[Wine Rack] Adding recommendations to pendingWines:', recWines.length)
+              const newWines = recWines.filter((w: Wine) =>
+                !pendingWines.find(pw => pw.id === w.id) &&
+                !displayedWines.find(dw => dw.id === w.id)
               )
               if (newWines.length > 0) {
-                setDiscussedWines(prev => [...prev, ...newWines.slice(0, 3)])
+                setPendingWines(prev => [...newWines, ...prev])
               }
             }
             break
@@ -324,7 +355,6 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
               }),
             })
             result = await response.json()
-            // Update cart state if successful
             if (result.success && result.cart) {
               setShopifyCartId(result.cart.id)
               localStorage.setItem('sommelier-shopify-cart-id', result.cart.id)
@@ -387,32 +417,19 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
       }
     }
 
-    // Handle the tool call
     if (lastMessage.toolCallId && lastMessage.name) {
       handleToolCall(lastMessage)
     }
-  }, [messages, sendToolMessage])
-
-  // Clear discussed wines when session ends
-  useEffect(() => {
-    if (status.value === 'disconnected' && discussedWines.length > 0) {
-      // Keep wines for reference but could clear here if desired
-    }
-  }, [status.value])
-
-  // Clear discussed wines handler
-  const handleClearDiscussed = useCallback(() => {
-    setDiscussedWines([])
-  }, [])
+  }, [messages, sendToolMessage, pendingWines, displayedWines, shopifyCartId])
 
   useEffect(() => {
     if (status.value === 'connected') {
       const interval = setInterval(() => {
-        setWaveHeights([...Array(40)].map(() => 20 + Math.random() * 80))
+        setWaveHeights([...Array(30)].map(() => 20 + Math.random() * 80))
       }, 150)
       return () => clearInterval(interval)
     } else {
-      setWaveHeights([...Array(40)].map((_, i) => 20 + Math.sin(i * 0.5) * 15))
+      setWaveHeights([...Array(30)].map((_, i) => 20 + Math.sin(i * 0.5) * 15))
     }
   }, [status.value])
 
@@ -422,20 +439,14 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
       return
     }
 
-    // Session settings with variables only - NO systemPrompt (let Hume config handle it)
-    // Extract first name from display name (e.g., "Dan Keegan" -> "Dan")
     const firstName = (userProfile?.displayName || 'Friend').split(' ')[0]
 
-    // Build wine database summary for Hume
     const winesByCountry: Record<string, string[]> = {}
     wines.forEach(wine => {
       const country = wine.region?.split(',').pop()?.trim() || 'Other'
       if (!winesByCountry[country]) winesByCountry[country] = []
       winesByCountry[country].push(`${wine.name} (${wine.wine_type})`)
     })
-    const wineSummary = Object.entries(winesByCountry)
-      .map(([country, wineList]) => `${country}: ${wineList.join(', ')}`)
-      .join('. ')
 
     const sessionSettings = {
       type: 'session_settings' as const,
@@ -447,15 +458,12 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
         preferredWineTypes: userProfile?.preferredWineTypes || 'all styles',
         pricePreference: userProfile?.pricePreference || 'premium',
         isNewUser: userProfile?.isNewUser ? 'yes' : 'no',
-        // Wine database context (summary only - full list available via tools)
         wine_count: wines.length.toString(),
         wine_regions: 'Bordeaux, Champagne, and other fine wine regions',
       }
     }
 
     console.log('[Hume] Connecting:', userProfile?.displayName, 'auth=', !!userId)
-    console.log('[Hume] Variables:', sessionSettings.variables)
-    console.log('[Hume] Tools:', WINE_TOOLS.map(t => t.name))
 
     try {
       await connect({
@@ -477,6 +485,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
   const handleDisconnect = useCallback(() => {
     disconnect()
     setManualConnected(false)
+    setActiveFilters({})
     console.log('[Hume] Disconnected')
   }, [disconnect])
 
@@ -503,16 +512,22 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
     window.dispatchEvent(new Event('cart-updated'))
   }, [])
 
-  // Use both Hume status AND manual tracking (status doesn't always update)
   const isConnected = status.value === 'connected' || manualConnected
   const isConnecting = status.value === 'connecting' && !manualConnected
   const isError = status.value === 'error'
 
-  return (
+  // Featured wine is the most recently displayed (revealed from transcript)
+  const featuredWine = displayedWines.length > 0 ? displayedWines[0] : null
+
+  // Cart wine IDs for highlighting
+  const cartWineIds = localCart.map(item => item.id)
+
+  // Compact Voice Widget Content
+  const voiceWidgetContent = (
     <div className="flex flex-col items-center">
-      {/* Large Goddess Image - THE Main Tap Target */}
-      <div className="relative mb-8">
-        {/* Champagne fizz bubbles rising around the goddess */}
+      {/* Goddess Avatar - Smaller in compact mode */}
+      <div className="relative mb-6">
+        {/* Champagne fizz bubbles */}
         <div className="goddess-fizz">
           <div className="fizz-bubble"></div>
           <div className="fizz-bubble"></div>
@@ -522,7 +537,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
           <div className="fizz-bubble"></div>
         </div>
 
-        {/* Golden divine glow - pulsating when idle */}
+        {/* Golden glow - pulsating when idle */}
         {!isConnected && !isConnecting && (
           <>
             <div
@@ -543,56 +558,39 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
           </>
         )}
 
-        {/* Active golden aura - when connected, more fizzy */}
+        {/* Active golden aura */}
         {isConnected && (
-          <>
-            <div
-              className="absolute inset-0 rounded-full animate-[rotate-shine_4s_linear_infinite]"
-              style={{
-                background: 'conic-gradient(from 0deg, transparent 0deg, rgba(212,165,10,0.6) 60deg, rgba(245,197,24,0.9) 120deg, rgba(212,165,10,0.6) 180deg, transparent 240deg, transparent 360deg)',
-                transform: 'scale(1.15)',
-                filter: 'blur(4px)',
-              }}
-            />
-            {/* Extra fizz when active */}
-            <div className="goddess-fizz">
-              <div className="fizz-bubble"></div>
-              <div className="fizz-bubble"></div>
-              <div className="fizz-bubble"></div>
-              <div className="fizz-bubble"></div>
-              <div className="fizz-bubble"></div>
-              <div className="fizz-bubble"></div>
-            </div>
-          </>
+          <div
+            className="absolute inset-0 rounded-full animate-[rotate-shine_4s_linear_infinite]"
+            style={{
+              background: 'conic-gradient(from 0deg, transparent 0deg, rgba(212,165,10,0.6) 60deg, rgba(245,197,24,0.9) 120deg, rgba(212,165,10,0.6) 180deg, transparent 240deg, transparent 360deg)',
+              transform: 'scale(1.15)',
+              filter: 'blur(4px)',
+            }}
+          />
         )}
 
-        {/* The Goddess - clickable with gold background inside circle */}
+        {/* The Goddess - clickable */}
         <button
           onClick={isConnected ? handleDisconnect : handleConnect}
           disabled={isConnecting}
           className="relative z-10 group focus:outline-none"
           aria-label={isConnected ? "End session with the Goddess" : "Tap to commune with Aionysus"}
         >
-          {/* Circular container that clips the square icon */}
-          <div className={`relative w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden ${
+          <div className={`relative w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full overflow-hidden ${
             isConnected
               ? 'shadow-[0_0_60px_rgba(212,165,10,0.9)]'
               : 'shadow-[0_0_40px_rgba(212,165,10,0.5)] group-hover:shadow-[0_0_70px_rgba(212,165,10,0.8)]'
           } transition-all duration-300`}
-            style={{
-              border: '3px solid rgba(212,165,10,0.8)',
-            }}
+            style={{ border: '3px solid rgba(212,165,10,0.8)' }}
           >
-            {/* Lottie + Image Hybrid */}
             <div className="absolute inset-0">
-              {/* Lottie aura effects BEHIND the image */}
               <div className="absolute inset-[-20%] w-[140%] h-[140%] z-0">
                 <LottieGoddess
                   isPlaying={isPlaying}
                   animationPath="/animations/goddess.json"
                 />
               </div>
-              {/* Goddess image ON TOP of effects */}
               <div className={`absolute inset-[-15%] w-[130%] h-[130%] flex items-center justify-center z-10 ${
                 isPlaying ? 'animate-[speaking-breathe_2s_ease-in-out_infinite]' : ''
               }`}>
@@ -604,27 +602,25 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
                   } transition-all duration-300`}
                 />
               </div>
-              {/* Speaking glow on top */}
               {isPlaying && (
                 <div className="absolute inset-0 rounded-full animate-[speaking-glow_1.5s_ease-in-out_infinite] pointer-events-none z-20" />
               )}
             </div>
-          </div>
 
-          {/* Subtle connecting spinner overlay */}
-          {isConnecting && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 border-4 border-gold-400 border-t-transparent rounded-full animate-spin" />
-            </div>
-          )}
+            {isConnecting && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-12 h-12 border-4 border-gold-400 border-t-transparent rounded-full animate-spin" />
+              </div>
+            )}
+          </div>
         </button>
       </div>
 
-      {/* Secondary Play/Stop Button - below the image */}
+      {/* Connect/Disconnect Button */}
       <button
         onClick={isConnected ? handleDisconnect : handleConnect}
         disabled={isConnecting}
-        className={`mb-4 px-6 py-2 rounded-full font-medium text-sm transition-all duration-300 flex items-center gap-2 ${
+        className={`mb-4 px-5 py-2 rounded-full font-medium text-sm transition-all duration-300 flex items-center gap-2 ${
           isConnected
             ? 'bg-gold-600 text-black hover:bg-gold-500'
             : isConnecting
@@ -654,12 +650,12 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
         )}
       </button>
 
-      {/* Waveform Animation - Centered Below */}
-      <div className="flex items-center justify-center gap-[2px] h-12 w-64 mb-4">
+      {/* Waveform */}
+      <div className="flex items-center justify-center gap-[2px] h-10 w-48 mb-4">
         {waveHeights.map((height, i) => (
           <div
             key={i}
-            className={`w-[3px] rounded-full transition-all duration-100 ${
+            className={`w-[2px] rounded-full transition-all duration-100 ${
               isPlaying
                 ? 'bg-gold-400 shadow-[0_0_8px_rgba(212,165,10,0.6)]'
                 : isConnected
@@ -674,8 +670,8 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
         ))}
       </div>
 
-      {/* Status Text - Compact when connected */}
-      <p className={`text-lg md:text-xl font-medium mb-4 text-center transition-all ${
+      {/* Status Text */}
+      <p className={`text-base md:text-lg font-medium mb-4 text-center transition-all ${
         isPlaying ? 'text-gold-300' : 'text-gold-500'
       }`}>
         {isConnecting
@@ -689,125 +685,47 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
           : "Tap to commune with Aionysus"}
       </p>
 
-      {/* SHOPPING DASHBOARD - Appears when connected, ABOVE the info panel */}
-      {isConnected && (
-        <div className="w-full max-w-2xl mb-6 space-y-4">
-          {/* Latest Wine Recommended */}
-          {discussedWines.length > 0 && (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <p className="text-gold-400 text-xs font-medium text-center mb-3">The Goddess Recommends</p>
-              <WineCard wine={discussedWines[discussedWines.length - 1]} onAddToCart={handleAddToCart} />
-            </div>
-          )}
-        </div>
-      )}
-
       {/* Wine Proverb - Only show when not connected */}
       {!isConnected && (
-        <p className="text-gold-500 text-sm italic mb-4">
+        <p className="text-gold-500/70 text-sm italic mb-4 text-center">
           "Where there is no wine, there is no love"
         </p>
       )}
 
-      {/* Version & Info Panel - Compact when connected */}
+      {/* Info Panel - Only when not connected */}
       {!isConnected && (
-        <div className="text-center mb-8 space-y-3">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold-900/20 rounded-full border border-gold-700/30">
-            <span className="text-gold-400 text-sm font-semibold">BETA</span>
-            <span className="text-gold-600">•</span>
-            <span className="text-gold-300 text-sm">3,800+ Wines</span>
-            <span className="text-gold-600">•</span>
-            <span className="text-gold-300 text-sm">All Types</span>
+        <div className="text-center mb-4 space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gold-900/20 rounded-full border border-gold-700/30 text-xs">
+            <span className="text-gold-400 font-semibold">BETA</span>
+            <span className="text-gold-600">|</span>
+            <span className="text-gold-300">3,800+ Wines</span>
           </div>
-          <p className="text-gold-400/60 text-sm max-w-md">
-            Red, White, Rosé, Sparkling & Dessert wines from Bordeaux, Champagne, and fine wine regions worldwide.
-          </p>
         </div>
       )}
 
-      {/* Your Cart Dashboard - Voice Shopping Results */}
+      {/* Your Cart Mini-Summary */}
       {localCart.length > 0 && (
-        <div className="w-full max-w-2xl mb-8">
-          <div className="bg-gradient-to-b from-stone-900/90 to-stone-950/95 rounded-2xl border border-gold-700/30 overflow-hidden">
-            {/* Cart Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-gold-700/20">
-              <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <h3 className="text-gold-300 font-semibold">Your Selection</h3>
-              </div>
-              <span className="text-gold-500 text-sm">
-                {localCart.reduce((sum, item) => sum + item.quantity, 0)} bottle{localCart.reduce((sum, item) => sum + item.quantity, 0) !== 1 ? 's' : ''}
+        <div className="w-full max-w-xs mt-4">
+          <Link
+            href="/cart"
+            className="flex items-center justify-between p-3 bg-stone-900/80 rounded-xl border border-gold-700/30 hover:border-gold-500/50 transition-all"
+          >
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              <span className="text-gold-300 text-sm font-medium">
+                {localCart.reduce((sum, item) => sum + item.quantity, 0)} item{localCart.reduce((sum, item) => sum + item.quantity, 0) !== 1 ? 's' : ''}
               </span>
             </div>
-
-            {/* Cart Items */}
-            <div className="divide-y divide-gold-700/20">
-              {localCart.map((item) => (
-                <div key={item.id} className="flex items-center gap-3 px-5 py-3">
-                  <img
-                    src={item.image_url || '/wine-placeholder.svg'}
-                    alt={item.name}
-                    className="w-12 h-16 object-cover rounded"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-white text-sm font-medium truncate">{item.name}</p>
-                    <p className="text-stone-400 text-xs">{item.winery}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-gold-400 font-bold">£{item.price.toLocaleString()}</p>
-                    <p className="text-stone-500 text-xs">Qty: {item.quantity}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Cart Footer */}
-            <div className="px-5 py-4 bg-gold-900/20 border-t border-gold-700/20">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-gold-300 font-medium">Total</span>
-                <span className="text-gold-400 font-bold text-xl">
-                  £{localCart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toLocaleString()}
-                </span>
-              </div>
-              <Link
-                href="/cart"
-                className="block w-full text-center bg-gradient-to-r from-gold-500 to-gold-600 text-black font-bold py-3 rounded-lg hover:from-gold-400 hover:to-gold-500 transition-all shadow-[0_0_20px_rgba(212,165,10,0.3)]"
-              >
-                View Cart & Checkout
-              </Link>
-            </div>
-          </div>
+            <span className="text-gold-400 font-bold text-sm">
+              £{localCart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toLocaleString()}
+            </span>
+          </Link>
         </div>
       )}
 
-      {/* Wines Mentioned (smaller, below cart) */}
-      {discussedWines.length > 1 && (
-        <div className="w-full max-w-2xl mb-8">
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-gold-500/60 text-xs font-medium">Also Discussed</p>
-            <button
-              onClick={handleClearDiscussed}
-              className="text-gold-500/40 hover:text-gold-400 text-xs flex items-center gap-1 transition-colors"
-            >
-              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-              Clear
-            </button>
-          </div>
-          <div className="overflow-x-auto scrollbar-hide">
-            <div className="flex gap-3 pb-2">
-              {discussedWines.slice(0, -1).map((wine) => (
-                <WineHistoryCard key={wine.id} wine={wine} onAddToCart={handleAddToCart} />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Checkout button when checkout URL is available */}
+      {/* Checkout floating button */}
       {checkoutUrl && cartCount > 0 && (
         <a
           href={checkoutUrl}
@@ -822,7 +740,7 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
         </a>
       )}
 
-      {/* Cart link */}
+      {/* Cart FAB */}
       <Link
         href="/cart"
         className="fixed bottom-6 right-6 bg-gold-600 text-white p-4 rounded-full shadow-lg hover:bg-gold-700 transition-colors z-50"
@@ -839,9 +757,22 @@ function VoiceInterface({ accessToken, userId }: { accessToken: string; userId?:
       </Link>
     </div>
   )
+
+  return (
+    <VoiceShoppingLayout
+      featuredWine={featuredWine}
+      discussedWines={displayedWines}
+      activeFilters={activeFilters}
+      onAddToCart={handleAddToCart}
+      isConnected={isConnected}
+      cartWineIds={cartWineIds}
+    >
+      {voiceWidgetContent}
+    </VoiceShoppingLayout>
+  )
 }
 
-export function VoiceWidget() {
+export function VoiceShoppingWidget() {
   const user = useUser()
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -883,7 +814,7 @@ export function VoiceWidget() {
       onError={(err) => console.error('[Hume Error]', err)}
       onClose={(e) => console.warn('[Hume Close]', e?.code, e?.reason)}
     >
-      <VoiceInterface accessToken={accessToken} userId={user?.id} />
+      <VoiceShoppingInterface accessToken={accessToken} userId={user?.id} />
     </VoiceProvider>
   )
 }

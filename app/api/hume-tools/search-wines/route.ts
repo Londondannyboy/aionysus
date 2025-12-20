@@ -54,10 +54,12 @@ export async function POST(request: NextRequest) {
     // Limit to 5 results
     filteredWines = filteredWines.slice(0, 5)
 
-    // Format for Hume voice response
+    // Format for Hume voice response AND wine rack display
+    // Note: Keep price_retail as number for wine rack, add formatted string for Hume
     const formattedWines = filteredWines.map((wine: any) => ({
       id: wine.id,
       name: wine.name,
+      slug: wine.slug,
       winery: wine.winery,
       region: wine.region,
       country: wine.country,
@@ -66,8 +68,9 @@ export async function POST(request: NextRequest) {
       wine_type: wine.wine_type,
       style: wine.style,
       color: wine.color,
-      price_retail: wine.price_retail ? `£${wine.price_retail}` : null,
-      price_trade: wine.price_trade ? `£${wine.price_trade}` : null,
+      price_retail: wine.price_retail, // Keep as number for wine rack
+      price_display: wine.price_retail ? `£${wine.price_retail}` : 'Price on request', // Formatted for Hume
+      price_trade: wine.price_trade,
       bottle_size: wine.bottle_size,
       tasting_notes: wine.tasting_notes,
       critic_scores: wine.critic_scores,

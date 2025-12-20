@@ -32,10 +32,11 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Format comprehensive response for Hume
+    // Format comprehensive response for Hume and wine rack
     const formattedWine = {
       id: wine.id,
       name: wine.name,
+      slug: wine.slug,
       winery: wine.winery,
       region: wine.region,
       country: wine.country,
@@ -46,8 +47,9 @@ export async function POST(request: NextRequest) {
       color: wine.color,
       appellation: wine.appellation,
       classification: wine.classification,
-      price_retail: wine.price_retail ? `£${wine.price_retail}` : null,
-      price_trade: wine.price_trade ? `£${wine.price_trade}` : null,
+      price_retail: wine.price_retail, // Keep as number for wine rack
+      price_display: wine.price_retail ? `£${wine.price_retail}` : 'Price on request',
+      price_trade: wine.price_trade,
       bottle_size: wine.bottle_size || '750ml',
       case_size: wine.case_size,
       tasting_notes: wine.tasting_notes,

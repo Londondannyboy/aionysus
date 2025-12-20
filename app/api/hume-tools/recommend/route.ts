@@ -87,11 +87,12 @@ export async function POST(request: NextRequest) {
       `
     }
 
-    // Format recommendations with context
+    // Format recommendations with context (keep price as number for wine rack)
     const recommendations = wines.map((wine: any, index: number) => ({
       rank: index + 1,
       id: wine.id,
       name: wine.name,
+      slug: wine.slug,
       winery: wine.winery,
       region: wine.region,
       country: wine.country,
@@ -99,14 +100,14 @@ export async function POST(request: NextRequest) {
       vintage: wine.vintage,
       wine_type: wine.wine_type,
       style: wine.style,
-      price_retail: wine.price_retail ? `£${wine.price_retail}` : null,
-      price_trade: wine.price_trade ? `£${wine.price_trade}` : null,
+      price_retail: wine.price_retail, // Keep as number for wine rack
+      price_display: wine.price_retail ? `£${wine.price_retail}` : 'Price on request',
+      price_trade: wine.price_trade,
       tasting_notes: wine.tasting_notes,
       critic_scores: wine.critic_scores,
       drinking_window: wine.drinking_window,
       food_pairings: wine.food_pairings,
       image_url: wine.image_url,
-      // Add recommendation reason
       recommendation_reason: use_case === 'investment'
         ? 'Strong investment potential with aging capability'
         : use_case === 'event'
