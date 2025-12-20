@@ -111,6 +111,14 @@ function VoiceShoppingInterface({ accessToken, userId }: { accessToken: string; 
     }
   }, [status.value])
 
+  // Log ALL Hume messages for debugging
+  useEffect(() => {
+    if (messages.length > 0) {
+      const lastMsg = messages[messages.length - 1]
+      console.log('[Hume Message]', (lastMsg as any).type, lastMsg)
+    }
+  }, [messages])
+
   // Log when wines change
   useEffect(() => {
     console.log('[Wine Rack] displayedWines:', displayedWines.length, displayedWines.map(w => w.name))
